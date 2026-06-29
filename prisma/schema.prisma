@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Categoria {
+  SALTOS
+  SANDALIAS
+  MULES
+  COLECAO_LIMITADA
+}
+
+enum EstadoEncomenda {
+  PENDENTE
+  PAGAMENTO_ANALISE
+  CONFIRMADA
+  EM_PREPARACAO
+  ENVIADA
+  ENTREGUE
+  CANCELADA
+  DEVOLVIDA
+}
+
+enum EstadoPagamento {
+  AGUARDA_COMPROVANTE
+  COMPROVANTE_SUBMETIDO
+  VALIDADO_AUTO_OK
+  VALIDADO_AUTO_ALERTA
+  VALIDADO_AUTO_REJEITADO
+  CONFIRMADO_ADMIN
+  REJEITADO_ADMIN
+}
+
+enum RoleAdmin {
+  SUPER_ADMIN
+  GESTOR
+}
+
+model Produto {
+  id             String          @id @default(cuid())
+  nome           String
+  slug           String          @unique
+  descricao      String
+  preco          Float
+  precoAntes     Float?
+  categoria      Categoria
+  colecao        String?
+  imagens        String[]
+  tamanhos       Int[]
+  cores          Json[]
+  stock          Json
+  destaque       Boolean         @default(false)
+  emBreve        Boolean         @default(false)
+  ativo          Boolean         @default(true)
+  metaTitle      String?
+  metaDesc       String?
+  criadoEm      DateTime        @default(now())
+  atualizadoEm  DateTime        @updatedAt
+  itensEncomenda ItemEncomenda[]
+}
+
+model Cliente {
+  id        String      @id @default(cuid())
+  nome      String
+  email     String      @unique
+  telefone  String?
+  morada    Json?
+  criadoEm DateTime    @default(now())
+  encomendas Encomenda[]
+}
+
+model Encomenda {
+  id           String          @id @default(cuid())
+  referencia   String          @unique
+  clienteId    String
+  cliente      Cliente         @relation(fields: [clienteId], references: [id])
+  itens        ItemEncomenda[]
+  pagamento    Pagamento?
+  subtotal     Float
+  portes       Float           @default(0)
+  total        Float
+  moradaEnvio  Json
+  estado       EstadoEncomenda @default(PENDENTE)
+  notas        String?
+  criadaEm    DateTime        @default(now())
+  atualizadaEm DateTime       @updatedAt
+}
+
+model ItemEncomenda {
+  id          String    @id @default(cuid())
+  encomendaId String
+  encomenda   Encomenda @relation(fields: [encomendaId], references: [id])
+  produtoId   String
+  produto     Produto   @relation(fields: [produtoId], references: [id])
+  tamanho     Int
+  cor         String
+  quantidade  Int
+  precoUnit   Float
+}
+
+model Pagamento {
+  id                String          @id @default(cuid())
+  encomendaId       String          @unique
+  encomenda         Encomenda       @relation(fields: [encomendaId], references: [id])
+  valor             Float
+  ibanDestinatario  String
+  referencia        String
+  comprovante       String?
+  estado            EstadoPagamento @default(AGUARDA_COMPROVANTE)
+  validacaoScript   Json?
+  validacaoAdmin    Boolean?
+  notaAdmin         String?
+  criadoEm         DateTime        @default(now())
+  verificadoEm     DateTime?
+}
+
+model Admin {
+  id        String    @id @default(cuid())
+  nome      String
+  email     String    @unique
+  password  String
+  role      RoleAdmin @default(GESTOR)
+  criadoEm DateTime  @default(now())
+}
