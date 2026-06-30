@@ -70,7 +70,8 @@ model Cliente {
   email     String      @unique
   telefone  String?
   morada    Json?
-  criadoEm DateTime    @default(now())
+  notas     String?
+  criadoEm  DateTime    @default(now())
   encomendas Encomenda[]
 }
 
@@ -86,9 +87,10 @@ model Encomenda {
   total        Float
   moradaEnvio  Json
   estado       EstadoEncomenda @default(PENDENTE)
-  notas        String?
-  criadaEm    DateTime        @default(now())
-  atualizadaEm DateTime       @updatedAt
+  notas          String?
+  numeroTracking String?
+  criadaEm      DateTime        @default(now())
+  atualizadaEm  DateTime        @updatedAt
 }
 
 model ItemEncomenda {

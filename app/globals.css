@@ -64,3 +64,32 @@ textarea {
   transition: color 300ms ease, background-color 300ms ease,
     border-color 300ms ease, opacity 300ms ease, box-shadow 300ms ease;
 }
+
+/* ── Store animations ─────────────────────────────── */
+@keyframes kk-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kk-pop {
+  0%   { transform: scale(0.6); opacity: 0; }
+  70%  { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-kk-fade-up {
+  animation: kk-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-kk-pop {
+  animation: kk-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Scrollbar hide ───────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
