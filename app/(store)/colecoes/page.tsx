@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import db from '@/lib/db'
 import { Categoria } from '@prisma/client'
-import ProductCard from '@/components/store/ProductCard'
 import ColecoesClient from '@/components/store/ColecoesClient'
+import SortSelect from '@/components/store/SortSelect'
 
 export const revalidate = 300
 
@@ -150,20 +150,11 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
         </div>
 
         {/* Ordenação */}
-        <select
+        <SortSelect
+          ordens={ORDENS}
           defaultValue={ordemFiltro}
-          onChange={e => {
-            const url = buildUrl({ ordem: e.target.value })
-            window.location.href = url
-          }}
-          className="text-[10px] tracking-[0.15em] border border-noir/20 px-4 py-2 bg-cream text-noir focus:outline-none focus:border-gold appearance-none cursor-pointer"
-          style={{ fontFamily: 'var(--font-sans)' }}
-          aria-label="Ordenar por"
-        >
-          {ORDENS.map(o => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
-        </select>
+          categoria={categoriaValida}
+        />
       </div>
 
       {/* Grid */}

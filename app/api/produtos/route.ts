@@ -93,7 +93,9 @@ export async function GET(req: NextRequest) {
     const itens = temMais ? rows.slice(0, limite) : rows
     const nextCursor = temMais ? itens[itens.length - 1].id : null
 
-    return NextResponse.json({ itens, nextCursor })
+    return NextResponse.json({ itens, nextCursor }, {
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60' },
+    })
   }
 
   // ── Admin page-based mode ──────────────────────────────────────

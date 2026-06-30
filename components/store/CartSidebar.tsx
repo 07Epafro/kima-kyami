@@ -13,12 +13,25 @@ function formatarPreco(valor: number) {
 export default function CartSidebar() {
   const { items, total, count, isOpen, closeCart, removeItem, updateQty } = useCart()
   const overlayRef = useRef<HTMLDivElement>(null)
+  const closeBtnRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden'
-    else document.body.style.overflow = ''
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+      closeBtnRef.current?.focus()
+    } else {
+      document.body.style.overflow = ''
+    }
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape' && isOpen) closeCart()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [isOpen, closeCart])
 
   return (
     <>
@@ -34,6 +47,8 @@ export default function CartSidebar() {
 
       {/* Sidebar */}
       <aside
+        role="dialog"
+        aria-modal="true"
         className={`fixed top-0 right-0 z-50 h-full w-full max-w-[420px] bg-cream flex flex-col shadow-2xl transition-transform duration-400 ease-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
@@ -58,6 +73,7 @@ export default function CartSidebar() {
             )}
           </div>
           <button
+            ref={closeBtnRef}
             onClick={closeCart}
             aria-label="Fechar carrinho"
             className="text-noir/40 hover:text-gold transition-colors"

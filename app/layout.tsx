@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     default: 'Ki Ma Kyami',
   },
   description: 'Ki Ma Kyami — Moda e lifestyle africano contemporâneo.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.com'),
   openGraph: {
     type: 'website',
     locale: 'pt_PT',

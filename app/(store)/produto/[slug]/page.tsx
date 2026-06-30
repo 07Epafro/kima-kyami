@@ -59,6 +59,18 @@ export default async function ProdutoPage({ params }: Params) {
   const stock = produto.stock as unknown as Record<string, number>
 
   const catLabel = CATEGORIA_LABELS[produto.categoria] ?? produto.categoria
+  const BASE = process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.com'
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${BASE}/` },
+      { '@type': 'ListItem', position: 2, name: 'Coleções', item: `${BASE}/colecoes` },
+      { '@type': 'ListItem', position: 3, name: catLabel, item: `${BASE}/colecoes?categoria=${produto.categoria}` },
+      { '@type': 'ListItem', position: 4, name: produto.nome, item: `${BASE}/produto/${produto.slug}` },
+    ],
+  }
 
   const produtoSchema = {
     '@context': 'https://schema.org',
@@ -76,7 +88,7 @@ export default async function ProdutoPage({ params }: Params) {
         : Object.values(stock).some(v => v > 0)
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
-      url: `https://kimakyami.com/produto/${produto.slug}`,
+      url: `${BASE}/produto/${produto.slug}`,
     },
   }
 
@@ -85,6 +97,10 @@ export default async function ProdutoPage({ params }: Params) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(produtoSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-8">

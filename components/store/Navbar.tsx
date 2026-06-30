@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Search, User, ShoppingBag, Menu, X } from 'lucide-react'
@@ -19,6 +19,7 @@ export default function Navbar() {
   const { count, openCart } = useCart()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -29,6 +30,18 @@ export default function Navbar() {
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (menuOpen) closeButtonRef.current?.focus()
+  }, [menuOpen])
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape' && menuOpen) setMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
   }, [menuOpen])
 
   return (
@@ -125,6 +138,9 @@ export default function Navbar() {
 
       {/* Mobile fullscreen menu */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu de navegação"
         className={`fixed inset-0 z-50 bg-noir flex flex-col transition-all duration-400 ${
           menuOpen ? 'opacity-100 translate-x-0 pointer-events-auto' : 'opacity-0 translate-x-4 pointer-events-none'
         }`}
@@ -139,6 +155,7 @@ export default function Navbar() {
             KK
           </span>
           <button
+            ref={closeButtonRef}
             onClick={() => setMenuOpen(false)}
             aria-label="Fechar menu"
             className="text-cream/40 hover:text-gold transition-colors"
