@@ -9,9 +9,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const session = await auth()
   if (!session) redirect('/admin/login')
 
-  const pagamentosPendentes = await db.pagamento.count({
-    where: { estado: EstadoPagamento.COMPROVANTE_SUBMETIDO },
-  })
+  let pagamentosPendentes = 0
+  try {
+    pagamentosPendentes = await db.pagamento.count({
+      where: { estado: EstadoPagamento.COMPROVANTE_SUBMETIDO },
+    })
+  } catch { /* badge não crítico — continua sem contagem */ }
 
   const adminNome = session.user.name ?? 'Admin'
   const adminEmail = session.user.email ?? ''

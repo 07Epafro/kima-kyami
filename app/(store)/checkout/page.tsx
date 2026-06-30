@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -23,7 +23,7 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>
 
-const PAISES = ['Portugal', 'Espanha', 'França', 'Alemanha', 'Reino Unido', 'Outro']
+const PAISES = ['Angola', 'Portugal', 'Espanha', 'França', 'Alemanha', 'Reino Unido', 'Outro']
 
 function formatarPreco(v: number) { return `€ ${v.toFixed(2).replace('.', ',')}` }
 
@@ -34,17 +34,37 @@ export default function CheckoutPage() {
   const router = useRouter()
   const { items, total, count } = useCart()
   const [erro, setErro] = useState<string | null>(null)
+  const [avisoStock, setAvisoStock] = useState<string | null>(null)
+  const submitted = useRef(false)
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { moradaPais: 'Portugal' },
+    defaultValues: { moradaPais: 'Angola' },
   })
+
+  useEffect(() => {
+    if (items.length === 0) return
+    const ids = [...new Set(items.map(i => i.produtoId))]
+    Promise.all(ids.map(id => fetch(`/api/produtos/${id}`).then(r => r.json()))).then(prods => {
+      for (const item of items) {
+        const prod = prods.find((p: { id: string; stock: Record<string, number> }) => p.id === item.produtoId)
+        if (!prod) continue
+        const key = `${item.tamanho}-${item.cor}`
+        const disponivel = (prod.stock as Record<string, number>)[key] ?? 0
+        if (disponivel < item.quantidade) {
+          setAvisoStock(`Stock insuficiente para ${item.nome} (${item.cor}, nº${item.tamanho}). Disponível: ${disponivel}.`)
+          return
+        }
+      }
+    }).catch(() => { /* stock check falhou — validação ocorre no servidor */ })
+  }, [items])
 
   const subtotal = total
   const portes = subtotal >= 150 ? 0 : 5.99
   const totalFinal = subtotal + portes
 
   async function onSubmit(data: FormValues) {
+    if (submitted.current) return
     setErro(null)
 
     const res = await fetch('/api/encomendas', {
@@ -77,6 +97,7 @@ export default function CheckoutPage() {
       valor: number
     }
 
+    submitted.current = true
     sessionStorage.setItem('kk-checkout', JSON.stringify({ ...json, email: data.email }))
     router.push('/checkout/pagamento')
   }
@@ -181,6 +202,12 @@ export default function CheckoutPage() {
               </div>
             </div>
           </section>
+
+          {avisoStock && (
+            <p className="text-sm text-amber-700 bg-amber-50 px-4 py-3 border border-amber-200" style={{ fontFamily: 'var(--font-sans)' }}>
+              {avisoStock}
+            </p>
+          )}
 
           {erro && (
             <p className="text-sm text-red-600 bg-red-50 px-4 py-3 border border-red-200" style={{ fontFamily: 'var(--font-sans)' }}>

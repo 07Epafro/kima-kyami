@@ -163,7 +163,7 @@ export async function validarComprovante(
 
   if (textoExtraido.length >= 20) {
     const ibanLoja = process.env.IBAN_LOJA ?? ''
-    const regexIban = /PT\s*50\s*[\d\s]{21,30}/gi
+    const regexIban = /AO\s*06\s*[\d\s]{21,30}/gi
     const matchesIban = textoExtraido.match(regexIban)
     if (matchesIban && ibanLoja) {
       const ibanLojaLimpo = ibanLoja.replace(/\s/g, '').toUpperCase()
@@ -187,7 +187,7 @@ export async function validarComprovante(
   let referenciaPresente: boolean | null = null
 
   if (textoExtraido.length >= 20) {
-    const regexRef = /KK[\s\-]?\d{4}[\s\-]?\d{4}/i
+    const regexRef = /KK[\s\-]?\d{4}[\s\-]?[A-Z0-9]{4}/i
     referenciaPresente = regexRef.test(textoExtraido)
     if (!referenciaPresente) {
       alertas.push('Referência da encomenda não encontrada')

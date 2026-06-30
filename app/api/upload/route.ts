@@ -12,6 +12,24 @@ const TIPOS_IMAGEM = ['image/jpeg', 'image/png', 'image/webp']
 const TIPOS_ACEITES = [...TIPOS_IMAGEM, 'application/pdf']
 const LIMITE_BYTES = 10 * 1024 * 1024 // 10 MB
 
+function verificarMagicBytes(buf: Buffer, mimeType: string): boolean {
+  if (mimeType === 'image/jpeg') {
+    return buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff
+  }
+  if (mimeType === 'image/png') {
+    return buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47
+  }
+  if (mimeType === 'image/webp') {
+    const riff = buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46
+    const webp = buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50
+    return riff && webp
+  }
+  if (mimeType === 'application/pdf') {
+    return buf[0] === 0x25 && buf[1] === 0x50 && buf[2] === 0x44 && buf[3] === 0x46
+  }
+  return false
+}
+
 export async function POST(req: NextRequest) {
   let formData: FormData
   try {
@@ -50,8 +68,23 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Comprovante uploads require a valid pagamentoId
+  if (tipo === 'comprovante') {
+    const pagamentoId = formData.get('pagamentoId')?.toString()
+    if (!pagamentoId) {
+      return NextResponse.json({ error: 'pagamentoId obrigatório para comprovante' }, { status: 400 })
+    }
+  }
+
   try {
     const buffer = Buffer.from(await file.arrayBuffer())
+
+    if (!verificarMagicBytes(buffer, file.type)) {
+      return NextResponse.json(
+        { error: 'Conteúdo do ficheiro não corresponde ao tipo declarado' },
+        { status: 400 },
+      )
+    }
     const folder = tipo === 'comprovante' ? 'kima-kyami/comprovativos' : 'kima-kyami/produtos'
 
     const result = await new Promise<{ secure_url: string; public_id: string; format: string }>(

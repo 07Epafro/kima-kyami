@@ -151,15 +151,25 @@ export async function POST(req: NextRequest) {
 
   const data = parsed.data
 
-  const slugExistente = await db.produto.findUnique({ where: { slug: data.slug } })
-  if (slugExistente) {
-    return NextResponse.json({ error: 'Slug já em uso. Escolha outro.' }, { status: 409 })
+  let finalSlug = data.slug
+  const slugBase = await db.produto.findUnique({ where: { slug: finalSlug } })
+  if (slugBase) {
+    let i = 1
+    while (i <= 99) {
+      const candidate = `${data.slug}-${i}`
+      const exists = await db.produto.findUnique({ where: { slug: candidate } })
+      if (!exists) { finalSlug = candidate; break }
+      i++
+    }
+    if (i > 99) {
+      return NextResponse.json({ error: 'Não foi possível gerar slug único' }, { status: 409 })
+    }
   }
 
   const produto = await db.produto.create({
     data: {
       nome: data.nome,
-      slug: data.slug,
+      slug: finalSlug,
       descricao: data.descricao,
       preco: data.preco,
       precoAntes: data.precoAntes ?? null,
