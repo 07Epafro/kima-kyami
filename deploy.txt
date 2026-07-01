@@ -1,0 +1,18 @@
+# deploy.ps1 — KI MA KYAMI deploy script
+$SERVER = "kimakyam@ws3.angoweb.net"
+$REMOTE = "~/kima-kyami-app"
+
+Write-Host "Building..." -ForegroundColor Yellow
+npm run build
+
+Write-Host "Copying static files..." -ForegroundColor Yellow
+Copy-Item -Recurse -Force ".next\static" ".next\standalone\.next\static"
+Copy-Item -Recurse -Force "public" ".next\standalone\public"
+
+Write-Host "Uploading to server..." -ForegroundColor Yellow
+rsync -avz --progress .next/standalone/ "${SERVER}:${REMOTE}/"
+
+Write-Host "Reloading app..." -ForegroundColor Yellow
+ssh $SERVER "pm2 reload kima-kyami"
+
+Write-Host "Deploy concluido!" -ForegroundColor Green

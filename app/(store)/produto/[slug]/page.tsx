@@ -18,11 +18,12 @@ const CATEGORIA_LABELS: Record<string, string> = {
 type Params = { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {
-  const produtos = await db.produto.findMany({
-    where: { ativo: true },
-    select: { slug: true },
-  })
-  return produtos.map(p => ({ slug: p.slug }))
+  try {
+    const produtos = await db.produto.findMany({ where: { ativo: true }, select: { slug: true } })
+    return produtos.map(p => ({ slug: p.slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

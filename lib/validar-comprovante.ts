@@ -35,7 +35,7 @@ export async function validarComprovante(
 
   if (mimeType !== 'application/pdf') {
     try {
-      const exif = await exifr.parse(ficheiro, { software: true, xmp: true, tiff: true })
+      const exif = await exifr.parse(ficheiro, { xmp: true, tiff: true })
       const software = exif?.Software ?? exif?.software ?? exif?.ProcessingSoftware ?? ''
       const softwareLower = String(software).toLowerCase()
       const editores = ['photoshop', 'gimp', 'lightroom', 'affinity', 'pixelmator', 'paint.net', 'canva']

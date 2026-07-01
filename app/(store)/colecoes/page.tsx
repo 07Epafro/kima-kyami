@@ -70,6 +70,7 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
     }),
   ])
 
+  const produtosTyped = produtos.map(p => ({ ...p, stock: (p.stock ?? {}) as Record<string, number> }))
   const catActual = CATEGORIAS.find(c => c.value === categoriaValida)
 
   function buildUrl(o: Record<string, string | undefined>) {
@@ -176,7 +177,7 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
         </div>
       ) : (
         <ColecoesClient
-          produtosIniciais={produtos}
+          produtosIniciais={produtosTyped}
           total={total}
           categoria={categoriaValida}
           ordem={ordemFiltro}

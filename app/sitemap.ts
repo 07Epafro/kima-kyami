@@ -6,10 +6,10 @@ const BASE = process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.com'
 const CATEGORIAS = ['SALTOS', 'SANDALIAS', 'MULES', 'COLECAO_LIMITADA'] as const
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const produtos = await db.produto.findMany({
-    where: { ativo: true },
-    select: { slug: true, atualizadoEm: true },
-  })
+  let produtos: { slug: string; atualizadoEm: Date }[] = []
+  try {
+    produtos = await db.produto.findMany({ where: { ativo: true }, select: { slug: true, atualizadoEm: true } })
+  } catch { /* DB unavailable at build time — sitemap omits dynamic URLs */ }
 
   return [
     { url: `${BASE}/`, priority: 1, changeFrequency: 'weekly' },

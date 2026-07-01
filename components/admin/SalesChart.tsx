@@ -51,7 +51,7 @@ export default function SalesChart({ data }: Props) {
           width={55}
         />
         <Tooltip
-          formatter={(value: number) => [`€ ${value.toFixed(2).replace('.', ',')}`, 'Vendas']}
+          formatter={(value) => [`€ ${Number(value).toFixed(2).replace('.', ',')}`, 'Vendas']}
           labelFormatter={(label) => `Dia ${label}`}
           contentStyle={{
             background: '#181818',
