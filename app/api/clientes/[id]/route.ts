@@ -134,7 +134,8 @@ export async function POST(req: NextRequest, { params }: Params) {
   const cliente = await db.cliente.findUnique({ where: { id }, select: { nome: true, email: true } })
   if (!cliente) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
 
-  await resend.emails.send({
+  try {
+    await resend.emails.send({
     from: 'Kima Kyami <noreply@kimakyami.com>',
     to: cliente.email,
     subject: parsed.data.assunto,
@@ -167,7 +168,10 @@ export async function POST(req: NextRequest, { params }: Params) {
   </table>
 </body>
 </html>`,
-  })
+    })
+  } catch {
+    return NextResponse.json({ error: 'Falha ao enviar email' }, { status: 502 })
+  }
 
   return NextResponse.json({ ok: true })
 }

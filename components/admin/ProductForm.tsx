@@ -299,7 +299,7 @@ export default function ProductForm({ produto }: Props) {
     const tamanhos = getValues('tamanhos')
     const stock = { ...getValues('stock') }
     for (const t of tamanhos) {
-      const key = `${t}_${nome}`
+      const key = `${t}-${nome}`
       if (!(key in stock)) stock[key] = 0
     }
     setValue('stock', stock)
@@ -319,7 +319,7 @@ export default function ProductForm({ produto }: Props) {
     const stock = getValues('stock')
     const updated: Record<string, number> = {}
     for (const [k, v] of Object.entries(stock)) {
-      if (!k.endsWith(`_${removida.nome}`)) updated[k] = v
+      if (!k.endsWith(`-${removida.nome}`)) updated[k] = v
     }
     setValue('stock', updated)
   }
@@ -328,14 +328,14 @@ export default function ProductForm({ produto }: Props) {
 
   function setStockValue(tamanho: number, corNomeKey: string, raw: string) {
     const val = parseInt(raw, 10)
-    const key = `${tamanho}_${corNomeKey}`
+    const key = `${tamanho}-${corNomeKey}`
     const stock = { ...getValues('stock') }
     stock[key] = isNaN(val) ? 0 : Math.max(0, val)
     setValue('stock', stock)
   }
 
   function getStockValue(tamanho: number, corNomeKey: string): number {
-    return getValues('stock')[`${tamanho}_${corNomeKey}`] ?? 0
+    return getValues('stock')[`${tamanho}-${corNomeKey}`] ?? 0
   }
 
   // ── Submit ───────────────────────────────────────────────────────────────
