@@ -59,12 +59,15 @@ const orgSchema = {
 }
 
 export default async function HomePage() {
-  const produtosEmBreve = await db.produto.findMany({
-    where: { emBreve: true, ativo: true },
-    select: { id: true, nome: true, slug: true, imagens: true, preco: true },
-    orderBy: { criadoEm: 'desc' },
-    take: 8,
-  })
+  let produtosEmBreve: { id: string; nome: string; slug: string; imagens: string[]; preco: number }[] = []
+  try {
+    produtosEmBreve = await db.produto.findMany({
+      where: { emBreve: true, ativo: true },
+      select: { id: true, nome: true, slug: true, imagens: true, preco: true },
+      orderBy: { criadoEm: 'desc' },
+      take: 8,
+    })
+  } catch { /* DB unavailable at build time — section hidden until next revalidation */ }
 
   return (
     <>
