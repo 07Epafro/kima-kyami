@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 import { formatarPreco } from '@/lib/utils'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM = 'Ki Ma Kyami <noreply@kimakyami.com>'
+const FROM = 'Kima Kyami <noreply@kimakyami.com>'
 
 interface ItemEmail {
   nome: string
@@ -42,7 +42,7 @@ function base(titulo: string, corpo: string): string {
         <tr>
           <td style="background:#181818;padding:32px 40px;text-align:center">
             <p style="margin:0;font-size:32px;letter-spacing:12px;color:#f7c480;font-weight:300">KK</p>
-            <p style="margin:6px 0 0;font-size:10px;letter-spacing:4px;color:#9a9a9a;text-transform:uppercase;font-family:Arial,sans-serif">Ki Ma Kyami</p>
+            <p style="margin:6px 0 0;font-size:10px;letter-spacing:4px;color:#9a9a9a;text-transform:uppercase;font-family:Arial,sans-serif">Kima Kyami</p>
           </td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@ function base(titulo: string, corpo: string): string {
             ${corpo}
             <hr style="border:none;border-top:1px solid #e8e0d8;margin:32px 0">
             <p style="margin:0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif;line-height:1.6;text-align:center">
-              Ki Ma Kyami · Lisboa, Portugal<br>
+              Kima Kyami · Lisboa, Portugal<br>
               Para questões: <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
             </p>
           </td>

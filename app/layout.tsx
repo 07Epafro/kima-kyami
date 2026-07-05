@@ -18,15 +18,15 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Ki Ma Kyami',
-    default: 'Ki Ma Kyami',
+    template: '%s | Kima Kyami',
+    default: 'Kima Kyami',
   },
-  description: 'Ki Ma Kyami — Moda e lifestyle africano contemporâneo.',
+  description: 'Kima Kyami — Moda e lifestyle africano contemporâneo.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.com'),
   openGraph: {
     type: 'website',
     locale: 'pt_PT',
-    siteName: 'Ki Ma Kyami',
+    siteName: 'Kima Kyami',
   },
   twitter: {
     card: 'summary_large_image',

@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   if (!produto) return { title: 'Produto não encontrado' }
 
-  const title = produto.metaTitle ?? `${produto.nome} — Ki Ma Kyami`
+  const title = produto.metaTitle ?? `${produto.nome} — Kima Kyami`
   const description = produto.metaDesc ?? produto.descricao.slice(0, 160)
 
   return {
@@ -79,7 +79,7 @@ export default async function ProdutoPage({ params }: Params) {
     name: produto.nome,
     description: produto.descricao,
     image: produto.imagens,
-    brand: { '@type': 'Brand', name: 'Ki Ma Kyami' },
+    brand: { '@type': 'Brand', name: 'Kima Kyami' },
     offers: {
       '@type': 'Offer',
       priceCurrency: 'EUR',

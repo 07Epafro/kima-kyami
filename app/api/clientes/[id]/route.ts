@@ -135,7 +135,7 @@ export async function POST(req: NextRequest, { params }: Params) {
   if (!cliente) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
 
   await resend.emails.send({
-    from: 'Ki Ma Kyami <noreply@kimakyami.com>',
+    from: 'Kima Kyami <noreply@kimakyami.com>',
     to: cliente.email,
     subject: parsed.data.assunto,
     html: `<!DOCTYPE html>
@@ -158,7 +158,7 @@ export async function POST(req: NextRequest, { params }: Params) {
             <p style="margin:0;font-size:14px;color:#181818;line-height:1.8;font-family:Arial,sans-serif;white-space:pre-wrap">${parsed.data.mensagem}</p>
             <hr style="border:none;border-top:1px solid #e8e0d8;margin:32px 0">
             <p style="margin:0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif;text-align:center">
-              Ki Ma Kyami · <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
+              Kima Kyami · <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
             </p>
           </td>
         </tr>

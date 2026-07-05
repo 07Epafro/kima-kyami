@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import LoginForm from './LoginForm'
 
 export const metadata = {
-  title: 'Login | Ki Ma Kyami Admin',
+  title: 'Login | Kima Kyami Admin',
 }
 
 export default async function LoginPage() {

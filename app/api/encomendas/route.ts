@@ -145,7 +145,7 @@ export async function POST(req: NextRequest) {
     pagamentoId: result.pagamentoId,
     referencia: result.referencia,
     iban: process.env.IBAN_LOJA ?? '',
-    titular: process.env.TITULAR_LOJA ?? 'Ki Ma Kyami',
+    titular: process.env.TITULAR_LOJA ?? 'Kima Kyami',
     valor: total,
   }, { status: 201 })
 }

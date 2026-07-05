@@ -31,7 +31,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const cat = CATEGORIAS.find(c => c.value === sp.categoria)
   return {
     title: cat ? `${cat.label} — Coleções` : 'Coleções',
-    description: `Descobre a coleção ${cat?.label ?? 'completa'} da Ki Ma Kyami. Sapatos de luxo de inspiração africana.`,
+    description: `Descobre a coleção ${cat?.label ?? 'completa'} da Kima Kyami. Sapatos de luxo de inspiração africana.`,
   }
 }
 

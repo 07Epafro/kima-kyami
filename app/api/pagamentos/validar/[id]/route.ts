@@ -68,7 +68,7 @@ export async function POST(req: NextRequest, { params }: Params) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Ki Ma Kyami Sistema <noreply@kimakyami.com>',
+      from: 'Kima Kyami Sistema <noreply@kimakyami.com>',
       to: process.env.ADMIN_EMAIL ?? 'admin@kimakyami.com',
       subject: `[Pagamento] ${resultado.estado} — ${encomenda.referencia} (score: ${resultado.score})`,
       html: `<p>Referência: ${encomenda.referencia}<br>Score: ${resultado.score}/100<br>Estado: ${resultado.estado}<br>Alertas: ${resultado.alertas.join(', ') || 'Nenhum'}</p>`,

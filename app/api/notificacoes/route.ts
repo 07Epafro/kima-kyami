@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Ki Ma Kyami <noreply@kimakyami.com>',
+      from: 'Kima Kyami <noreply@kimakyami.com>',
       to: process.env.ADMIN_EMAIL ?? 'admin@kimakyami.com',
       subject: `[Notificação] Nova subscrição de disponibilidade`,
       html: `<p>Email: ${email}<br>ProdutoId: ${produtoId}</p>`,

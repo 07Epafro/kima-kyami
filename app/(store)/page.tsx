@@ -7,10 +7,10 @@ import ProductCarousel from '@/components/store/ProductCarousel'
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: 'Ki Ma Kyami — Sapatos de Luxo',
+  title: 'Kima Kyami — Sapatos de Luxo',
   description: 'Sapatos criados para mulheres que deixam presença por onde passam. Moda africana contemporânea de luxo.',
   openGraph: {
-    title: 'Ki Ma Kyami',
+    title: 'Kima Kyami',
     description: 'Sapatos criados para mulheres que deixam presença por onde passam.',
     type: 'website',
   },
@@ -42,7 +42,7 @@ const CATEGORIAS = [
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Ki Ma Kyami',
+  name: 'Kima Kyami',
   url: 'https://kimakyami.com',
   description: 'Sapatos de luxo de inspiração africana contemporânea.',
   contactPoint: {
@@ -80,7 +80,7 @@ export default async function HomePage() {
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         <Image
           src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=85"
-          alt="Ki Ma Kyami — Sapatos de luxo"
+          alt="Kima Kyami — Sapatos de luxo"
           fill
           sizes="100vw"
           priority
@@ -156,13 +156,13 @@ export default async function HomePage() {
               className="text-[clamp(28px,4vw,42px)] font-light text-noir leading-snug tracking-[0.1em] uppercase mb-8"
               style={{ fontFamily: 'var(--font-serif)' }}
             >
-              KI MA KYAMI
+              KIMA KYAMI
             </h2>
             <p
               className="text-sm text-noir/65 leading-[1.9] tracking-wide mb-10 max-w-md"
               style={{ fontFamily: 'var(--font-sans)' }}
             >
-              KI MA KYAMI nasceu para mulheres que não seguem caminhos.
+              KIMA KYAMI nasceu para mulheres que não seguem caminhos.
               Elas criam o seu. Cada par é uma declaração de presença — fruto
               de uma visão africana contemporânea onde o detalhe é sagrado e
               a feminilidade, soberana.
@@ -226,7 +226,7 @@ export default async function HomePage() {
           <div className="relative aspect-[4/5] lg:aspect-auto lg:min-h-[600px] order-2 lg:order-1">
             <Image
               src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=85"
-              alt="Ki Ma Kyami — Postura. Atitude."
+              alt="Kima Kyami — Postura. Atitude."
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-top"
@@ -243,7 +243,7 @@ export default async function HomePage() {
               "NÃO É SÓ UM SAPATO.
               <br />É POSTURA.
               <br />É ATITUDE.
-              <br />É KI MA KYAMI."
+              <br />É KIMA KYAMI."
             </blockquote>
             <span
               className="text-gold text-[28px] tracking-[0.5em] font-light"
@@ -308,7 +308,7 @@ export default async function HomePage() {
           <div className="relative aspect-[4/5] lg:aspect-auto">
             <Image
               src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=700&q=80"
-              alt="Embalagem Ki Ma Kyami"
+              alt="Embalagem Kima Kyami"
               fill
               sizes="(max-width: 1024px) 100vw, 33vw"
               className="object-cover"
@@ -337,7 +337,7 @@ export default async function HomePage() {
           <div className="relative aspect-[4/5] lg:aspect-auto">
             <Image
               src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80"
-              alt="Saco Ki Ma Kyami"
+              alt="Saco Kima Kyami"
               fill
               sizes="(max-width: 1024px) 100vw, 33vw"
               className="object-cover"

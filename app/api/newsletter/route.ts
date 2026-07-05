@@ -19,9 +19,9 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Ki Ma Kyami <noreply@kimakyami.com>',
+      from: 'Kima Kyami <noreply@kimakyami.com>',
       to: email,
-      subject: 'Bem-vinda à Ki Ma Kyami',
+      subject: 'Bem-vinda à Kima Kyami',
       html: `<!DOCTYPE html>
 <html lang="pt">
 <head><meta charset="UTF-8"></head>
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         <tr>
           <td style="padding:48px 40px">
             <p style="margin:0 0 20px;font-size:13px;color:#181818;line-height:1.9;font-family:Arial,sans-serif">
-              Bem-vinda à Ki Ma Kyami.
+              Bem-vinda à Kima Kyami.
             </p>
             <p style="margin:0 0 20px;font-size:13px;color:#181818;line-height:1.9;font-family:Arial,sans-serif">
               Serás das primeiras a saber dos nossos novos lançamentos, coleções exclusivas e ofertas especiais.
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
             </p>
             <hr style="border:none;border-top:1px solid #e8e0d8;margin:36px 0">
             <p style="margin:0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif;text-align:center">
-              Ki Ma Kyami · <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
+              Kima Kyami · <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
             </p>
           </td>
         </tr>

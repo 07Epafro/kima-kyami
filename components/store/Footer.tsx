@@ -220,7 +220,7 @@ export default function Footer() {
             className="text-[9px] text-cream/25 tracking-[0.2em]"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
-            © {new Date().getFullYear()} KI MA KYAMI. TODOS OS DIREITOS RESERVADOS.
+            © {new Date().getFullYear()} KIMA KYAMI. TODOS OS DIREITOS RESERVADOS.
           </p>
           <p
             className="text-[9px] text-cream/20 tracking-[0.18em]"
