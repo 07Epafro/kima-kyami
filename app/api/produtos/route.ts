@@ -99,6 +99,9 @@ export async function GET(req: NextRequest) {
   }
 
   // ── Admin page-based mode ──────────────────────────────────────
+  const session = await auth()
+  if (!session) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+
   const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10) || 1)
   const limit = Math.max(1, Math.min(100, parseInt(searchParams.get('limit') ?? '20', 10) || 20))
   const skip = (page - 1) * limit

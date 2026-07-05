@@ -1,6 +1,7 @@
 import { auth } from '@/lib/auth'
 import { v2 as cloudinary } from 'cloudinary'
 import { NextRequest, NextResponse } from 'next/server'
+import db from '@/lib/db'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -68,11 +69,15 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Comprovante uploads require a valid pagamentoId
+  // Comprovante uploads require a real pagamentoId
   if (tipo === 'comprovante') {
     const pagamentoId = formData.get('pagamentoId')?.toString()
     if (!pagamentoId) {
       return NextResponse.json({ error: 'pagamentoId obrigatório para comprovante' }, { status: 400 })
+    }
+    const pagamento = await db.pagamento.findUnique({ where: { id: pagamentoId }, select: { id: true } })
+    if (!pagamento) {
+      return NextResponse.json({ error: 'Pagamento não encontrado' }, { status: 404 })
     }
   }
 

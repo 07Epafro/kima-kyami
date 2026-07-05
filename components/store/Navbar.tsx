@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Search, User, ShoppingBag, Menu, X } from 'lucide-react'
+import { User, ShoppingBag, Menu, X } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
 const LINKS = [
@@ -110,14 +110,6 @@ export default function Navbar() {
 
             {/* Right: icons */}
             <div className="flex items-center gap-5 flex-1 justify-end">
-              <button
-                type="button"
-                aria-label="Pesquisar"
-                className="hidden lg:block text-noir/55 hover:text-gold transition-colors"
-              >
-                <Search size={16} strokeWidth={1.5} />
-              </button>
-
               <Link
                 href="/conta"
                 aria-label="A minha conta"
@@ -199,9 +191,6 @@ export default function Navbar() {
 
         {/* Mobile menu footer */}
         <div className="flex items-center gap-8 px-8 py-8 border-t border-cream/8">
-          <button type="button" aria-label="Pesquisar" className="text-cream/35 hover:text-gold transition-colors">
-            <Search size={18} strokeWidth={1.5} />
-          </button>
           <Link
             href="/conta"
             onClick={() => setMenuOpen(false)}

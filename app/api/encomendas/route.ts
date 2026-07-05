@@ -127,6 +127,8 @@ export async function POST(req: NextRequest) {
         total,
         subtotal,
         portes,
+        iban: process.env.IBAN_LOJA ?? '',
+        titular: process.env.TITULAR_LOJA ?? 'Kima Kyami',
         itens: itens.map(i => ({
           nome: produtoMap.get(i.produtoId)?.nome ?? i.produtoId,
           tamanho: i.tamanho,

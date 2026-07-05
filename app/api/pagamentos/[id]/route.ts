@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import db from '@/lib/db'
 import { EstadoPagamento, EstadoEncomenda } from '@prisma/client'
-import { emailEncomendaConfirmada, emailEncomendaCancelada } from '@/lib/email'
+import { emailEncomendaConfirmada, emailEncomendaCancelada, emailComprovanteRecebido } from '@/lib/email'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -21,8 +21,24 @@ export async function PUT(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: 'URL do comprovante inválida' }, { status: 400 })
   }
 
-  const pagamento = await db.pagamento.findUnique({ where: { id }, select: { id: true } })
+  const pagamento = await db.pagamento.findUnique({
+    where: { id },
+    include: {
+      encomenda: {
+        include: {
+          cliente: { select: { nome: true, email: true } },
+          itens: {
+            include: { produto: { select: { nome: true } } },
+          },
+        },
+      },
+    },
+  })
   if (!pagamento) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
+
+  if (pagamento.estado !== EstadoPagamento.AGUARDA_COMPROVANTE) {
+    return NextResponse.json({ error: 'Comprovante já submetido' }, { status: 409 })
+  }
 
   const updated = await db.pagamento.update({
     where: { id },
@@ -31,6 +47,28 @@ export async function PUT(req: NextRequest, { params }: Params) {
       estado: EstadoPagamento.COMPROVANTE_SUBMETIDO,
     },
   })
+
+  try {
+    const enc = pagamento.encomenda
+    const moradaEnvio = enc.moradaEnvio as { rua: string; codigoPostal: string; cidade: string; pais: string }
+    await emailComprovanteRecebido(
+      {
+        referencia: enc.referencia,
+        total: enc.total,
+        subtotal: enc.subtotal,
+        portes: enc.portes,
+        itens: enc.itens.map(i => ({
+          nome: i.produto?.nome ?? 'Produto',
+          tamanho: i.tamanho,
+          cor: i.cor,
+          quantidade: i.quantidade,
+          precoUnit: i.precoUnit,
+        })),
+        moradaEnvio,
+      },
+      enc.cliente,
+    )
+  } catch { /* Email falhou mas estado foi actualizado */ }
 
   return NextResponse.json(updated)
 }

@@ -24,6 +24,8 @@ interface EncomendaEmail {
     cidade: string
     pais: string
   }
+  iban?: string
+  titular?: string
 }
 
 interface ClienteEmail {
@@ -111,6 +113,17 @@ export async function emailConfirmacaoEncomenda(enc: EncomendaEmail, cliente: Cl
       <p style="margin:0 0 4px;font-size:10px;letter-spacing:3px;color:#9a9a9a;text-transform:uppercase;font-family:Arial,sans-serif">Referência</p>
       <p style="margin:0;font-size:22px;letter-spacing:4px;color:#181818">${enc.referencia}</p>
     </div>
+    ${enc.iban ? `
+    <div style="background:#fff8e8;border:1px solid #f7c480;border-radius:8px;padding:20px;margin:20px 0">
+      <p style="margin:0 0 10px;font-size:10px;letter-spacing:2px;color:#9a9a9a;text-transform:uppercase;font-family:Arial,sans-serif">Dados para transferência bancária</p>
+      <table cellpadding="0" cellspacing="0" style="width:100%">
+        <tr><td style="padding:4px 0;font-size:12px;color:#9a9a9a;font-family:Arial,sans-serif;width:80px">IBAN</td><td style="padding:4px 0;font-size:13px;color:#181818;font-family:'Courier New',monospace;font-weight:600">${enc.iban}</td></tr>
+        <tr><td style="padding:4px 0;font-size:12px;color:#9a9a9a;font-family:Arial,sans-serif">Titular</td><td style="padding:4px 0;font-size:13px;color:#181818;font-family:Arial,sans-serif">${enc.titular ?? 'Kima Kyami'}</td></tr>
+        <tr><td style="padding:4px 0;font-size:12px;color:#9a9a9a;font-family:Arial,sans-serif">Valor</td><td style="padding:4px 0;font-size:13px;color:#181818;font-family:Arial,sans-serif;font-weight:600">${formatarPreco(enc.total)}</td></tr>
+        <tr><td style="padding:4px 0;font-size:12px;color:#9a9a9a;font-family:Arial,sans-serif">Referência</td><td style="padding:4px 0;font-size:13px;color:#181818;font-family:Arial,sans-serif">${enc.referencia}</td></tr>
+      </table>
+      <p style="margin:12px 0 0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif">Inclui a referência na descrição da transferência para processamento mais rápido.</p>
+    </div>` : ''}
     ${tabelaItens(enc.itens, enc.total, enc.portes)}
     <div style="background:#f9f6f2;border-radius:8px;padding:16px;margin-top:20px">
       <p style="margin:0 0 8px;font-size:10px;letter-spacing:2px;color:#9a9a9a;text-transform:uppercase;font-family:Arial,sans-serif">Morada de entrega</p>
