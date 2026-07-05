@@ -1,29 +1,33 @@
-'use client'
-
-import { useState } from 'react'
+import type { Metadata } from 'next'
 import { Mail, Phone, MapPin, Instagram } from 'lucide-react'
+import db from '@/lib/db'
+import ContactForm from './ContactForm'
 
-export default function ContactosPage() {
-  const [form, setForm] = useState({ nome: '', email: '', assunto: '', mensagem: '' })
-  const [estado, setEstado] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
+export const metadata: Metadata = {
+  title: 'Contactos — Kima Kyami',
+  description: 'Fala connosco. Email, WhatsApp e Instagram da Kima Kyami.',
+}
 
-  async function enviar(e: React.FormEvent) {
-    e.preventDefault()
-    if (estado === 'loading') return
-    setEstado('loading')
-    try {
-      const res = await fetch('/api/contacto', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      })
-      setEstado(res.ok ? 'ok' : 'error')
-    } catch {
-      setEstado('error')
-    }
+const DEFAULTS = {
+  email: 'geral@kimakyami.ao',
+  whatsapp: '+244 943771341',
+  whatsappUrl: 'https://wa.me/244943771341',
+  instagram: '@kimakyami',
+  instagramUrl: 'https://instagram.com/kimakyami',
+  localizacao: 'Luanda, Angola',
+  horario: 'Segunda — Sexta: 09h00 – 18h00\nSábado: 10h00 – 14h00\nDomingo: Encerrado',
+}
+
+export default async function ContactosPage() {
+  let config = DEFAULTS
+  try {
+    const row = await db.configLoja.findUnique({ where: { id: 'singleton' } })
+    if (row) config = row
+  } catch {
+    // fall through to defaults
   }
 
-  const inputClass = `w-full bg-transparent border border-noir/20 px-4 py-3.5 text-[12px] text-noir placeholder:text-noir/30 focus:outline-none focus:border-gold transition-colors`
+  const horarioLinhas = config.horario.split('\n')
 
   return (
     <>
@@ -59,62 +63,62 @@ export default function ContactosPage() {
               </p>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <Mail size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" />
+                  <Mail size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" aria-hidden="true" />
                   <div>
                     <p className="text-[9px] tracking-[0.25em] uppercase text-noir/35 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                       Email
                     </p>
                     <a
-                      href="mailto:geral@kimakyami.ao"
+                      href={`mailto:${config.email}`}
                       className="text-[13px] text-noir hover:text-gold transition-colors tracking-wide"
                       style={{ fontFamily: 'var(--font-sans)' }}
                     >
-                      geral@kimakyami.ao
+                      {config.email}
                     </a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <Phone size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" />
+                  <Phone size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" aria-hidden="true" />
                   <div>
                     <p className="text-[9px] tracking-[0.25em] uppercase text-noir/35 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                       WhatsApp
                     </p>
                     <a
-                      href="https://wa.me/244900000000"
+                      href={config.whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[13px] text-noir hover:text-gold transition-colors tracking-wide"
                       style={{ fontFamily: 'var(--font-sans)' }}
                     >
-                      +244 900 000 000
+                      {config.whatsapp}
                     </a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <MapPin size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" />
+                  <MapPin size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" aria-hidden="true" />
                   <div>
                     <p className="text-[9px] tracking-[0.25em] uppercase text-noir/35 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                       Localização
                     </p>
                     <p className="text-[13px] text-noir tracking-wide" style={{ fontFamily: 'var(--font-sans)' }}>
-                      Luanda, Angola
+                      {config.localizacao}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <Instagram size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" />
+                  <Instagram size={15} strokeWidth={1.5} className="text-gold mt-0.5 shrink-0" aria-hidden="true" />
                   <div>
                     <p className="text-[9px] tracking-[0.25em] uppercase text-noir/35 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
                       Instagram
                     </p>
                     <a
-                      href="https://instagram.com/kimakyami"
+                      href={config.instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[13px] text-noir hover:text-gold transition-colors tracking-wide"
                       style={{ fontFamily: 'var(--font-sans)' }}
                     >
-                      @kimakyami
+                      {config.instagram}
                     </a>
                   </div>
                 </div>
@@ -129,9 +133,12 @@ export default function ContactosPage() {
                 Horário de Atendimento
               </p>
               <p className="text-[13px] text-noir/60 leading-[1.9]" style={{ fontFamily: 'var(--font-sans)' }}>
-                Segunda — Sexta: 09h00 – 18h00<br />
-                Sábado: 10h00 – 14h00<br />
-                Domingo: Encerrado
+                {horarioLinhas.map((linha, i) => (
+                  <span key={i}>
+                    {linha}
+                    {i < horarioLinhas.length - 1 && <br />}
+                  </span>
+                ))}
               </p>
             </div>
           </div>
@@ -144,71 +151,7 @@ export default function ContactosPage() {
             >
               Enviar Mensagem
             </p>
-
-            {estado === 'ok' ? (
-              <div className="border border-gold/30 bg-gold/5 px-8 py-12 text-center">
-                <p className="text-gold text-[11px] tracking-[0.3em] uppercase mb-2" style={{ fontFamily: 'var(--font-sans)' }}>
-                  Mensagem Enviada
-                </p>
-                <p className="text-noir/60 text-[13px]" style={{ fontFamily: 'var(--font-sans)' }}>
-                  Respondemos em até 24 horas.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={enviar} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Nome"
-                    required
-                    value={form.nome}
-                    onChange={e => setForm(f => ({ ...f, nome: e.target.value }))}
-                    className={inputClass}
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    required
-                    value={form.email}
-                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                    className={inputClass}
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Assunto"
-                  required
-                  value={form.assunto}
-                  onChange={e => setForm(f => ({ ...f, assunto: e.target.value }))}
-                  className={inputClass}
-                  style={{ fontFamily: 'var(--font-sans)' }}
-                />
-                <textarea
-                  placeholder="A tua mensagem"
-                  required
-                  rows={6}
-                  value={form.mensagem}
-                  onChange={e => setForm(f => ({ ...f, mensagem: e.target.value }))}
-                  className={`${inputClass} resize-none`}
-                  style={{ fontFamily: 'var(--font-sans)' }}
-                />
-                {estado === 'error' && (
-                  <p className="text-red-400 text-[11px]" style={{ fontFamily: 'var(--font-sans)' }}>
-                    Erro ao enviar. Tenta novamente.
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  disabled={estado === 'loading'}
-                  className="w-full bg-noir text-cream text-[10px] tracking-[0.3em] uppercase py-4 hover:bg-gold hover:text-noir transition-colors disabled:opacity-50"
-                  style={{ fontFamily: 'var(--font-sans)' }}
-                >
-                  {estado === 'loading' ? 'A ENVIAR...' : 'ENVIAR MENSAGEM'}
-                </button>
-              </form>
-            )}
+            <ContactForm />
           </div>
         </div>
       </section>

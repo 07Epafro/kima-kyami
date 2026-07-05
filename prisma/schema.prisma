@@ -130,3 +130,15 @@ model Admin {
   role      RoleAdmin @default(GESTOR)
   criadoEm DateTime  @default(now())
 }
+
+model ConfigLoja {
+  id           String   @id @default("singleton")
+  email        String   @default("geral@kimakyami.ao")
+  whatsapp     String   @default("+244 943771341")
+  whatsappUrl  String   @default("https://wa.me/244943771341")
+  instagram    String   @default("@kimakyami")
+  instagramUrl String   @default("https://instagram.com/kimakyami")
+  localizacao  String   @default("Luanda, Angola")
+  horario      String   @default("Segunda — Sexta: 09h00 – 18h00\nSábado: 10h00 – 14h00\nDomingo: Encerrado")
+  atualizadoEm DateTime @updatedAt
+}

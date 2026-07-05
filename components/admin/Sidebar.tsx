@@ -10,6 +10,7 @@ import {
   ShoppingBag,
   Users,
   CreditCard,
+  Settings,
   LogOut,
   Menu,
   X,
@@ -21,6 +22,7 @@ const navItems = [
   { href: '/admin/encomendas', icon: ShoppingBag, label: 'Encomendas' },
   { href: '/admin/clientes', icon: Users, label: 'Clientes' },
   { href: '/admin/pagamentos', icon: CreditCard, label: 'Pagamentos' },
+  { href: '/admin/configuracoes', icon: Settings, label: 'Configurações' },
 ]
 
 interface Props {
@@ -49,7 +51,7 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
             className="block text-[10px] tracking-widest uppercase text-muted mt-1"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
-            Ki Ma Kyami
+            Kima Kyami
           </span>
         </Link>
       </div>
@@ -95,11 +97,12 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
           </div>
         </div>
         <button
+          type="button"
           onClick={() => signOut({ callbackUrl: '/admin/login' })}
           className="flex items-center gap-3 w-full px-3 py-2 text-sm text-muted hover:text-red-400 transition-colors rounded-lg hover:bg-white/5"
           style={{ fontFamily: 'var(--font-sans)' }}
         >
-          <LogOut size={16} />
+          <LogOut size={16} aria-hidden="true" />
           <span className="tracking-wide">Terminar sessão</span>
         </button>
       </div>
@@ -109,10 +112,13 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
   return (
     <>
       <button
+        type="button"
         onClick={() => setOpen(true)}
+        aria-label="Abrir menu de navegação"
+        aria-expanded={open ? "true" : "false"}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-noir rounded-lg border border-white/10 text-cream"
       >
-        <Menu size={20} />
+        <Menu size={20} aria-hidden="true" />
       </button>
 
       {open && (
@@ -128,10 +134,12 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
         }`}
       >
         <button
+          type="button"
           onClick={() => setOpen(false)}
+          aria-label="Fechar menu de navegação"
           className="lg:hidden absolute top-4 right-4 text-muted hover:text-cream"
         >
-          <X size={20} />
+          <X size={20} aria-hidden="true" />
         </button>
         {NavContent}
       </aside>

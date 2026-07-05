@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Instagram, Send } from 'lucide-react'
 
 const INFO_LINKS = [
@@ -66,8 +65,9 @@ export default function Footer() {
           {/* Col 1: Brand */}
           <div className="space-y-6">
             <Link href="/" className="inline-block" aria-label="Kima Kyami — Início">
-              <Image
-                src="/logo-cream.png"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo-cream.svg"
                 alt="Kima Kyami"
                 width={110}
                 height={44}
@@ -237,8 +237,9 @@ export default function Footer() {
             >
               DESENVOLVIDO PELA
             </span>
-            <Image
-              src="/ubuntucode.png"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/ubuntucode.svg"
               alt="UbuntuCode"
               width={80}
               height={20}

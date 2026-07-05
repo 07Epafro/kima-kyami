@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Search, User, ShoppingBag, Menu, X } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
@@ -86,13 +85,13 @@ export default function Navbar() {
               className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center"
               aria-label="Kima Kyami — Início"
             >
-              <Image
-                src="/logo.png"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.svg"
                 alt="Kima Kyami"
                 width={100}
                 height={40}
                 className="object-contain h-8 lg:h-10 w-auto"
-                priority
               />
             </Link>
 
@@ -155,18 +154,20 @@ export default function Navbar() {
         className={`fixed inset-0 z-50 bg-noir flex flex-col transition-all duration-400 ${
           menuOpen ? 'opacity-100 translate-x-0 pointer-events-auto' : 'opacity-0 translate-x-4 pointer-events-none'
         }`}
-        aria-hidden={menuOpen ? undefined : true}
+        aria-hidden={menuOpen ? undefined : "true"}
       >
         {/* Mobile menu header */}
         <div className="flex items-center justify-between px-7 pt-7 pb-0">
-          <Image
-            src="/logo-cream.png"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-cream.svg"
             alt="Kima Kyami"
             width={90}
             height={36}
             className="object-contain h-8 w-auto"
           />
           <button
+            type="button"
             ref={closeButtonRef}
             onClick={() => setMenuOpen(false)}
             aria-label="Fechar menu"
