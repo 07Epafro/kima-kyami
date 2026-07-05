@@ -63,21 +63,34 @@ export default function Navbar() {
         <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16">
           <div className="relative flex items-center h-[60px] lg:h-[72px]">
 
-            {/* Left: nav links */}
-            <nav className="hidden lg:flex items-center gap-8 flex-1">
-              {LINKS.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`text-[9.5px] tracking-[0.22em] transition-colors whitespace-nowrap ${
-                    pathname === href ? 'text-gold' : 'text-noir/55 hover:text-noir'
-                  }`}
-                  style={{ fontFamily: 'var(--font-sans)' }}
-                >
-                  {label}
-                </Link>
-              ))}
-            </nav>
+            {/* Left: hamburger (mobile) / nav links (desktop) */}
+            <div className="flex items-center flex-1">
+              {/* Mobile hamburger — left side */}
+              <button
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                aria-label="Abrir menu"
+                className="lg:hidden text-noir/55 hover:text-gold transition-colors"
+              >
+                <Menu size={20} strokeWidth={1.5} />
+              </button>
+
+              {/* Desktop nav links */}
+              <nav className="hidden lg:flex items-center gap-8">
+                {LINKS.map(({ href, label }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`text-[9.5px] tracking-[0.22em] transition-colors whitespace-nowrap ${
+                      pathname === href ? 'text-gold' : 'text-noir/55 hover:text-noir'
+                    }`}
+                    style={{ fontFamily: 'var(--font-sans)' }}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
 
             {/* Center: logo (absolutely centered) */}
             <Link
@@ -130,16 +143,6 @@ export default function Navbar() {
                   </span>
                 )}
               </button>
-
-              {/* Hamburger — mobile only */}
-              <button
-                type="button"
-                onClick={() => setMenuOpen(true)}
-                aria-label="Abrir menu"
-                className="lg:hidden text-noir/55 hover:text-gold transition-colors"
-              >
-                <Menu size={20} strokeWidth={1.5} />
-              </button>
             </div>
 
           </div>
@@ -154,7 +157,7 @@ export default function Navbar() {
         className={`fixed inset-0 z-50 bg-noir flex flex-col transition-all duration-400 ${
           menuOpen ? 'opacity-100 translate-x-0 pointer-events-auto' : 'opacity-0 translate-x-4 pointer-events-none'
         }`}
-        aria-hidden={menuOpen ? undefined : "true"}
+        aria-hidden={menuOpen ? undefined : true}
       >
         {/* Mobile menu header */}
         <div className="flex items-center justify-between px-7 pt-7 pb-0">

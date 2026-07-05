@@ -20,7 +20,7 @@ function gerarStock(tamanhos: number[], cores: { nome: string; hex: string }[]):
   for (const tamanho of tamanhos) {
     for (const cor of cores) {
       const idx = Math.abs((tamanho * 7 + cor.nome.length * 3) % quantidades.length)
-      stock[`${tamanho}_${cor.nome}`] = quantidades[idx]
+      stock[`${tamanho}-${cor.nome}`] = quantidades[idx]
     }
   }
   return stock
