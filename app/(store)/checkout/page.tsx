@@ -137,7 +137,7 @@ export default function CheckoutPage() {
         Checkout
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_24rem] gap-12">
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Contacto */}
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
         </form>
 
         {/* Order summary */}
-        <aside className="lg:sticky lg:top-[92px] lg:self-start">
+        <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="border border-noir/10 p-6 space-y-5 bg-white">
             <h2
               className="text-[10px] tracking-[0.3em] uppercase text-muted"

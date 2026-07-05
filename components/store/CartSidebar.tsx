@@ -49,7 +49,7 @@ export default function CartSidebar() {
       <aside
         role="dialog"
         aria-modal="true"
-        className={`fixed top-0 right-0 z-50 h-full w-full max-w-[420px] bg-cream flex flex-col shadow-2xl transition-transform duration-400 ease-out ${
+        className={`fixed top-0 right-0 z-50 h-full w-full max-w-104 bg-cream flex flex-col shadow-2xl transition-transform duration-400 ease-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         aria-label="Carrinho de compras"
@@ -106,7 +106,7 @@ export default function CartSidebar() {
             <Link
               href="/colecoes"
               onClick={closeCart}
-              className="mt-2 inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase border border-noir text-noir px-6 py-3 hover:bg-noir hover:text-cream transition-colors"
+              className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase border border-noir text-noir px-6 py-3 hover:bg-noir hover:text-cream transition-colors"
               style={{ fontFamily: 'var(--font-sans)' }}
             >
               DESCOBRIR COLEÇÃO <ArrowRight size={12} />

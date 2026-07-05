@@ -123,7 +123,7 @@ export default function Navbar() {
                 {count > 0 && (
                   <span
                     key={count}
-                    className="absolute -top-2 -right-2 bg-gold text-noir text-[8px] font-semibold rounded-full w-[15px] h-[15px] flex items-center justify-center leading-none animate-kk-pop"
+                    className="absolute -top-2 -right-2 bg-gold text-noir text-[8px] font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none animate-kk-pop"
                     style={{ fontFamily: 'var(--font-sans)' }}
                   >
                     {count > 9 ? '9+' : count}
@@ -136,7 +136,7 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setMenuOpen(true)}
                 aria-label="Abrir menu"
-                className="lg:hidden text-noir/55 hover:text-gold transition-colors ml-1"
+                className="lg:hidden text-noir/55 hover:text-gold transition-colors"
               >
                 <Menu size={20} strokeWidth={1.5} />
               </button>
