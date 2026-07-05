@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Instagram, Send } from 'lucide-react'
 
 const INFO_LINKS = [
@@ -43,7 +44,6 @@ export default function Footer() {
     e.preventDefault()
     if (!email.trim() || estado === 'loading') return
     setEstado('loading')
-
     try {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
@@ -65,12 +65,14 @@ export default function Footer() {
 
           {/* Col 1: Brand */}
           <div className="space-y-6">
-            <Link
-              href="/"
-              className="inline-block text-[36px] tracking-[0.55em] font-light text-cream hover:text-gold transition-colors"
-              style={{ fontFamily: 'var(--font-serif)' }}
-            >
-              KK
+            <Link href="/" className="inline-block" aria-label="Kima Kyami — Início">
+              <Image
+                src="/logo-cream.png"
+                alt="Kima Kyami"
+                width={110}
+                height={44}
+                className="object-contain h-10 w-auto"
+              />
             </Link>
             <p
               className="text-[11px] text-cream/40 leading-relaxed tracking-wide max-w-[200px]"
@@ -215,19 +217,34 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-cream/8">
-        <div className="max-w-[1440px] mx-auto px-8 lg:px-16 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-[1440px] mx-auto px-8 lg:px-16 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p
             className="text-[9px] text-cream/25 tracking-[0.2em]"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
             © {new Date().getFullYear()} KIMA KYAMI. TODOS OS DIREITOS RESERVADOS.
           </p>
-          <p
-            className="text-[9px] text-cream/20 tracking-[0.18em]"
-            style={{ fontFamily: 'var(--font-sans)' }}
+          <a
+            href="https://www.instagram.com/ubuntucode"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2.5 group"
+            aria-label="Desenvolvido pela UbuntuCode"
           >
-            DESENVOLVIDO COM EXCELÊNCIA.
-          </p>
+            <span
+              className="text-[9px] text-cream/20 tracking-[0.18em] group-hover:text-cream/40 transition-colors"
+              style={{ fontFamily: 'var(--font-sans)' }}
+            >
+              DESENVOLVIDO PELA
+            </span>
+            <Image
+              src="/ubuntucode.png"
+              alt="UbuntuCode"
+              width={80}
+              height={20}
+              className="object-contain h-4 w-auto opacity-25 group-hover:opacity-50 transition-opacity"
+            />
+          </a>
         </div>
       </div>
     </footer>

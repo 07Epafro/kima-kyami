@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Search, User, ShoppingBag, Menu, X } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
@@ -82,15 +83,23 @@ export default function Navbar() {
             {/* Center: logo (absolutely centered) */}
             <Link
               href="/"
-              className="absolute left-1/2 -translate-x-1/2 text-[30px] tracking-[0.55em] font-light text-noir hover:text-gold transition-colors"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center"
+              aria-label="Kima Kyami — Início"
             >
-              KK
+              <Image
+                src="/logo.png"
+                alt="Kima Kyami"
+                width={100}
+                height={40}
+                className="object-contain h-8 lg:h-10 w-auto"
+                priority
+              />
             </Link>
 
             {/* Right: icons */}
             <div className="flex items-center gap-5 flex-1 justify-end">
               <button
+                type="button"
                 aria-label="Pesquisar"
                 className="hidden lg:block text-noir/55 hover:text-gold transition-colors"
               >
@@ -106,6 +115,7 @@ export default function Navbar() {
               </Link>
 
               <button
+                type="button"
                 onClick={openCart}
                 aria-label={`Carrinho — ${count} ${count === 1 ? 'artigo' : 'artigos'}`}
                 className="relative text-noir/55 hover:text-gold transition-colors"
@@ -124,6 +134,7 @@ export default function Navbar() {
 
               {/* Hamburger — mobile only */}
               <button
+                type="button"
                 onClick={() => setMenuOpen(true)}
                 aria-label="Abrir menu"
                 className="lg:hidden text-noir/55 hover:text-gold transition-colors ml-1"
@@ -144,16 +155,17 @@ export default function Navbar() {
         className={`fixed inset-0 z-50 bg-noir flex flex-col transition-all duration-400 ${
           menuOpen ? 'opacity-100 translate-x-0 pointer-events-auto' : 'opacity-0 translate-x-4 pointer-events-none'
         }`}
-        aria-hidden={!menuOpen}
+        aria-hidden={menuOpen ? undefined : true}
       >
         {/* Mobile menu header */}
         <div className="flex items-center justify-between px-7 pt-7 pb-0">
-          <span
-            className="text-[28px] tracking-[0.55em] font-light text-cream"
-            style={{ fontFamily: 'var(--font-serif)' }}
-          >
-            KK
-          </span>
+          <Image
+            src="/logo-cream.png"
+            alt="Kima Kyami"
+            width={90}
+            height={36}
+            className="object-contain h-8 w-auto"
+          />
           <button
             ref={closeButtonRef}
             onClick={() => setMenuOpen(false)}
@@ -183,7 +195,7 @@ export default function Navbar() {
 
         {/* Mobile menu footer */}
         <div className="flex items-center gap-8 px-8 py-8 border-t border-cream/8">
-          <button aria-label="Pesquisar" className="text-cream/35 hover:text-gold transition-colors">
+          <button type="button" aria-label="Pesquisar" className="text-cream/35 hover:text-gold transition-colors">
             <Search size={18} strokeWidth={1.5} />
           </button>
           <Link
@@ -195,6 +207,7 @@ export default function Navbar() {
             <User size={18} strokeWidth={1.5} />
           </Link>
           <button
+            type="button"
             onClick={() => { setMenuOpen(false); openCart() }}
             aria-label="Carrinho"
             className="text-cream/35 hover:text-gold transition-colors relative"
