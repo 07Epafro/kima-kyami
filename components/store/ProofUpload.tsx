@@ -45,6 +45,7 @@ export default function ProofUpload({ pagamentoId, onConcluido }: Props) {
     const formData = new FormData()
     formData.append('file', f)
     formData.append('tipo', 'comprovante')
+    formData.append('pagamentoId', pagamentoId)
 
     const uploadUrl = await new Promise<string | null>((resolve) => {
       const xhr = new XMLHttpRequest()
@@ -169,9 +170,9 @@ export default function ProofUpload({ pagamentoId, onConcluido }: Props) {
             Detectámos um problema com o teu comprovante
           </p>
           <p className="text-xs text-red-700/70 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>
-            Por favor contacta-nos em <a href="mailto:hello@kimakyami.com" className="underline">hello@kimakyami.com</a>.
+            Por favor contacta-nos em <a href="mailto:geral@kimakyami.ao" className="underline">geral@kimakyami.ao</a>.
           </p>
-          <button onClick={remover} className="text-xs text-red-600 underline mt-2" style={{ fontFamily: 'var(--font-sans)' }}>
+          <button type="button" onClick={remover} className="text-xs text-red-600 underline mt-2" style={{ fontFamily: 'var(--font-sans)' }}>
             Tentar novamente
           </button>
         </div>
@@ -191,7 +192,9 @@ export default function ProofUpload({ pagamentoId, onConcluido }: Props) {
           drag ? 'border-gold bg-gold/5' : 'border-noir/15 hover:border-noir/40'
         } ${estado !== 'idle' ? 'pointer-events-none' : ''}`}
       >
+        <label htmlFor="proof-file" className="sr-only">Seleccionar comprovante de pagamento</label>
         <input
+          id="proof-file"
           ref={inputRef}
           type="file"
           accept="image/jpeg,image/png,image/webp,application/pdf"
@@ -233,7 +236,9 @@ export default function ProofUpload({ pagamentoId, onConcluido }: Props) {
             </div>
             {estado === 'idle' && (
               <button
+                type="button"
                 onClick={e => { e.stopPropagation(); remover() }}
+                aria-label="Remover ficheiro"
                 className="text-noir/30 hover:text-gold transition-colors p-1 shrink-0"
               >
                 <X size={16} strokeWidth={1.5} />

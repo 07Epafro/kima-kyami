@@ -123,7 +123,7 @@ export default function CartSidebar() {
                 >
                   {/* Image */}
                   <Link
-                    href={`/produto/${item.produtoId}`}
+                    href={`/produto/${item.slug}`}
                     onClick={closeCart}
                     className="relative w-20 h-24 shrink-0 overflow-hidden bg-noir/5"
                   >

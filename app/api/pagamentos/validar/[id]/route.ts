@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
 import db from '@/lib/db'
 import { validarComprovante } from '@/lib/validar-comprovante'
 import { EstadoPagamento, Prisma } from '@prisma/client'
@@ -11,9 +10,6 @@ const schema = z.object({ comprovanteUrl: z.string().url() })
 type Params = { params: Promise<{ id: string }> }
 
 export async function POST(req: NextRequest, { params }: Params) {
-  const session = await auth()
-  if (!session) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-
   const { id } = await params
 
   const body = await req.json().catch(() => ({}))

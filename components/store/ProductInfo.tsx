@@ -57,7 +57,7 @@ const ACORDEAO = [
 ]
 
 export default function ProductInfo({
-  id, nome, preco, precoAntes, descricao, tamanhos, cores, stock, emBreve, imagem,
+  id, nome, preco, precoAntes, descricao, tamanhos, cores, stock, emBreve, slug, imagem,
 }: Props) {
   const { addItem, openCart } = useCart()
 
@@ -84,6 +84,7 @@ export default function ProductInfo({
     if (!corSel || !tamSel) return
     addItem({
       produtoId: id,
+      slug,
       nome,
       imagem,
       preco,
