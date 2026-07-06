@@ -6,7 +6,8 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 export function formatarPreco(valor: number): string {
-  return `Kz ${valor.toFixed(2).replace('.', ',')}`
+  const inteiro = Math.round(valor)
+  return `Kz ${inteiro.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`
 }
 
 export function gerarReferencia(id: string): string {

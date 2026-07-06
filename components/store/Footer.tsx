@@ -57,9 +57,9 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-noir text-cream">
+    <footer className="bg-noir text-cream font-sans">
       {/* Main footer grid */}
-      <div className="max-w-[1440px] mx-auto px-8 lg:px-16 py-16 lg:py-24">
+      <div className="container-kk py-16 lg:py-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
 
           {/* Col 1: Brand */}
@@ -74,20 +74,17 @@ export default function Footer() {
                 className="object-contain h-10 w-auto"
               />
             </Link>
-            <p
-              className="text-[11px] text-cream/40 leading-relaxed tracking-wide max-w-[200px]"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-[11px] text-cream/50 leading-relaxed tracking-wide max-w-[200px]">
               Sapatos criados para mulheres que deixam presença por onde passam.
             </p>
-            {/* Social links */}
-            <div className="flex items-center gap-5 pt-2">
+            {/* Social links — p-2 garante touch target ~44px */}
+            <div className="flex items-center gap-3 pt-2">
               <a
                 href="https://instagram.com/kimakyami"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="text-cream/30 hover:text-gold transition-colors"
+                className="p-2 -m-2 text-cream/40 hover:text-gold transition-colors"
               >
                 <Instagram size={16} strokeWidth={1.5} />
               </a>
@@ -96,7 +93,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
-                className="text-cream/30 hover:text-gold transition-colors"
+                className="p-2 -m-2 text-cream/40 hover:text-gold transition-colors"
               >
                 <TikTokIcon />
               </a>
@@ -105,7 +102,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Pinterest"
-                className="text-cream/30 hover:text-gold transition-colors"
+                className="p-2 -m-2 text-cream/40 hover:text-gold transition-colors"
               >
                 <PinterestIcon />
               </a>
@@ -114,19 +111,15 @@ export default function Footer() {
 
           {/* Col 2: Informações */}
           <div>
-            <p
-              className="text-[9px] tracking-[0.3em] uppercase text-cream/35 mb-6"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/45 mb-6">
               Informações
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {INFO_LINKS.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-[12px] text-cream/55 hover:text-gold transition-colors tracking-wide"
-                    style={{ fontFamily: 'var(--font-sans)' }}
+                    className="text-[12px] text-cream/60 hover:text-gold transition-colors tracking-wide"
                   >
                     {label}
                   </Link>
@@ -137,19 +130,15 @@ export default function Footer() {
 
           {/* Col 3: Ajuda */}
           <div>
-            <p
-              className="text-[9px] tracking-[0.3em] uppercase text-cream/35 mb-6"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/45 mb-6">
               Ajuda
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {AJUDA_LINKS.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-[12px] text-cream/55 hover:text-gold transition-colors tracking-wide"
-                    style={{ fontFamily: 'var(--font-sans)' }}
+                    className="text-[12px] text-cream/60 hover:text-gold transition-colors tracking-wide"
                   >
                     {label}
                   </Link>
@@ -160,24 +149,15 @@ export default function Footer() {
 
           {/* Col 4: Newsletter */}
           <div>
-            <p
-              className="text-[9px] tracking-[0.3em] uppercase text-cream/35 mb-6"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/45 mb-6">
               Newsletter
             </p>
-            <p
-              className="text-[12px] text-cream/55 leading-relaxed mb-5"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-[12px] text-cream/60 leading-relaxed mb-5">
               As primeiras a saber. Novos lançamentos e ofertas exclusivas.
             </p>
 
             {estado === 'ok' ? (
-              <p
-                className="text-[12px] text-gold leading-relaxed"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
+              <p className="text-[12px] text-gold leading-relaxed">
                 ✓ Subscrita com sucesso. Bem-vinda.
               </p>
             ) : (
@@ -189,23 +169,19 @@ export default function Footer() {
                     onChange={e => setEmail(e.target.value)}
                     placeholder="O teu email"
                     required
-                    className="flex-1 bg-transparent px-4 py-3 text-[11px] text-cream placeholder:text-cream/25 focus:outline-none min-w-0"
-                    style={{ fontFamily: 'var(--font-sans)' }}
+                    className="flex-1 bg-transparent px-4 py-3 text-[11px] text-cream placeholder:text-cream/30 focus:outline-none min-w-0"
                   />
                   <button
                     type="submit"
                     disabled={estado === 'loading'}
                     aria-label="Subscrever newsletter"
-                    className="px-4 text-cream/40 hover:text-gold transition-colors disabled:opacity-50"
+                    className="px-4 text-cream/45 hover:text-gold transition-colors disabled:opacity-50"
                   >
                     <Send size={14} strokeWidth={1.5} />
                   </button>
                 </div>
                 {estado === 'error' && (
-                  <p
-                    className="text-[10px] text-red-400"
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  >
+                  <p className="text-[11px] text-red-400">
                     Erro. Tenta novamente.
                   </p>
                 )}
@@ -216,12 +192,9 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-cream/8">
-        <div className="max-w-[1440px] mx-auto px-8 lg:px-16 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p
-            className="text-[9px] text-cream/25 tracking-[0.2em]"
-            style={{ fontFamily: 'var(--font-sans)' }}
-          >
+      <div className="border-t border-cream/10">
+        <div className="container-kk py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-[10px] text-cream/40 tracking-[0.2em]">
             © {new Date().getFullYear()} KIMA KYAMI. TODOS OS DIREITOS RESERVADOS.
           </p>
           <a
@@ -231,10 +204,7 @@ export default function Footer() {
             className="flex items-center gap-2.5 group"
             aria-label="Desenvolvido pela UbuntuCode"
           >
-            <span
-              className="text-[9px] text-cream/20 tracking-[0.18em] group-hover:text-cream/40 transition-colors"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <span className="text-[10px] text-cream/35 tracking-[0.18em] group-hover:text-cream/55 transition-colors">
               DESENVOLVIDO PELA
             </span>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -243,7 +213,7 @@ export default function Footer() {
               alt="UbuntuCode"
               width={80}
               height={20}
-              className="object-contain h-4 w-auto opacity-25 group-hover:opacity-50 transition-opacity"
+              className="object-contain h-4 w-auto opacity-30 group-hover:opacity-55 transition-opacity"
             />
           </a>
         </div>

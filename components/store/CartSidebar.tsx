@@ -5,10 +5,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { X, Minus, Plus, ShoppingBag, ArrowRight } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
+import { formatarPreco } from '@/lib/utils'
 
-function formatarPreco(valor: number) {
-  return `Kz ${valor.toFixed(2).replace('.', ',')}`
-}
+const PORTES_GRATIS_A_PARTIR_DE = 50000
+const CUSTO_PORTES = 3500
 
 export default function CartSidebar() {
   const { items, total, count, isOpen, closeCart, removeItem, updateQty } = useCart()
@@ -32,6 +32,8 @@ export default function CartSidebar() {
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [isOpen, closeCart])
+
+  const portes = total >= PORTES_GRATIS_A_PARTIR_DE ? 0 : CUSTO_PORTES
 
   return (
     <>
@@ -57,17 +59,11 @@ export default function CartSidebar() {
         {/* Header */}
         <div className="flex items-center justify-between px-7 py-5 border-b border-noir/8">
           <div className="flex items-center gap-3">
-            <h2
-              className="text-[10px] tracking-[0.3em] uppercase text-noir"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <h2 className="text-[10px] tracking-[0.3em] uppercase text-noir">
               Carrinho
             </h2>
             {count > 0 && (
-              <span
-                className="text-[9px] bg-gold text-noir px-2 py-0.5 rounded-full font-semibold"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
+              <span className="text-[9px] bg-gold text-noir px-2 py-0.5 rounded-full font-semibold">
                 {count}
               </span>
             )}
@@ -84,30 +80,18 @@ export default function CartSidebar() {
 
         {/* Content */}
         {items.length === 0 ? (
-          /* Empty state */
           <div className="flex-1 flex flex-col items-center justify-center px-8 gap-5 text-center">
             <div className="w-16 h-16 rounded-full border border-noir/12 flex items-center justify-center">
               <ShoppingBag size={24} strokeWidth={1} className="text-noir/30" />
             </div>
             <div>
-              <p
-                className="text-sm text-noir/60 mb-1"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
-                O teu carrinho está vazio.
-              </p>
-              <p
-                className="text-xs text-muted"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
-                Descobre a nossa coleção exclusiva.
-              </p>
+              <p className="text-sm text-noir/60 mb-1">O teu carrinho está vazio.</p>
+              <p className="text-xs text-muted">Descobre a nossa coleção exclusiva.</p>
             </div>
             <Link
               href="/colecoes"
               onClick={closeCart}
               className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase border border-noir text-noir px-6 py-3 hover:bg-noir hover:text-cream transition-colors"
-              style={{ fontFamily: 'var(--font-sans)' }}
             >
               DESCOBRIR COLEÇÃO <ArrowRight size={12} />
             </Link>
@@ -121,7 +105,6 @@ export default function CartSidebar() {
                   key={`${item.produtoId}-${item.tamanho}-${item.cor}`}
                   className="flex gap-4 pb-5 border-b border-noir/6 last:border-0"
                 >
-                  {/* Image */}
                   <Link
                     href={`/produto/${item.slug}`}
                     onClick={closeCart}
@@ -136,13 +119,9 @@ export default function CartSidebar() {
                     />
                   </Link>
 
-                  {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start gap-2">
-                      <p
-                        className="text-xs font-light text-noir leading-snug truncate"
-                        style={{ fontFamily: 'var(--font-serif)' }}
-                      >
+                      <p className="text-xs font-light text-noir leading-snug truncate font-serif">
                         {item.nome}
                       </p>
                       <button
@@ -154,42 +133,33 @@ export default function CartSidebar() {
                       </button>
                     </div>
 
-                    <p
-                      className="text-[10px] text-muted mt-1"
-                      style={{ fontFamily: 'var(--font-sans)' }}
-                    >
+                    <p className="text-[10px] text-muted mt-1">
                       {item.cor} · Nº {item.tamanho}
                     </p>
 
                     <div className="flex items-center justify-between mt-3">
-                      {/* Qty controls */}
-                      <div className="flex items-center border border-noir/15 rounded-sm">
+                      {/* Qty controls — cantos vivos, luxo */}
+                      <div className="flex items-center border border-noir/15">
                         <button
                           onClick={() => updateQty(item.produtoId, item.tamanho, item.cor, item.quantidade - 1)}
                           aria-label="Diminuir quantidade"
-                          className="w-7 h-7 flex items-center justify-center text-noir/50 hover:text-gold hover:bg-noir/4 transition-colors"
+                          className="w-8 h-8 flex items-center justify-center text-noir/50 hover:text-gold transition-colors"
                         >
                           <Minus size={10} strokeWidth={2} />
                         </button>
-                        <span
-                          className="w-7 text-center text-xs text-noir select-none"
-                          style={{ fontFamily: 'var(--font-sans)' }}
-                        >
+                        <span className="w-7 text-center text-xs text-noir select-none">
                           {item.quantidade}
                         </span>
                         <button
                           onClick={() => updateQty(item.produtoId, item.tamanho, item.cor, item.quantidade + 1)}
                           aria-label="Aumentar quantidade"
-                          className="w-7 h-7 flex items-center justify-center text-noir/50 hover:text-gold hover:bg-noir/4 transition-colors"
+                          className="w-8 h-8 flex items-center justify-center text-noir/50 hover:text-gold transition-colors"
                         >
                           <Plus size={10} strokeWidth={2} />
                         </button>
                       </div>
 
-                      <p
-                        className="text-xs font-medium text-noir"
-                        style={{ fontFamily: 'var(--font-sans)' }}
-                      >
+                      <p className="text-xs font-medium text-noir">
                         {formatarPreco(item.preco * item.quantidade)}
                       </p>
                     </div>
@@ -200,67 +170,35 @@ export default function CartSidebar() {
 
             {/* Footer */}
             <div className="px-7 py-5 border-t border-noir/8 space-y-4 bg-cream">
-              {/* Subtotal */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span
-                    className="text-[10px] tracking-[0.15em] uppercase text-muted"
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  >
-                    Subtotal
-                  </span>
-                  <span
-                    className="text-sm text-noir"
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  >
-                    {formatarPreco(total)}
-                  </span>
+                  <span className="text-[10px] tracking-[0.15em] uppercase text-muted">Subtotal</span>
+                  <span className="text-sm text-noir">{formatarPreco(total)}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span
-                    className="text-[10px] tracking-[0.15em] uppercase text-muted"
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  >
-                    Portes
-                  </span>
-                  <span
-                    className="text-[11px] text-noir/60"
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  >
-                    {total >= 150 ? 'Grátis' : '€ 5,99'}
+                  <span className="text-[10px] tracking-[0.15em] uppercase text-muted">Portes</span>
+                  <span className="text-[11px] text-noir/60">
+                    {portes === 0 ? 'Grátis' : formatarPreco(CUSTO_PORTES)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center pt-2 border-t border-noir/8">
-                  <span
-                    className="text-[10px] tracking-[0.15em] uppercase text-noir font-medium"
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  >
-                    Total
-                  </span>
-                  <span
-                    className="text-base font-medium text-noir"
-                    style={{ fontFamily: 'var(--font-serif)' }}
-                  >
-                    {formatarPreco(total >= 150 ? total : total + 5.99)}
+                  <span className="text-[10px] tracking-[0.15em] uppercase text-noir font-medium">Total</span>
+                  <span className="text-base font-medium text-noir font-serif">
+                    {formatarPreco(total + portes)}
                   </span>
                 </div>
               </div>
 
-              {total < 150 && (
-                <p
-                  className="text-[10px] text-muted text-center"
-                  style={{ fontFamily: 'var(--font-sans)' }}
-                >
-                  Faltam {formatarPreco(150 - total)} para portes grátis
+              {portes > 0 && (
+                <p className="text-[10px] text-muted text-center">
+                  Faltam {formatarPreco(PORTES_GRATIS_A_PARTIR_DE - total)} para portes grátis
                 </p>
               )}
 
-              {/* CTAs */}
               <Link
                 href="/checkout"
                 onClick={closeCart}
                 className="block w-full text-center py-3.5 bg-noir text-cream text-[11px] tracking-[0.25em] uppercase hover:bg-noir/85 transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}
               >
                 FINALIZAR ENCOMENDA
               </Link>
@@ -268,7 +206,6 @@ export default function CartSidebar() {
               <button
                 onClick={closeCart}
                 className="block w-full text-center py-2.5 text-[10px] tracking-[0.2em] uppercase text-noir/50 hover:text-gold transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}
               >
                 CONTINUAR A COMPRAR
               </button>

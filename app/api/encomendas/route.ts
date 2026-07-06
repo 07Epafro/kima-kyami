@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
   }
 
   const subtotal = itens.reduce((s, i) => s + (produtoMap.get(i.produtoId)?.preco ?? 0) * i.quantidade, 0)
-  const portes = subtotal >= 150 ? 0 : 5.99
+  const portes = subtotal >= 50000 ? 0 : 3500
   const total = subtotal + portes
   const moradaEnvio = {
     rua: moradaNumero ? `${moradaRua}, ${moradaNumero}` : moradaRua,

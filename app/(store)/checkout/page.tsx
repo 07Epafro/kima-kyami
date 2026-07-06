@@ -9,6 +9,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
+import { formatarPreco } from '@/lib/utils'
+
+const PORTES_GRATIS_A_PARTIR_DE = 50000
+const CUSTO_PORTES = 3500
 
 const schema = z.object({
   nome: z.string().min(2, 'Nome obrigatório'),
@@ -24,8 +28,6 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>
 
 const PAISES = ['Angola', 'Portugal', 'Espanha', 'França', 'Alemanha', 'Reino Unido', 'Outro']
-
-function formatarPreco(v: number) { return `Kz ${v.toFixed(2).replace('.', ',')}` }
 
 const inputCls = 'w-full border border-noir/20 px-4 py-3 text-sm bg-cream text-noir placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors'
 const labelCls = 'block text-[9.5px] tracking-[0.25em] uppercase text-muted mb-1.5'
@@ -60,7 +62,7 @@ export default function CheckoutPage() {
   }, [items])
 
   const subtotal = total
-  const portes = subtotal >= 150 ? 0 : 5.99
+  const portes = subtotal >= PORTES_GRATIS_A_PARTIR_DE ? 0 : CUSTO_PORTES
   const totalFinal = subtotal + portes
 
   async function onSubmit(data: FormValues) {
