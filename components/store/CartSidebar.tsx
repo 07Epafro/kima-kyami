@@ -198,7 +198,7 @@ export default function CartSidebar() {
               <Link
                 href="/checkout"
                 onClick={closeCart}
-                className="block w-full text-center py-3.5 bg-noir text-cream text-[11px] tracking-[0.25em] uppercase hover:bg-noir/85 transition-colors"
+                className="block w-full text-center min-h-14 py-3.5 bg-noir text-cream text-[11px] tracking-[0.25em] uppercase hover:bg-noir/85 transition-colors"
               >
                 FINALIZAR ENCOMENDA
               </Link>

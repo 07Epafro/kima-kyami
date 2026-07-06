@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
             </p>
             <hr style="border:none;border-top:1px solid #e8e0d8;margin:36px 0">
             <p style="margin:0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif;text-align:center">
-              Kima Kyami · <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
+              Kima Kyami · <a href="mailto:atendimento@kimakyami.ao" style="color:#9a9a9a">atendimento@kimakyami.ao</a>
             </p>
           </td>
         </tr>

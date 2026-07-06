@@ -82,8 +82,8 @@ export default async function ProdutoPage({ params }: Params) {
     brand: { '@type': 'Brand', name: 'Kima Kyami' },
     offers: {
       '@type': 'Offer',
-      priceCurrency: 'EUR',
-      price: produto.preco.toFixed(2),
+      priceCurrency: 'AOA',
+      price: String(Math.round(produto.preco)),
       availability: produto.emBreve
         ? 'https://schema.org/PreOrder'
         : Object.values(stock).some(v => v > 0)
@@ -104,7 +104,7 @@ export default async function ProdutoPage({ params }: Params) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-8">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-10 lg:py-16">
         {/* Breadcrumb */}
         <nav
           className="flex items-center flex-wrap gap-2 text-[10px] tracking-[0.2em] text-muted mb-8"

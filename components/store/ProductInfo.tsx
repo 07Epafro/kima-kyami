@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { ChevronDown, Check } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
+import { formatarPreco } from '@/lib/utils'
 import type { CorProduto } from '@/types'
 
 interface Props {
@@ -24,10 +25,6 @@ interface Props {
 
 const notifSchema = z.object({ email: z.string().email() })
 type NotifForm = z.infer<typeof notifSchema>
-
-function formatarPreco(valor: number) {
-  return `Kz ${valor.toFixed(2).replace('.', ',')}`
-}
 
 function stockKey(tamanho: number, cor: string) {
   return `${tamanho}-${cor}`
@@ -52,14 +49,14 @@ const ACORDEAO = [
   },
   {
     titulo: 'Envios e Devoluções',
-    conteudo: 'Envios para Portugal Continental: 3-5 dias úteis. Portes grátis em compras acima de €150. Trocas e devoluções aceites em 14 dias após recepção, mediante artigo em perfeito estado.',
+    conteudo: 'Entregas em Luanda: 2-4 dias úteis. Envios para outras províncias: 4-7 dias úteis. Portes grátis em compras acima de Kz 50.000. Trocas e devoluções aceites em 14 dias após recepção, mediante artigo em perfeito estado.',
   },
 ]
 
 export default function ProductInfo({
   id, nome, preco, precoAntes, descricao, tamanhos, cores, stock, emBreve, slug, imagem,
 }: Props) {
-  const { addItem, openCart } = useCart()
+  const { addItem } = useCart()
 
   const [corSel, setCorSel] = useState<CorProduto | null>(cores[0] ?? null)
   const [tamSel, setTamSel] = useState<number | null>(null)
@@ -111,52 +108,34 @@ export default function ProductInfo({
     <div className="space-y-7">
       {/* Nome e preço */}
       <div>
-        <h1
-          className="text-[clamp(24px,3vw,36px)] font-light text-noir leading-snug tracking-[0.06em] mb-3"
-          style={{ fontFamily: 'var(--font-serif)' }}
-        >
+        <h1 className="text-[clamp(24px,3vw,36px)] font-light text-noir leading-snug tracking-[0.06em] mb-3 font-serif">
           {nome}
         </h1>
         <div className="flex items-baseline gap-3">
           {precoAntes && (
-            <span
-              className="text-sm text-muted line-through"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <span className="text-sm text-muted line-through font-sans">
               {formatarPreco(precoAntes)}
             </span>
           )}
-          <span
-            className={`text-xl font-light ${precoAntes ? 'text-gold' : 'text-noir'}`}
-            style={{ fontFamily: 'var(--font-serif)' }}
-          >
+          <span className={`text-xl font-light font-serif ${precoAntes ? 'text-gold' : 'text-noir'}`}>
             {formatarPreco(preco)}
           </span>
         </div>
       </div>
 
       {/* Descrição */}
-      <p
-        className="text-sm text-noir/65 leading-[1.85] tracking-wide"
-        style={{ fontFamily: 'var(--font-sans)' }}
-      >
+      <p className="text-sm text-noir/65 leading-[1.85] tracking-wide font-sans">
         {descricao}
       </p>
 
       {emBreve ? (
         /* Em breve — notificação */
         <div className="space-y-4 py-4 border-t border-b border-noir/8">
-          <p
-            className="text-[10px] tracking-[0.25em] uppercase text-muted"
-            style={{ fontFamily: 'var(--font-sans)' }}
-          >
+          <p className="text-[10px] tracking-[0.25em] uppercase text-muted font-sans">
             Avisa-me quando disponível
           </p>
           {notifOk ? (
-            <p
-              className="text-sm text-emerald-700 flex items-center gap-2"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-sm text-emerald-700 flex items-center gap-2 font-sans">
               <Check size={14} /> Avisaremos quando estiver disponível.
             </p>
           ) : (
@@ -165,23 +144,19 @@ export default function ProductInfo({
                 {...register('email')}
                 type="email"
                 placeholder="O teu email"
-                className="flex-1 border border-noir/20 px-4 py-3 text-sm bg-transparent focus:outline-none focus:border-gold text-noir placeholder:text-muted/60"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="flex-1 border border-noir/20 px-4 py-3 text-sm bg-transparent focus:outline-none focus:border-gold text-noir placeholder:text-muted/60 font-sans"
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-6 py-3 bg-noir text-cream text-[10px] tracking-[0.2em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors whitespace-nowrap"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="px-6 min-h-12 py-3 bg-noir text-cream text-[10px] tracking-[0.2em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors whitespace-nowrap font-sans"
               >
                 NOTIFICAR
               </button>
             </form>
           )}
           {errors.email && (
-            <p className="text-xs text-red-500" style={{ fontFamily: 'var(--font-sans)' }}>
-              {errors.email.message}
-            </p>
+            <p className="text-xs text-red-500 font-sans">{errors.email.message}</p>
           )}
         </div>
       ) : (
@@ -190,16 +165,14 @@ export default function ProductInfo({
           {/* Selector de cor */}
           {cores.length > 0 && (
             <div>
-              <p
-                className="text-[10px] tracking-[0.25em] uppercase text-muted mb-3"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
+              <p className="text-[10px] tracking-[0.25em] uppercase text-muted mb-3 font-sans">
                 Cor: <span className="text-noir">{corSel?.nome}</span>
               </p>
               <div className="flex flex-wrap gap-2">
                 {cores.map(cor => (
                   <button
                     key={cor.nome}
+                    type="button"
                     onClick={() => { setCorSel(cor); setTamSel(null) }}
                     aria-label={`Cor: ${cor.nome}`}
                     title={cor.nome}
@@ -217,10 +190,7 @@ export default function ProductInfo({
 
           {/* Selector de tamanho */}
           <div>
-            <p
-              className="text-[10px] tracking-[0.25em] uppercase text-muted mb-3"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-[10px] tracking-[0.25em] uppercase text-muted mb-3 font-sans">
               Tamanho {tamSel && `— ${tamSel}`}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -230,16 +200,16 @@ export default function ProductInfo({
                 return (
                   <button
                     key={tam}
+                    type="button"
                     onClick={() => disponivel && setTamSel(tam)}
                     disabled={!disponivel}
-                    className={`w-11 h-11 text-[11px] border transition-all ${
+                    className={`w-11 h-11 text-[11px] border transition-all font-sans ${
                       selecionado
                         ? 'bg-noir text-cream border-noir'
                         : disponivel
                         ? 'border-noir/25 text-noir hover:border-noir'
                         : 'border-noir/10 text-noir/25 cursor-not-allowed line-through'
                     }`}
-                    style={{ fontFamily: 'var(--font-sans)' }}
                   >
                     {tam}
                   </button>
@@ -250,26 +220,23 @@ export default function ProductInfo({
 
           {/* Aviso de stock baixo */}
           {baixoStock && (
-            <p
-              className="text-[11px] text-amber-700 tracking-wide"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <p className="text-[11px] text-amber-700 tracking-wide font-sans">
               Últimas {qtdActual} unidade{qtdActual > 1 ? 's' : ''}
             </p>
           )}
 
-          {/* CTA */}
+          {/* CTA — min-h-14 = 56px */}
           <button
+            type="button"
             onClick={handleAdicionarCarrinho}
             disabled={!corSel || !tamSel || adicionado}
-            className={`w-full py-4 text-[11px] tracking-[0.3em] uppercase transition-all duration-300 ${
+            className={`w-full min-h-14 py-4 text-[11px] tracking-[0.3em] uppercase transition-all duration-300 font-sans ${
               adicionado
                 ? 'bg-emerald-700 text-cream'
                 : corSel && tamSel
                 ? 'bg-noir text-cream hover:bg-noir/85'
                 : 'bg-noir/20 text-noir/40 cursor-not-allowed'
             }`}
-            style={{ fontFamily: 'var(--font-sans)' }}
           >
             {adicionado ? '✓ ADICIONADO AO CARRINHO' : 'ADICIONAR AO CARRINHO'}
           </button>
@@ -281,13 +248,11 @@ export default function ProductInfo({
         {ACORDEAO.map(({ titulo, conteudo }) => (
           <div key={titulo}>
             <button
+              type="button"
               onClick={() => setAcordeaoAberto(a => a === titulo ? null : titulo)}
               className="flex items-center justify-between w-full py-4 text-left"
             >
-              <span
-                className="text-[11px] tracking-[0.2em] uppercase text-noir"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
+              <span className="text-[11px] tracking-[0.2em] uppercase text-noir font-sans">
                 {titulo}
               </span>
               <ChevronDown
@@ -299,10 +264,7 @@ export default function ProductInfo({
               />
             </button>
             {acordeaoAberto === titulo && (
-              <p
-                className="text-sm text-noir/60 leading-[1.85] pb-5"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
+              <p className="text-sm text-noir/60 leading-[1.85] pb-5 font-sans">
                 {conteudo}
               </p>
             )}

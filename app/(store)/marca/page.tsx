@@ -56,7 +56,7 @@ export default function MarcaPage() {
       </section>
 
       {/* ─── Manifesto ─── */}
-      <section className="bg-cream py-24 lg:py-36">
+      <section className="bg-cream section-py">
         <div className="max-w-[900px] mx-auto px-8 lg:px-16 text-center">
           <div className="w-8 h-px bg-gold mx-auto mb-12" />
           <blockquote
@@ -78,7 +78,7 @@ export default function MarcaPage() {
       </section>
 
       {/* ─── Valores ─── */}
-      <section className="bg-noir py-24 lg:py-32">
+      <section className="bg-noir section-py">
         <div className="max-w-[1440px] mx-auto px-8 lg:px-16">
           <p
             className="text-[9px] tracking-[0.4em] uppercase text-gold mb-16 text-center"
@@ -125,7 +125,7 @@ export default function MarcaPage() {
             className="object-cover"
           />
         </div>
-        <div className="bg-cream flex flex-col justify-center px-10 lg:px-16 py-20">
+        <div className="bg-cream flex flex-col justify-center px-10 lg:px-16 py-16 lg:py-24">
           <p
             className="text-[9px] tracking-[0.4em] uppercase text-gold mb-6"
             style={{ fontFamily: 'var(--font-sans)' }}

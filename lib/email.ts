@@ -54,7 +54,7 @@ function base(titulo: string, corpo: string): string {
             <hr style="border:none;border-top:1px solid #e8e0d8;margin:32px 0">
             <p style="margin:0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif;line-height:1.6;text-align:center">
               Kima Kyami · Luanda, Angola<br>
-              Para questões: <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
+              Para questões: <a href="mailto:atendimento@kimakyami.ao" style="color:#9a9a9a">atendimento@kimakyami.ao</a>
             </p>
           </td>
         </tr>
@@ -228,7 +228,7 @@ export async function emailEncomendaCancelada(
     </p>
     <div style="background:#fff5f5;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin:20px 0">
       <p style="margin:0;font-size:13px;color:#181818;font-family:Arial,sans-serif">
-        Se tiveres alguma dúvida, responde a este email ou contacta <a href="mailto:hello@kimakyami.com" style="color:#181818">hello@kimakyami.com</a>.
+        Se tiveres alguma dúvida, responde a este email ou contacta <a href="mailto:atendimento@kimakyami.ao" style="color:#181818">atendimento@kimakyami.ao</a>.
       </p>
     </div>`
 

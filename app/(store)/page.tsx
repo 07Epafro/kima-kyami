@@ -47,7 +47,7 @@ const orgSchema = {
   description: 'Sapatos de luxo de inspiração africana contemporânea.',
   contactPoint: {
     '@type': 'ContactPoint',
-    email: 'hello@kimakyami.com',
+    email: 'atendimento@kimakyami.ao',
     contactType: 'customer service',
     availableLanguage: 'Portuguese',
   },
@@ -78,13 +78,14 @@ export default async function HomePage() {
 
       {/* ─── 1. Hero ─────────────────────────────────────────────────── */}
       <section className="relative h-screen min-h-[600px] overflow-hidden">
+        {/* Art direction: portrait crop em mobile, landscape em desktop */}
         <Image
           src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=85"
           alt="Kima Kyami — Sapatos de luxo"
           fill
           sizes="100vw"
           priority
-          className="object-cover object-center"
+          className="object-cover object-[center_20%] sm:object-center"
         />
         {/* Overlay gradiente */}
         <div className="absolute inset-0 bg-gradient-to-r from-noir/75 via-noir/40 to-noir/20" />
@@ -105,7 +106,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/colecoes"
-              className="inline-block border border-cream text-cream text-[10px] tracking-spaced-lg px-10 py-4 hover:bg-cream hover:text-noir transition-colors duration-300 animate-kk-fade-up font-sans"
+              className="inline-flex items-center justify-center border border-cream text-cream text-[10px] tracking-spaced-lg px-10 min-h-12 hover:bg-cream hover:text-noir transition-colors duration-300 animate-kk-fade-up font-sans"
               style={{ animationDelay: '0.3s' }}
             >
               DESCOBRIR COLEÇÃO
@@ -120,7 +121,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── 2. Sobre a Marca ─────────────────────────────────────────── */}
-      <section className="relative py-24 lg:py-36 bg-cream overflow-hidden">
+      <section className="relative section-py bg-cream overflow-hidden">
         {/* Watermark */}
         <span
           className="absolute -right-8 bottom-0 text-[22vw] font-light text-noir/4 leading-none select-none pointer-events-none font-serif"
@@ -250,7 +251,7 @@ export default async function HomePage() {
 
       {/* ─── 5. Novos Lançamentos ─────────────────────────────────────── */}
       {produtosEmBreve.length > 0 && (
-        <section className="py-20 lg:py-28 bg-cream overflow-hidden">
+        <section className="section-py bg-cream overflow-hidden">
           <div className="container-kk">
             {/* Header */}
             <div className="text-center mb-12">

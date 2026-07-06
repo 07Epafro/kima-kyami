@@ -26,6 +26,7 @@ body {
   font-family: var(--font-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.65;
 }
 
 .heading-display {
@@ -59,6 +60,30 @@ body {
   .container-kk {
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+}
+
+/* Section vertical rhythm — 64px mobile / 140px desktop */
+.section-py {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 1024px) {
+  .section-py {
+    padding-top: 8.75rem;
+    padding-bottom: 8.75rem;
+  }
+}
+
+/* Section half-top (used after a page header that has its own top padding) */
+.section-pb {
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 1024px) {
+  .section-pb {
+    padding-bottom: 8.75rem;
   }
 }
 

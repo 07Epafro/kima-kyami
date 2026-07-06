@@ -32,7 +32,7 @@ export default async function ContactosPage() {
   return (
     <>
       {/* ─── Header ─── */}
-      <section className="bg-cream pt-20 pb-12 text-center px-8">
+      <section className="bg-cream pt-16 lg:pt-35 pb-12 text-center px-8">
         <p
           className="text-[9px] tracking-[0.45em] uppercase text-gold mb-4"
           style={{ fontFamily: 'var(--font-sans)' }}
@@ -49,7 +49,7 @@ export default async function ContactosPage() {
       </section>
 
       {/* ─── Grid: Info + Form ─── */}
-      <section className="bg-cream pb-24 px-8 lg:px-16">
+      <section className="bg-cream section-pb px-8 lg:px-16">
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
           {/* Info */}

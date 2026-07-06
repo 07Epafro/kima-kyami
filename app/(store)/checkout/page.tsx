@@ -220,7 +220,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 bg-noir text-cream text-[11px] tracking-[0.3em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors"
+            className="w-full min-h-14 py-4 bg-noir text-cream text-[11px] tracking-[0.3em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
             {isSubmitting ? 'A processar…' : 'CONTINUAR PARA PAGAMENTO'}
