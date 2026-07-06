@@ -48,8 +48,7 @@ export default function Navbar() {
     <>
       {/* Announcement bar */}
       <div
-        className="bg-noir text-cream text-center py-2.5 text-[9px] tracking-[0.35em] font-light"
-        style={{ fontFamily: 'var(--font-sans)' }}
+        className="bg-noir text-cream text-center py-2.5 text-[9px] tracking-spaced-xl font-light font-sans"
       >
         BREVEMENTE, ALGO EXCLUSIVO ESTÁ A CHEGAR.
       </div>
@@ -60,7 +59,7 @@ export default function Navbar() {
           scrolled ? 'border-b border-noir/10 shadow-[0_2px_20px_rgba(24,24,24,0.06)]' : ''
         }`}
       >
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16">
+        <div className="container-kk">
           <div className="relative flex items-center h-[60px] lg:h-[72px]">
 
             {/* Left: hamburger (mobile) / nav links (desktop) */}
@@ -70,7 +69,7 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setMenuOpen(true)}
                 aria-label="Abrir menu"
-                className="lg:hidden text-noir/55 hover:text-gold transition-colors"
+                className="lg:hidden text-noir/70 hover:text-gold transition-colors"
               >
                 <Menu size={20} strokeWidth={1.5} />
               </button>
@@ -81,10 +80,9 @@ export default function Navbar() {
                   <Link
                     key={href}
                     href={href}
-                    className={`text-[9.5px] tracking-[0.22em] transition-colors whitespace-nowrap ${
-                      pathname === href ? 'text-gold' : 'text-noir/55 hover:text-noir'
+                    className={`text-[9.5px] tracking-[0.22em] transition-colors whitespace-nowrap font-sans ${
+                      pathname === href ? 'text-gold' : 'text-noir/70 hover:text-noir'
                     }`}
-                    style={{ fontFamily: 'var(--font-sans)' }}
                   >
                     {label}
                   </Link>
@@ -113,7 +111,7 @@ export default function Navbar() {
               <Link
                 href="/conta"
                 aria-label="A minha conta"
-                className="hidden lg:block text-noir/55 hover:text-gold transition-colors"
+                className="hidden lg:block text-noir/70 hover:text-gold transition-colors"
               >
                 <User size={16} strokeWidth={1.5} />
               </Link>
@@ -122,14 +120,13 @@ export default function Navbar() {
                 type="button"
                 onClick={openCart}
                 aria-label={`Carrinho — ${count} ${count === 1 ? 'artigo' : 'artigos'}`}
-                className="relative text-noir/55 hover:text-gold transition-colors"
+                className="relative text-noir/70 hover:text-gold transition-colors"
               >
                 <ShoppingBag size={16} strokeWidth={1.5} />
                 {count > 0 && (
                   <span
                     key={count}
-                    className="absolute -top-2 -right-2 bg-gold text-noir text-[8px] font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none animate-kk-pop"
-                    style={{ fontFamily: 'var(--font-sans)' }}
+                    className="absolute -top-2 -right-2 bg-gold text-noir text-[8px] font-semibold rounded-full w-4 h-4 flex items-center justify-center leading-none animate-kk-pop font-sans"
                   >
                     {count > 9 ? '9+' : count}
                   </span>
@@ -179,10 +176,9 @@ export default function Navbar() {
               key={href}
               href={href}
               onClick={() => setMenuOpen(false)}
-              className={`text-[clamp(26px,7vw,40px)] tracking-[0.2em] font-light py-4 border-b border-cream/8 transition-colors ${
-                pathname === href ? 'text-gold' : 'text-cream/65 hover:text-cream'
+              className={`text-nav-mobile tracking-spaced font-light py-4 border-b border-cream/8 transition-colors font-serif ${
+                pathname === href ? 'text-gold' : 'text-cream/80 hover:text-cream'
               }`}
-              style={{ fontFamily: 'var(--font-serif)' }}
             >
               {label}
             </Link>

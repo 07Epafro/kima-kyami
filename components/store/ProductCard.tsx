@@ -24,7 +24,7 @@ interface Props {
 }
 
 function formatarPreco(valor: number) {
-  return `€ ${valor.toFixed(2).replace('.', ',')}`
+  return `Kz ${valor.toFixed(2).replace('.', ',')}`
 }
 
 function temStock(stock: Record<string, number>) {
@@ -85,8 +85,7 @@ export default function ProductCard({ produto, prioridade = false }: Props) {
         {badge && (
           <div className="absolute top-3 left-3 z-10">
             <span
-              className={`text-[8px] tracking-[0.25em] uppercase px-2.5 py-1 ${badge.cls}`}
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className={`text-[8px] tracking-[0.25em] uppercase px-2.5 py-1 font-sans ${badge.cls}`}
             >
               {badge.label}
             </span>
@@ -102,8 +101,7 @@ export default function ProductCard({ produto, prioridade = false }: Props) {
           >
             <ShoppingBag size={12} strokeWidth={1.5} className="text-cream/70" />
             <span
-              className="text-[9px] tracking-[0.3em] uppercase text-cream"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="text-[9px] tracking-spaced-lg uppercase text-cream font-sans"
             >
               ADICIONAR
             </span>
@@ -119,8 +117,7 @@ export default function ProductCard({ produto, prioridade = false }: Props) {
       {/* Info */}
       <div>
         <p
-          className="text-sm font-light text-noir leading-snug tracking-wide mb-1 group-hover:text-gold transition-colors duration-200"
-          style={{ fontFamily: 'var(--font-serif)' }}
+          className="text-sm font-light text-noir leading-snug tracking-wide mb-1 group-hover:text-gold transition-colors duration-200 font-serif"
         >
           {produto.nome}
         </p>
@@ -128,15 +125,13 @@ export default function ProductCard({ produto, prioridade = false }: Props) {
         <div className="flex items-baseline gap-2">
           {produto.precoAntes && (
             <span
-              className="text-[11px] text-muted line-through"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="text-[11px] text-muted line-through font-sans"
             >
               {formatarPreco(produto.precoAntes)}
             </span>
           )}
           <span
-            className={`text-[12px] ${produto.precoAntes ? 'text-gold font-medium' : 'text-noir/70'}`}
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className={`text-[12px] font-sans ${produto.precoAntes ? 'text-gold font-medium' : 'text-noir/80'}`}
           >
             {produto.emBreve ? 'Em breve' : formatarPreco(produto.preco)}
           </span>

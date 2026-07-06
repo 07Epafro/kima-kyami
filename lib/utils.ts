@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 export function formatarPreco(valor: number): string {
-  return `€ ${valor.toFixed(2).replace('.', ',')}`
+  return `Kz ${valor.toFixed(2).replace('.', ',')}`
 }
 
 export function gerarReferencia(id: string): string {

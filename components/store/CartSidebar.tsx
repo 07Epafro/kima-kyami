@@ -7,7 +7,7 @@ import { X, Minus, Plus, ShoppingBag, ArrowRight } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
 function formatarPreco(valor: number) {
-  return `€ ${valor.toFixed(2).replace('.', ',')}`
+  return `Kz ${valor.toFixed(2).replace('.', ',')}`
 }
 
 export default function CartSidebar() {

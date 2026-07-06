@@ -16,8 +16,20 @@ const config: Config = {
         muted: '#9a9a9a',
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Montserrat', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'sans-serif'],
+      },
+      fontSize: {
+        'hero': 'clamp(40px, 8vw, 76px)',
+        'title-lg': 'clamp(28px, 4vw, 42px)',
+        'title-md': 'clamp(22px, 3vw, 34px)',
+        'nav-mobile': 'clamp(26px, 7vw, 40px)',
+      },
+      letterSpacing: {
+        'spaced': '.2em',
+        'spaced-lg': '.3em',
+        'spaced-xl': '.35em',
+        'spaced-max': '.5em',
       },
       screens: {
         xs: '480px',

@@ -26,7 +26,7 @@ const notifSchema = z.object({ email: z.string().email() })
 type NotifForm = z.infer<typeof notifSchema>
 
 function formatarPreco(valor: number) {
-  return `€ ${valor.toFixed(2).replace('.', ',')}`
+  return `Kz ${valor.toFixed(2).replace('.', ',')}`
 }
 
 function stockKey(tamanho: number, cor: string) {

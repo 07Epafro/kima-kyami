@@ -90,24 +90,23 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-r from-noir/75 via-noir/40 to-noir/20" />
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-end lg:justify-center px-8 sm:px-12 lg:px-20 pb-20 lg:pb-0">
+        <div className="absolute inset-0 flex flex-col justify-end lg:justify-center container-kk pb-20 lg:pb-0">
           <div className="max-w-xl">
             <h1
-              className="text-cream text-[clamp(40px,8vw,76px)] font-light leading-[1.05] tracking-[0.08em] uppercase mb-6 animate-kk-fade-up"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="text-cream text-hero font-light leading-[1.05] tracking-[0.08em] uppercase mb-6 animate-kk-fade-up font-serif"
             >
               ELEGÂNCIA<br />EM CADA<br />PASSO.
             </h1>
             <p
-              className="text-cream/75 text-sm sm:text-base leading-relaxed tracking-wide mb-10 animate-kk-fade-up"
-              style={{ fontFamily: 'var(--font-sans)', animationDelay: '0.15s' }}
+              className="text-cream/85 text-sm sm:text-base leading-relaxed tracking-wide mb-10 animate-kk-fade-up font-sans"
+              style={{ animationDelay: '0.15s' }}
             >
               Sapatos criados para mulheres que deixam<br className="hidden sm:block" /> presença por onde passam.
             </p>
             <Link
               href="/colecoes"
-              className="inline-block border border-cream text-cream text-[10px] tracking-[0.3em] px-10 py-4 hover:bg-cream hover:text-noir transition-colors duration-300 animate-kk-fade-up"
-              style={{ fontFamily: 'var(--font-sans)', animationDelay: '0.3s' }}
+              className="inline-block border border-cream text-cream text-[10px] tracking-spaced-lg px-10 py-4 hover:bg-cream hover:text-noir transition-colors duration-300 animate-kk-fade-up font-sans"
+              style={{ animationDelay: '0.3s' }}
             >
               DESCOBRIR COLEÇÃO
             </Link>
@@ -124,19 +123,17 @@ export default async function HomePage() {
       <section className="relative py-24 lg:py-36 bg-cream overflow-hidden">
         {/* Watermark */}
         <span
-          className="absolute -right-8 bottom-0 text-[22vw] font-light text-noir/4 leading-none select-none pointer-events-none"
-          style={{ fontFamily: 'var(--font-serif)' }}
+          className="absolute -right-8 bottom-0 text-[22vw] font-light text-noir/4 leading-none select-none pointer-events-none font-serif"
           aria-hidden="true"
         >
           KK
         </span>
 
-        <div className="max-w-[1440px] mx-auto px-8 lg:px-20 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
+        <div className="container-kk grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
           {/* Logo mark */}
           <div className="flex flex-col items-center lg:items-end">
             <span
-              className="text-[clamp(80px,18vw,160px)] font-light leading-none text-noir/12 tracking-[0.3em]"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="text-[clamp(80px,18vw,160px)] font-light leading-none text-noir/12 tracking-[0.3em] font-serif"
               aria-hidden="true"
             >
               KK
@@ -147,20 +144,17 @@ export default async function HomePage() {
           {/* Text */}
           <div>
             <p
-              className="text-[10px] tracking-[0.35em] uppercase text-muted mb-6"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="text-[10px] tracking-spaced-xl uppercase text-muted mb-6 font-sans"
             >
               A Marca
             </p>
             <h2
-              className="text-[clamp(28px,4vw,42px)] font-light text-noir leading-snug tracking-[0.1em] uppercase mb-8"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="text-title-lg font-light text-noir leading-snug tracking-widest uppercase mb-8 font-serif"
             >
               KIMA KYAMI
             </h2>
             <p
-              className="text-sm text-noir/65 leading-[1.9] tracking-wide mb-10 max-w-md"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="text-sm text-noir/80 leading-[1.9] tracking-wide mb-10 max-w-md font-sans"
             >
               KIMA KYAMI nasceu para mulheres que não seguem caminhos.
               Elas criam o seu. Cada par é uma declaração de presença — fruto
@@ -169,8 +163,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/marca"
-              className="group inline-flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase text-noir hover:text-gold transition-colors"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="group inline-flex items-center gap-3 text-[10px] tracking-spaced-lg uppercase text-noir hover:text-gold transition-colors font-sans"
             >
               CONHECER A MARCA
               <span className="transition-transform group-hover:translate-y-0.5">▼</span>
@@ -202,14 +195,12 @@ export default async function HomePage() {
               {/* Label */}
               <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
                 <p
-                  className="text-cream text-[11px] tracking-[0.3em] uppercase mb-1.5 group-hover:text-gold transition-colors duration-300"
-                  style={{ fontFamily: 'var(--font-sans)' }}
+                  className="text-cream text-[11px] tracking-spaced-lg uppercase mb-1.5 group-hover:text-gold transition-colors duration-300 font-sans"
                 >
                   {cat.label}
                 </p>
                 <p
-                  className="text-cream/0 group-hover:text-gold/70 text-[9px] tracking-[0.25em] uppercase transition-all duration-300 translate-y-2 group-hover:translate-y-0"
-                  style={{ fontFamily: 'var(--font-sans)' }}
+                  className="text-cream/0 group-hover:text-gold/90 text-[9px] tracking-[0.25em] uppercase transition-all duration-300 translate-y-2 group-hover:translate-y-0 font-sans"
                 >
                   VER MAIS →
                 </p>
@@ -221,7 +212,7 @@ export default async function HomePage() {
 
       {/* ─── 4. Quote Section ─────────────────────────────────────────── */}
       <section className="bg-noir py-20 lg:py-0 overflow-hidden">
-        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+        <div className="container-kk grid grid-cols-1 lg:grid-cols-2 min-h-[600px] p-0 lg:p-0">
           {/* Image */}
           <div className="relative aspect-[4/5] lg:aspect-auto lg:min-h-[600px] order-2 lg:order-1">
             <Image
@@ -237,8 +228,7 @@ export default async function HomePage() {
           <div className="flex flex-col items-center justify-center py-16 lg:py-24 px-10 lg:px-16 text-center order-1 lg:order-2">
             <div className="w-8 h-px bg-gold mb-12" />
             <blockquote
-              className="text-cream text-[clamp(24px,3.5vw,40px)] font-light leading-[1.3] tracking-[0.06em] uppercase mb-14"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="text-cream text-title-md font-light leading-[1.3] tracking-[0.06em] uppercase mb-14 font-serif"
             >
               "NÃO É SÓ UM SAPATO.
               <br />É POSTURA.
@@ -246,8 +236,7 @@ export default async function HomePage() {
               <br />É KIMA KYAMI."
             </blockquote>
             <span
-              className="text-gold text-[28px] tracking-[0.5em] font-light"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="text-gold text-[28px] tracking-spaced-max font-light font-serif"
             >
               KK
             </span>
@@ -258,27 +247,24 @@ export default async function HomePage() {
       {/* ─── 5. Novos Lançamentos ─────────────────────────────────────── */}
       {produtosEmBreve.length > 0 && (
         <section className="py-20 lg:py-28 bg-cream overflow-hidden">
-          <div className="max-w-[1440px] mx-auto px-8 lg:px-16">
+          <div className="container-kk">
             {/* Header */}
             <div className="flex items-end justify-between mb-12">
               <div>
                 <p
-                  className="text-[9px] tracking-[0.35em] uppercase text-gold mb-3"
-                  style={{ fontFamily: 'var(--font-sans)' }}
+                  className="text-[9px] tracking-spaced-xl uppercase text-gold mb-3 font-sans"
                 >
                   EM BREVE
                 </p>
                 <h2
-                  className="text-[clamp(28px,4vw,42px)] font-light text-noir tracking-[0.12em] uppercase"
-                  style={{ fontFamily: 'var(--font-serif)' }}
+                  className="text-title-lg font-light text-noir tracking-[0.12em] uppercase font-serif"
                 >
                   NOVOS LANÇAMENTOS
                 </h2>
               </div>
               <Link
                 href="/colecoes"
-                className="hidden sm:inline-flex text-[10px] tracking-[0.25em] uppercase text-noir/50 hover:text-gold transition-colors border-b border-transparent hover:border-gold pb-0.5"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="hidden sm:inline-flex text-[10px] tracking-[0.25em] uppercase text-noir/70 hover:text-gold transition-colors border-b border-transparent hover:border-gold pb-0.5 font-sans"
               >
                 VER TODOS →
               </Link>
@@ -319,15 +305,13 @@ export default async function HomePage() {
           <div className="flex flex-col items-center justify-center py-20 px-10 lg:px-14 text-center bg-cream border-y lg:border-y-0 lg:border-x border-noir/8">
             <div className="w-6 h-px bg-gold mb-10" />
             <h2
-              className="text-[clamp(22px,3vw,34px)] font-light text-noir leading-[1.35] tracking-[0.1em] uppercase mb-10"
-              style={{ fontFamily: 'var(--font-serif)' }}
+              className="text-title-md font-light text-noir leading-[1.35] tracking-[0.1em] uppercase mb-10 font-serif"
             >
               CADA DETALHE FOI PENSADO PARA TE FAZER SENTIR EXCLUSIVA.
             </h2>
             <Link
               href="/marca"
-              className="text-[10px] tracking-[0.3em] uppercase text-noir hover:text-gold transition-colors border-b border-noir/30 hover:border-gold pb-0.5"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="text-[10px] tracking-spaced-lg uppercase text-noir hover:text-gold transition-colors border-b border-noir/30 hover:border-gold pb-0.5 font-sans"
             >
               SABER MAIS
             </Link>

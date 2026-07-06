@@ -10,7 +10,7 @@ interface CheckoutData {
   valor: number
 }
 
-function formatarPreco(v: number) { return `€ ${v.toFixed(2).replace('.', ',')}` }
+function formatarPreco(v: number) { return `Kz ${v.toFixed(2).replace('.', ',')}` }
 
 export default function ConfirmacaoPage() {
   const { clearCart } = useCart()

@@ -25,7 +25,7 @@ type FormValues = z.infer<typeof schema>
 
 const PAISES = ['Angola', 'Portugal', 'Espanha', 'França', 'Alemanha', 'Reino Unido', 'Outro']
 
-function formatarPreco(v: number) { return `€ ${v.toFixed(2).replace('.', ',')}` }
+function formatarPreco(v: number) { return `Kz ${v.toFixed(2).replace('.', ',')}` }
 
 const inputCls = 'w-full border border-noir/20 px-4 py-3 text-sm bg-cream text-noir placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors'
 const labelCls = 'block text-[9.5px] tracking-[0.25em] uppercase text-muted mb-1.5'

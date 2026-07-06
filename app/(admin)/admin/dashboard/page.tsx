@@ -131,14 +131,14 @@ export default async function DashboardPage() {
         {kpis.map(({ label, valor, icon: Icon, cor, bg }) => (
           <div key={label} className="bg-white rounded-xl p-6 border border-gray-100">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+              <span className="text-xs tracking-spaced-lg uppercase text-muted font-sans">
                 {label}
               </span>
               <div className={`w-8 h-8 rounded-lg ${bg} flex items-center justify-center`}>
                 <Icon size={16} className={cor} />
               </div>
             </div>
-            <p className="text-2xl font-light text-noir" style={{ fontFamily: 'var(--font-serif)' }}>
+            <p className="text-2xl font-light text-noir font-serif">
               {valor}
             </p>
           </div>
@@ -146,7 +146,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="bg-white rounded-xl p-6 border border-gray-100">
-        <h2 className="text-xs tracking-widest uppercase text-muted mb-6" style={{ fontFamily: 'var(--font-sans)' }}>
+        <h2 className="text-xs tracking-spaced-lg uppercase text-muted mb-6 font-sans">
           Vendas — últimos 30 dias
         </h2>
         <SalesChart data={vendasDiarias} />
@@ -155,10 +155,10 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="text-xs tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+            <h2 className="text-xs tracking-spaced-lg uppercase text-muted font-sans">
               Últimas encomendas
             </h2>
-            <Link href="/admin/encomendas" className="text-xs text-gold hover:underline" style={{ fontFamily: 'var(--font-sans)' }}>
+            <Link href="/admin/encomendas" className="text-xs text-gold hover:underline font-sans">
               Ver todas
             </Link>
           </div>
@@ -167,7 +167,7 @@ export default async function DashboardPage() {
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-50">
+                <tr className="text-[10px] tracking-spaced-xl uppercase text-muted border-b border-gray-50 font-sans">
                   <th className="px-6 py-3 text-left font-normal">Ref.</th>
                   <th className="px-4 py-3 text-left font-normal">Cliente</th>
                   <th className="px-4 py-3 text-right font-normal">Total</th>
@@ -200,10 +200,10 @@ export default async function DashboardPage() {
 
         <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="text-xs tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+            <h2 className="text-xs tracking-spaced-lg uppercase text-muted font-sans">
               Pagamentos a validar
             </h2>
-            <Link href="/admin/pagamentos" className="text-xs text-gold hover:underline" style={{ fontFamily: 'var(--font-sans)' }}>
+            <Link href="/admin/pagamentos" className="text-xs text-gold hover:underline font-sans">
               Ver todos
             </Link>
           </div>
@@ -212,7 +212,7 @@ export default async function DashboardPage() {
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-50">
+                <tr className="text-[10px] tracking-spaced-xl uppercase text-muted border-b border-gray-50 font-sans">
                   <th className="px-6 py-3 text-left font-normal">Encomenda</th>
                   <th className="px-4 py-3 text-right font-normal">Valor</th>
                   <th className="px-4 py-3 text-right font-normal">Submetido</th>

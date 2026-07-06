@@ -18,7 +18,7 @@ interface Props {
 }
 
 function formatarPreco(valor: number) {
-  return `€ ${valor.toFixed(2).replace('.', ',')}`
+  return `Kz ${valor.toFixed(2).replace('.', ',')}`
 }
 
 export default function ProductCarousel({ produtos }: Props) {
