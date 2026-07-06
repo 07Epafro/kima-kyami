@@ -131,14 +131,18 @@ export default async function HomePage() {
 
         <div className="container-kk grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
           {/* Logo mark */}
-          <div className="flex flex-col items-center lg:items-end">
-            <span
-              className="text-[clamp(80px,18vw,160px)] font-light leading-none text-noir/12 tracking-[0.3em] font-serif"
-              aria-hidden="true"
-            >
-              KK
-            </span>
-            <div className="mt-4 w-16 h-px bg-gold" />
+          <div className="flex flex-col items-center lg:items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.svg"
+              alt="Kima Kyami"
+              width={120}
+              height={80}
+              className="object-contain w-28 lg:w-36 h-auto"
+            />
+            <p className="text-[9px] tracking-spaced-xl uppercase text-noir/50 font-sans">
+              KIMA KYAMI
+            </p>
           </div>
 
           {/* Text */}
@@ -249,36 +253,23 @@ export default async function HomePage() {
         <section className="py-20 lg:py-28 bg-cream overflow-hidden">
           <div className="container-kk">
             {/* Header */}
-            <div className="flex items-end justify-between mb-12">
-              <div>
-                <p
-                  className="text-[9px] tracking-spaced-xl uppercase text-gold mb-3 font-sans"
-                >
-                  EM BREVE
-                </p>
-                <h2
-                  className="text-title-lg font-light text-noir tracking-[0.12em] uppercase font-serif"
-                >
-                  NOVOS LANÇAMENTOS
-                </h2>
-              </div>
-              <Link
-                href="/colecoes"
-                className="hidden sm:inline-flex text-[10px] tracking-[0.25em] uppercase text-noir/70 hover:text-gold transition-colors border-b border-transparent hover:border-gold pb-0.5 font-sans"
-              >
-                VER TODOS →
-              </Link>
+            <div className="text-center mb-12">
+              <p className="text-[9px] tracking-spaced-xl uppercase text-gold mb-3 font-sans">
+                EM BREVE
+              </p>
+              <h2 className="text-title-lg font-light text-noir tracking-[0.12em] uppercase font-serif">
+                NOVOS LANÇAMENTOS
+              </h2>
             </div>
 
             {/* Carousel */}
             <ProductCarousel produtos={produtosEmBreve} />
 
-            {/* Mobile CTA */}
-            <div className="mt-10 flex justify-center sm:hidden">
+            {/* CTA */}
+            <div className="mt-12 flex justify-center">
               <Link
                 href="/colecoes"
-                className="text-[10px] tracking-[0.25em] uppercase text-noir border border-noir px-8 py-3 hover:bg-noir hover:text-cream transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="text-[10px] tracking-[0.25em] uppercase text-noir border border-noir px-10 py-3.5 hover:bg-noir hover:text-cream transition-colors font-sans"
               >
                 VER TODOS
               </Link>

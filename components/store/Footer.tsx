@@ -9,11 +9,11 @@ const INFO_LINKS = [
   { href: '/colecoes', label: 'Coleções' },
   { href: '/lookbook', label: 'Lookbook' },
   { href: '/contactos', label: 'Contactos' },
+  { href: '/faq', label: 'Perguntas Frequentes' },
 ]
 
 const AJUDA_LINKS = [
-  { href: '/faq', label: 'Perguntas Frequentes' },
-  { href: '/envios', label: 'Envios' },
+  { href: '/envios', label: 'Envios e Entregas' },
   { href: '/trocas-e-devolucoes', label: 'Trocas e Devoluções' },
   { href: '/privacidade', label: 'Política de Privacidade' },
   { href: '/termos', label: 'Termos e Condições' },
