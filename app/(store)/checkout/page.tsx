@@ -153,17 +153,17 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
                 <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Nome completo *</label>
-                <input {...register('nome')} className={inputCls} placeholder="Ana Sofia Ferreira" style={{ fontFamily: 'var(--font-sans)' }} />
+                <input {...register('nome')} className={inputCls} placeholder="Ana Sofia Luvualu" style={{ fontFamily: 'var(--font-sans)' }} />
                 {errors.nome && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.nome.message}</p>}
               </div>
               <div>
                 <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Email *</label>
-                <input {...register('email')} type="email" className={inputCls} placeholder="ana@exemplo.pt" style={{ fontFamily: 'var(--font-sans)' }} />
+                <input {...register('email')} type="email" className={inputCls} placeholder="ana@exemplo.ao" style={{ fontFamily: 'var(--font-sans)' }} />
                 {errors.email && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.email.message}</p>}
               </div>
               <div>
                 <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Telefone</label>
-                <input {...register('telefone')} className={inputCls} placeholder="+351 9XX XXX XXX" style={{ fontFamily: 'var(--font-sans)' }} />
+                <input {...register('telefone')} className={inputCls} placeholder="+244 9XX XXX XXX" style={{ fontFamily: 'var(--font-sans)' }} />
               </div>
             </div>
           </section>
@@ -179,7 +179,7 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2">
                 <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Rua / Avenida *</label>
-                <input {...register('moradaRua')} className={inputCls} placeholder="Rua das Flores" style={{ fontFamily: 'var(--font-sans)' }} />
+                <input {...register('moradaRua')} className={inputCls} placeholder="Rua Rainha Ginga" style={{ fontFamily: 'var(--font-sans)' }} />
                 {errors.moradaRua && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.moradaRua.message}</p>}
               </div>
               <div>
@@ -188,12 +188,12 @@ export default function CheckoutPage() {
               </div>
               <div>
                 <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Código Postal *</label>
-                <input {...register('moradaCp')} className={inputCls} placeholder="1200-001" style={{ fontFamily: 'var(--font-sans)' }} />
+                <input {...register('moradaCp')} className={inputCls} placeholder="11000" style={{ fontFamily: 'var(--font-sans)' }} />
                 {errors.moradaCp && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.moradaCp.message}</p>}
               </div>
               <div>
                 <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Cidade *</label>
-                <input {...register('moradaCidade')} className={inputCls} placeholder="Lisboa" style={{ fontFamily: 'var(--font-sans)' }} />
+                <input {...register('moradaCidade')} className={inputCls} placeholder="Luanda" style={{ fontFamily: 'var(--font-sans)' }} />
                 {errors.moradaCidade && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.moradaCidade.message}</p>}
               </div>
               <div>

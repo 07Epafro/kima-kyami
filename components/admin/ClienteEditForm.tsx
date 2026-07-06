@@ -174,7 +174,7 @@ export default function ClienteEditForm({ clienteId, nome, email, telefone, mora
         </div>
         <div>
           <label className={labelCls}>Telefone</label>
-          <input {...register('telefone')} className={inputCls} placeholder="+351 9XX XXX XXX" />
+          <input {...register('telefone')} className={inputCls} placeholder="+244 9XX XXX XXX" />
         </div>
         <div />
         <div className="sm:col-span-2">

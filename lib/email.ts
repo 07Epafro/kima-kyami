@@ -53,7 +53,7 @@ function base(titulo: string, corpo: string): string {
             ${corpo}
             <hr style="border:none;border-top:1px solid #e8e0d8;margin:32px 0">
             <p style="margin:0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif;line-height:1.6;text-align:center">
-              Kima Kyami · Lisboa, Portugal<br>
+              Kima Kyami · Luanda, Angola<br>
               Para questões: <a href="mailto:hello@kimakyami.com" style="color:#9a9a9a">hello@kimakyami.com</a>
             </p>
           </td>
