@@ -10,8 +10,7 @@ export default auth((req) => {
   const isAuthApi = nextUrl.pathname.startsWith('/api/auth')
   const isAdminPage = nextUrl.pathname.startsWith('/admin')
   const isProtectedApi =
-    nextUrl.pathname.startsWith('/api/admin') ||
-    nextUrl.pathname.startsWith('/api/pagamentos/validar')
+    nextUrl.pathname.startsWith('/api/admin')
 
   if (isLoginPage || isAuthApi) return NextResponse.next()
 
@@ -29,5 +28,5 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*', '/api/pagamentos/:path*'],
+  matcher: ['/admin/:path*', '/api/admin/:path*'],
 }

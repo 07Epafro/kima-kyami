@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { v2 as cloudinary } from 'cloudinary'
 import { NextRequest, NextResponse } from 'next/server'
 import db from '@/lib/db'
+import { rateLimit } from '@/lib/rate-limit'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -39,6 +40,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Pedido inválido' }, { status: 400 })
   }
 
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (!rateLimit(ip, 5, 60_000)) {
+    return NextResponse.json({ error: 'Demasiados pedidos. Tenta novamente em breve.' }, { status: 429 })
+  }
+
   const file = formData.get('file')
   if (!file || !(file instanceof File)) {
     return NextResponse.json({ error: 'Campo "file" obrigatório' }, { status: 400 })
@@ -59,6 +65,9 @@ export async function POST(req: NextRequest) {
   }
 
   const tipo = formData.get('tipo')?.toString() ?? 'produto'
+  if (tipo !== 'produto' && tipo !== 'comprovante') {
+    return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 })
+  }
   const isImagem = TIPOS_IMAGEM.includes(file.type)
 
   // Admin-only uploads require a session

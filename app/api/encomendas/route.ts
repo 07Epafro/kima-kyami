@@ -5,6 +5,7 @@ import { EstadoEncomenda, EstadoPagamento, Prisma } from '@prisma/client'
 import { z } from 'zod'
 import { emailConfirmacaoEncomenda } from '@/lib/email'
 import { gerarReferencia } from '@/lib/utils'
+import { rateLimit } from '@/lib/rate-limit'
 
 // ── Store: create order ──────────────────────────────────────────
 
@@ -34,6 +35,16 @@ export async function POST(req: NextRequest) {
   const parsed = criarSchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
+  }
+
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (!rateLimit(ip, 5, 60_000)) {
+    return NextResponse.json({ error: 'Demasiados pedidos. Tenta novamente em breve.' }, { status: 429 })
+  }
+
+  if (!process.env.IBAN_LOJA) {
+    console.error('[encomendas] IBAN_LOJA env var is missing')
+    return NextResponse.json({ error: 'Serviço temporariamente indisponível' }, { status: 503 })
   }
 
   const { nome, email, telefone, moradaRua, moradaNumero, moradaCidade, moradaCp, moradaPais, itens } = parsed.data

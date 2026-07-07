@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
 import db from '@/lib/db'
 import { validarComprovante } from '@/lib/validar-comprovante'
 import { EstadoPagamento, Prisma } from '@prisma/client'
@@ -7,13 +6,11 @@ import { Resend } from 'resend'
 import { z } from 'zod'
 
 const schema = z.object({ comprovanteUrl: z.string().url() })
+const ALLOWED_UPLOAD_HOSTS = ['res.cloudinary.com']
 
 type Params = { params: Promise<{ id: string }> }
 
 export async function POST(req: NextRequest, { params }: Params) {
-  const session = await auth()
-  if (!session) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-
   const { id } = await params
 
   const body = await req.json().catch(() => ({}))
@@ -23,6 +20,15 @@ export async function POST(req: NextRequest, { params }: Params) {
   }
 
   const { comprovanteUrl } = parsed.data
+
+  try {
+    const { hostname } = new URL(comprovanteUrl)
+    if (!ALLOWED_UPLOAD_HOSTS.includes(hostname)) {
+      return NextResponse.json({ error: 'Origem do ficheiro não autorizada' }, { status: 400 })
+    }
+  } catch {
+    return NextResponse.json({ error: 'URL inválido' }, { status: 400 })
+  }
 
   const pagamento = await db.pagamento.findUnique({
     where: { id },
