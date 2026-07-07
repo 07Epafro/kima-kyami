@@ -161,25 +161,29 @@ export default function Footer() {
                 ✓ Subscrita com sucesso. Bem-vinda.
               </p>
             ) : (
-              <form onSubmit={subscrever} className="space-y-2">
-                <div className="flex border border-cream/20 focus-within:border-gold transition-colors">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="O teu email"
-                    required
-                    className="flex-1 bg-transparent px-4 py-3 text-[11px] text-cream placeholder:text-cream/30 focus:outline-none min-w-0"
-                  />
-                  <button
-                    type="submit"
-                    disabled={estado === 'loading'}
-                    aria-label="Subscrever newsletter"
-                    className="px-4 text-cream/70 hover:text-gold transition-colors disabled:opacity-50"
-                  >
-                    <Send size={14} strokeWidth={1.5} />
-                  </button>
-                </div>
+              <form onSubmit={subscrever} className="space-y-2.5">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="O teu endereço de email"
+                  required
+                  className="w-full bg-transparent border border-cream/40 focus:border-gold/80 px-4 py-3 text-[11px] text-cream placeholder:text-cream/50 focus:outline-none transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={estado === 'loading'}
+                  className="w-full min-h-11 bg-gold text-noir text-[9px] tracking-[0.3em] uppercase hover:bg-gold/85 transition-colors disabled:opacity-50 font-sans flex items-center justify-center gap-2.5"
+                >
+                  {estado === 'loading' ? (
+                    <div className="w-3.5 h-3.5 border-2 border-noir/25 border-t-noir rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      SUBSCREVER
+                      <Send size={11} strokeWidth={1.5} />
+                    </>
+                  )}
+                </button>
                 {estado === 'error' && (
                   <p className="text-[11px] text-red-400">
                     Erro. Tenta novamente.
