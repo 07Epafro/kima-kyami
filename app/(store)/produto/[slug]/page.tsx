@@ -115,7 +115,7 @@ export default async function ProdutoPage({ params }: Params) {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-10 lg:py-16">
         {/* Breadcrumb */}
         <nav
-          className="flex items-center flex-wrap gap-2 text-[10px] tracking-[0.2em] text-muted mb-8 font-sans"
+          className="flex items-center flex-wrap gap-2 text-[10px] tracking-[0.2em] text-noir/60 mb-8 font-sans"
           aria-label="Breadcrumb"
         >
           <Link href="/" className="hover:text-gold transition-colors">INÍCIO</Link>

@@ -70,9 +70,10 @@ export default function CartSidebar() {
           </div>
           <button
             ref={closeBtnRef}
+            type="button"
             onClick={closeCart}
             aria-label="Fechar carrinho"
-            className="text-noir/40 hover:text-gold transition-colors"
+            className="min-w-11 min-h-11 flex items-center justify-center text-noir/60 hover:text-gold transition-colors -mr-2.5"
           >
             <X size={18} strokeWidth={1.5} />
           </button>
@@ -125,9 +126,10 @@ export default function CartSidebar() {
                         {item.nome}
                       </p>
                       <button
+                        type="button"
                         onClick={() => removeItem(item.produtoId, item.tamanho, item.cor)}
                         aria-label="Remover artigo"
-                        className="text-noir/25 hover:text-gold transition-colors shrink-0 mt-0.5"
+                        className="min-w-11 min-h-11 flex items-center justify-center text-noir/50 hover:text-gold transition-colors shrink-0 -mt-2 -mr-2"
                       >
                         <X size={13} strokeWidth={1.5} />
                       </button>
@@ -143,7 +145,7 @@ export default function CartSidebar() {
                         <button
                           onClick={() => updateQty(item.produtoId, item.tamanho, item.cor, item.quantidade - 1)}
                           aria-label="Diminuir quantidade"
-                          className="w-8 h-8 flex items-center justify-center text-noir/50 hover:text-gold transition-colors"
+                          className="w-8 h-8 flex items-center justify-center text-noir/65 hover:text-gold transition-colors"
                         >
                           <Minus size={10} strokeWidth={2} />
                         </button>
@@ -153,7 +155,7 @@ export default function CartSidebar() {
                         <button
                           onClick={() => updateQty(item.produtoId, item.tamanho, item.cor, item.quantidade + 1)}
                           aria-label="Aumentar quantidade"
-                          className="w-8 h-8 flex items-center justify-center text-noir/50 hover:text-gold transition-colors"
+                          className="w-8 h-8 flex items-center justify-center text-noir/65 hover:text-gold transition-colors"
                         >
                           <Plus size={10} strokeWidth={2} />
                         </button>
@@ -204,8 +206,9 @@ export default function CartSidebar() {
               </Link>
 
               <button
+                type="button"
                 onClick={closeCart}
-                className="block w-full text-center py-2.5 text-[10px] tracking-[0.2em] uppercase text-noir/50 hover:text-gold transition-colors"
+                className="block w-full text-center py-3 min-h-11 text-[10px] tracking-[0.2em] uppercase text-noir/65 hover:text-noir transition-colors"
               >
                 CONTINUAR A COMPRAR
               </button>

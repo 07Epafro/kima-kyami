@@ -143,7 +143,7 @@ export default function SizeSelectionDrawer({
 
           {/* Seleção de tamanho */}
           <div className="px-7 py-7">
-            <p className="text-[9px] tracking-spaced-xl uppercase text-noir/50 mb-5 font-sans">
+            <p className="text-[9px] tracking-spaced-xl uppercase text-noir/70 mb-5 font-sans">
               TAMANHO {tamSel && `— ${tamSel}`}
             </p>
             <div className="flex flex-wrap gap-2">

@@ -137,7 +137,7 @@ export default function ProductInfo({
             {/* Selector de cor */}
             {cores.length > 0 && (
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-muted mb-3 font-sans">
+                <p className="text-[10px] tracking-[0.25em] uppercase text-noir/60 mb-3 font-sans">
                   Cor: <span className="text-noir">{corSel?.nome}</span>
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -196,7 +196,7 @@ export default function ProductInfo({
                 <ChevronDown
                   size={14}
                   strokeWidth={1.5}
-                  className={`text-noir/40 transition-transform duration-200 ${
+                  className={`text-noir/55 transition-transform duration-200 ${
                     acordeaoAberto === titulo ? 'rotate-180' : ''
                   }`}
                 />

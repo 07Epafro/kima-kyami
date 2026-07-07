@@ -111,7 +111,7 @@ export default function Footer() {
 
           {/* Col 2: Informações */}
           <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/45 mb-6">
+            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/70 mb-6">
               Informações
             </p>
             <ul className="space-y-3.5">
@@ -130,7 +130,7 @@ export default function Footer() {
 
           {/* Col 3: Ajuda */}
           <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/45 mb-6">
+            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/70 mb-6">
               Ajuda
             </p>
             <ul className="space-y-3.5">
@@ -149,7 +149,7 @@ export default function Footer() {
 
           {/* Col 4: Newsletter */}
           <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/45 mb-6">
+            <p className="text-[10px] tracking-[0.3em] uppercase text-cream/70 mb-6">
               Newsletter
             </p>
             <p className="text-[12px] text-cream/60 leading-relaxed mb-5">
@@ -175,7 +175,7 @@ export default function Footer() {
                     type="submit"
                     disabled={estado === 'loading'}
                     aria-label="Subscrever newsletter"
-                    className="px-4 text-cream/45 hover:text-gold transition-colors disabled:opacity-50"
+                    className="px-4 text-cream/70 hover:text-gold transition-colors disabled:opacity-50"
                   >
                     <Send size={14} strokeWidth={1.5} />
                   </button>
