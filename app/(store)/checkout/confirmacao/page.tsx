@@ -3,14 +3,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
+import { formatarPreco } from '@/lib/utils'
 
 interface CheckoutData {
   encomendaId: string
   referencia: string
   valor: number
 }
-
-function formatarPreco(v: number) { return `Kz ${v.toFixed(2).replace('.', ',')}` }
 
 export default function ConfirmacaoPage() {
   const { clearCart } = useCart()
@@ -47,65 +46,51 @@ export default function ConfirmacaoPage() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <path d="M5 13l4 4L19 7" className="animate-kk-fade-up" style={{ animationDelay: '0.2s' }} />
+            <path d="M5 13l4 4L19 7" className="animate-kk-fade-up [animation-delay:0.2s]" />
           </svg>
         </div>
       </div>
 
       {/* Content */}
       <div className="text-center max-w-md">
-        <p
-          className="text-[10px] tracking-[0.35em] uppercase text-gold mb-4"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
+        <p className="text-[10px] tracking-[0.35em] uppercase text-gold mb-4 font-sans">
           Encomenda Recebida
         </p>
 
-        <h1
-          className="text-[clamp(26px,4vw,36px)] font-light text-noir tracking-[0.08em] mb-4"
-          style={{ fontFamily: 'var(--font-serif)' }}
-        >
+        <h1 className="text-[clamp(26px,4vw,36px)] font-light text-noir tracking-[0.08em] mb-4 font-serif">
           Obrigada pela tua encomenda.
         </h1>
 
         {dados && (
           <div className="bg-white border border-noir/10 px-6 py-5 my-8 space-y-3 text-left">
             <div className="flex justify-between items-center">
-              <span className="text-[10px] tracking-[0.2em] uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+              <span className="text-[10px] tracking-[0.2em] uppercase text-muted font-sans">
                 Referência
               </span>
               <span className="font-mono text-sm text-noir font-medium">{dados.referencia}</span>
             </div>
             <div className="flex justify-between items-center border-t border-noir/8 pt-3">
-              <span className="text-[10px] tracking-[0.2em] uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+              <span className="text-[10px] tracking-[0.2em] uppercase text-muted font-sans">
                 Total
               </span>
-              <span className="text-sm text-noir" style={{ fontFamily: 'var(--font-sans)' }}>
+              <span className="text-sm text-noir font-sans">
                 {formatarPreco(dados.valor)}
               </span>
             </div>
           </div>
         )}
 
-        <p
-          className="text-sm text-noir/60 leading-[1.85] mb-3"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
-          Receberás um email de confirmação
-          {email ? ` em ${email}` : ''}.
+        <p className="text-sm text-noir/60 leading-[1.85] mb-3 font-sans">
+          Receberás um email de confirmação{email ? ` em ${email}` : ''}.
         </p>
 
-        <p
-          className="text-sm text-noir/60 leading-[1.85] mb-10"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
+        <p className="text-sm text-noir/60 leading-[1.85] mb-10 font-sans">
           Assim que o pagamento for verificado, receberás uma confirmação por email com os detalhes do envio.
         </p>
 
         <Link
           href="/"
-          className="inline-block bg-noir text-cream text-[11px] tracking-[0.3em] uppercase px-10 py-4 hover:bg-noir/85 transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="inline-block bg-noir text-cream text-[11px] tracking-[0.3em] uppercase px-10 py-4 hover:bg-noir/85 transition-colors font-sans"
         >
           VOLTAR À LOJA
         </Link>

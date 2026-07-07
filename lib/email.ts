@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 import { formatarPreco } from '@/lib/utils'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM = 'Kima Kyami <noreply@kimakyami.com>'
+const FROM = process.env.EMAIL_FROM ?? 'Kima Kyami <noreply@kimakyami.ao>'
 
 interface ItemEmail {
   nome: string

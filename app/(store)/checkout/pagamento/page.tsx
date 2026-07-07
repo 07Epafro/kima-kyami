@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Copy, Check } from 'lucide-react'
 import ProofUpload from '@/components/store/ProofUpload'
+import { formatarPreco } from '@/lib/utils'
 
 interface CheckoutData {
   encomendaId: string
@@ -13,8 +14,6 @@ interface CheckoutData {
   titular: string
   valor: number
 }
-
-function formatarPreco(v: number) { return `Kz ${v.toFixed(2).replace('.', ',')}` }
 
 function CopiarBotao({ texto }: { texto: string }) {
   const [copiado, setCopiado] = useState(false)
@@ -28,6 +27,7 @@ function CopiarBotao({ texto }: { texto: string }) {
 
   return (
     <button
+      type="button"
       onClick={copiar}
       aria-label="Copiar"
       className="p-1.5 text-muted hover:text-gold transition-colors"
@@ -43,10 +43,10 @@ function Campo({ label, valor }: { label: string; valor: string }) {
   return (
     <div className="flex items-center justify-between py-4 border-b border-noir/8 last:border-0">
       <div>
-        <p className="text-[9.5px] tracking-[0.2em] uppercase text-muted mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+        <p className="text-[9.5px] tracking-[0.2em] uppercase text-muted mb-1 font-sans">
           {label}
         </p>
-        <p className="text-sm font-medium text-noir font-mono" style={{ fontFamily: 'var(--font-sans)' }}>
+        <p className="text-sm font-medium text-noir font-mono">
           {valor}
         </p>
       </div>
@@ -80,7 +80,7 @@ export default function PagamentoPage() {
   return (
     <div className="max-w-2xl mx-auto px-5 sm:px-8 py-10 lg:py-16">
       {/* Steps */}
-      <div className="flex items-center gap-3 mb-10 text-[9px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-sans)' }}>
+      <div className="flex items-center gap-3 mb-10 text-[9px] tracking-[0.2em] uppercase font-sans">
         <span className="text-muted">Dados</span>
         <div className="h-px flex-1 bg-noir/15" />
         <span className="text-gold font-medium">Pagamento</span>
@@ -88,13 +88,10 @@ export default function PagamentoPage() {
         <span className="text-muted">Confirmação</span>
       </div>
 
-      <h1
-        className="text-2xl font-light text-noir tracking-[0.12em] uppercase mb-2"
-        style={{ fontFamily: 'var(--font-serif)' }}
-      >
+      <h1 className="text-2xl font-light text-noir tracking-[0.12em] uppercase mb-2 font-serif">
         Transferência Bancária
       </h1>
-      <p className="text-sm text-muted mb-8" style={{ fontFamily: 'var(--font-sans)' }}>
+      <p className="text-sm text-muted mb-8 font-sans">
         Efectua a transferência com os dados abaixo e submete o comprovante.
       </p>
 
@@ -109,12 +106,12 @@ export default function PagamentoPage() {
       {/* Avisos */}
       <div className="space-y-3 mb-8">
         <div className="bg-amber-50 border border-amber-200 px-5 py-4">
-          <p className="text-[12px] text-amber-800 leading-relaxed" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-[12px] text-amber-800 leading-relaxed font-sans">
             <strong>Tens 48 horas</strong> para efectuar a transferência. Após esse prazo a encomenda poderá ser cancelada.
           </p>
         </div>
         <div className="bg-noir/4 px-5 py-4">
-          <p className="text-[12px] text-noir/70 leading-relaxed" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-[12px] text-noir/70 leading-relaxed font-sans">
             Indica <strong>sempre a referência {dados.referencia}</strong> no descritivo da transferência. Sem referência não é possível associar o pagamento à tua encomenda.
           </p>
         </div>
@@ -122,13 +119,10 @@ export default function PagamentoPage() {
 
       {/* Upload */}
       <div className="mb-8">
-        <h2
-          className="text-[10px] tracking-[0.3em] uppercase text-muted mb-4"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
+        <h2 className="text-[10px] tracking-[0.3em] uppercase text-muted mb-4 font-sans">
           Comprovante de Pagamento
         </h2>
-        <p className="text-xs text-noir/60 mb-5" style={{ fontFamily: 'var(--font-sans)' }}>
+        <p className="text-xs text-noir/60 mb-5 font-sans">
           Após efectuares a transferência, submete o comprovante. A validação é automática e imediata.
         </p>
         <ProofUpload
@@ -141,9 +135,9 @@ export default function PagamentoPage() {
 
       {/* Skip */}
       <button
+        type="button"
         onClick={() => router.push('/checkout/confirmacao')}
-        className="w-full py-3 text-[10px] tracking-[0.2em] uppercase text-muted hover:text-noir transition-colors border border-noir/10 hover:border-noir/30"
-        style={{ fontFamily: 'var(--font-sans)' }}
+        className="w-full py-3 text-[10px] tracking-[0.2em] uppercase text-muted hover:text-noir transition-colors border border-noir/10 hover:border-noir/30 font-sans"
       >
         SUBMETER COMPROVANTE MAIS TARDE
       </button>

@@ -23,7 +23,7 @@ const criarSchema = z.object({
   moradaNumero: z.string().optional(),
   moradaCidade: z.string().min(1),
   moradaCp: z.string().min(3),
-  moradaPais: z.string().default('Portugal'),
+  moradaPais: z.string().default('Angola'),
   itens: z.array(itemSchema).min(1),
 })
 

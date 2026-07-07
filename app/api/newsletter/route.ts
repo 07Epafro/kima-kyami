@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { Resend } from 'resend'
+import { rateLimit } from '@/lib/rate-limit'
 
 const schema = z.object({
   email: z.string().email(),
 })
 
+const FROM = process.env.EMAIL_FROM ?? 'Kima Kyami <noreply@kimakyami.ao>'
+
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (!rateLimit(ip, 3, 60_000)) {
+    return NextResponse.json({ error: 'Demasiados pedidos. Tenta novamente em breve.' }, { status: 429 })
+  }
+
   const body = await req.json().catch(() => ({}))
   const parsed = schema.safeParse(body)
 
@@ -19,7 +27,7 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Kima Kyami <noreply@kimakyami.com>',
+      from: FROM,
       to: email,
       subject: 'Bem-vinda à Kima Kyami',
       html: `<!DOCTYPE html>
@@ -58,7 +66,7 @@ export async function POST(req: NextRequest) {
 </html>`,
     })
   } catch {
-    /* Email failed — subscription still registered conceptually */
+    /* Email failed — subscription registered */
   }
 
   return NextResponse.json({ ok: true })
