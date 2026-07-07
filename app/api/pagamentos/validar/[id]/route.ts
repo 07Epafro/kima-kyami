@@ -42,37 +42,62 @@ export async function POST(req: NextRequest, { params }: Params) {
   const mimeType = contentType.split(';')[0].trim()
   const buffer = Buffer.from(await res.arrayBuffer())
 
-  const resultado = await validarComprovante(buffer, mimeType, {
-    total: pagamento.valor,
-    referencia: encomenda.referencia,
-    criadaEm: encomenda.criadaEm,
-  })
-
-  const estadoMap: Record<'OK' | 'ALERTA' | 'REJEITADO', EstadoPagamento> = {
-    OK: EstadoPagamento.VALIDADO_AUTO_OK,
-    ALERTA: EstadoPagamento.VALIDADO_AUTO_ALERTA,
-    REJEITADO: EstadoPagamento.VALIDADO_AUTO_REJEITADO,
+  let resultado: Awaited<ReturnType<typeof validarComprovante>> | null = null
+  try {
+    resultado = await validarComprovante(buffer, mimeType, {
+      total: pagamento.valor,
+      referencia: encomenda.referencia,
+      criadaEm: encomenda.criadaEm,
+    })
+  } catch (err) {
+    console.error('[validar-comprovante] OCR falhou — revisão manual necessária', err)
   }
-  const novoEstado = estadoMap[resultado.estado]
+
+  let novoEstado: EstadoPagamento
+  let validacaoScript: Prisma.InputJsonValue
+
+  if (resultado) {
+    const estadoMap: Record<'OK' | 'ALERTA' | 'REJEITADO', EstadoPagamento> = {
+      OK: EstadoPagamento.VALIDADO_AUTO_OK,
+      ALERTA: EstadoPagamento.VALIDADO_AUTO_ALERTA,
+      REJEITADO: EstadoPagamento.VALIDADO_AUTO_REJEITADO,
+    }
+    novoEstado = estadoMap[resultado.estado]
+    validacaoScript = resultado as unknown as Prisma.InputJsonValue
+  } else {
+    novoEstado = EstadoPagamento.COMPROVANTE_SUBMETIDO
+    validacaoScript = { erro: 'OCR indisponível — revisão manual necessária' }
+  }
 
   const pagamentoActualizado = await db.pagamento.update({
     where: { id },
     data: {
       estado: novoEstado,
       comprovante: comprovanteUrl,
-      validacaoScript: resultado as unknown as Prisma.InputJsonValue,
+      validacaoScript,
       verificadoEm: new Date(),
     },
   })
 
+  const fromAddr = process.env.EMAIL_FROM ?? 'Kima Kyami <noreply@kimakyami.ao>'
+  const adminEmail = process.env.ADMIN_EMAIL ?? 'geral@kimakyami.ao'
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
-    await resend.emails.send({
-      from: 'Kima Kyami Sistema <noreply@kimakyami.com>',
-      to: process.env.ADMIN_EMAIL ?? 'admin@kimakyami.com',
-      subject: `[Pagamento] ${resultado.estado} — ${encomenda.referencia} (score: ${resultado.score})`,
-      html: `<p>Referência: ${encomenda.referencia}<br>Score: ${resultado.score}/100<br>Estado: ${resultado.estado}<br>Alertas: ${resultado.alertas.join(', ') || 'Nenhum'}</p>`,
-    })
+    if (resultado) {
+      await resend.emails.send({
+        from: fromAddr,
+        to: adminEmail,
+        subject: `[Pagamento] ${resultado.estado} — ${encomenda.referencia} (score: ${resultado.score})`,
+        html: `<p>Referência: ${encomenda.referencia}<br>Score: ${resultado.score}/100<br>Estado: ${resultado.estado}<br>Alertas: ${resultado.alertas.join(', ') || 'Nenhum'}</p>`,
+      })
+    } else {
+      await resend.emails.send({
+        from: fromAddr,
+        to: adminEmail,
+        subject: `[Pagamento] Revisão manual — ${encomenda.referencia}`,
+        html: `<p>Referência: ${encomenda.referencia}<br>OCR falhou — valida manualmente o comprovante no painel de admin.</p>`,
+      })
+    }
   } catch {
     /* Email falhou mas validação foi registada — não reverter */
   }
