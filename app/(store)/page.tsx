@@ -7,11 +7,13 @@ import ProductCarousel from '@/components/store/ProductCarousel'
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: 'Kima Kyami — Sapatos de Luxo',
-  description: 'Sapatos criados para mulheres que deixam presença por onde passam. Moda africana contemporânea de luxo.',
+  title: {
+    absolute: 'Kima Kyami — Sapatos de Luxo Femininos em Angola',
+  },
+  description: 'Sapatos de luxo criados para mulheres angolanas que deixam presença por onde passam. Saltos, sandálias e mules de inspiração africana contemporânea, feitos em Luanda.',
   openGraph: {
-    title: 'Kima Kyami',
-    description: 'Sapatos criados para mulheres que deixam presença por onde passam.',
+    title: 'Kima Kyami — Sapatos de Luxo em Angola',
+    description: 'Calçado feminino de luxo com inspiração africana. Descobre a nova coleção.',
     type: 'website',
   },
 }

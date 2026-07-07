@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s | Kima Kyami',
     default: 'Kima Kyami',
   },
-  description: 'Kima Kyami — Moda e lifestyle africano contemporâneo.',
+  description: 'Kima Kyami — Sapatos de luxo femininos com inspiração africana contemporânea. Saltos, sandálias e mules exclusivos, criados em Angola.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.com'),
   openGraph: {
     type: 'website',

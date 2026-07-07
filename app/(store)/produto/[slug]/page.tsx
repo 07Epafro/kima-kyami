@@ -35,14 +35,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   if (!produto) return { title: 'Produto não encontrado' }
 
-  const title = produto.metaTitle ?? `${produto.nome} — Kima Kyami`
-  const description = produto.metaDesc ?? produto.descricao.slice(0, 160)
+  const titleString = produto.metaTitle ?? `${produto.nome} — Calçado de Luxo Feminino`
+  const title = produto.metaTitle ? { absolute: titleString } : titleString
+  const description = produto.metaDesc ?? `${produto.descricao.slice(0, 140)} | Kima Kyami — Sapatos de Luxo em Angola.`
 
   return {
     title,
     description,
     openGraph: {
-      title,
+      title: titleString,
       description,
       images: produto.imagens[0] ? [{ url: produto.imagens[0] }] : [],
       type: 'website',

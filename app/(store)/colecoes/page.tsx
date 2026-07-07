@@ -26,12 +26,21 @@ interface PageProps {
   searchParams: Promise<{ categoria?: string; ordem?: string }>
 }
 
+const CAT_DESCRIPTIONS: Record<string, string> = {
+  SALTOS: 'Saltos de luxo femininos da Kima Kyami. Calçado de festa elegante com design africano contemporâneo, perfeito para ocasiões especiais em Angola.',
+  SANDALIAS: 'Sandálias de luxo femininas Kima Kyami. Modelos exclusivos de inspiração africana para o verão angolano — elegância e conforto em cada passo.',
+  MULES: 'Mules de luxo femininos Kima Kyami. Sapatos abertos de design exclusivo com influência africana, ideais para looks modernos e sofisticados.',
+  COLECAO_LIMITADA: 'Coleção Limitada Kima Kyami — peças únicas de calçado de luxo feminino com design africano. Edições exclusivas, disponíveis por tempo limitado em Angola.',
+}
+
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
   const sp = await searchParams
   const cat = CATEGORIAS.find(c => c.value === sp.categoria)
   return {
-    title: cat ? `${cat.label} — Coleções` : 'Coleções',
-    description: `Descobre a coleção ${cat?.label ?? 'completa'} da Kima Kyami. Sapatos de luxo de inspiração africana.`,
+    title: cat ? `${cat.label} — Sapatos de Luxo Femininos` : 'Coleções — Calçado de Luxo Feminino',
+    description: cat
+      ? (CAT_DESCRIPTIONS[cat.value] ?? `Descobre a coleção ${cat.label} da Kima Kyami. Sapatos de luxo de inspiração africana.`)
+      : 'Descobre todas as coleções da Kima Kyami. Saltos, sandálias, mules e edições limitadas — calçado de luxo feminino com design africano contemporâneo, criado em Angola.',
   }
 }
 
