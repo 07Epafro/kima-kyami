@@ -864,8 +864,7 @@ export default function ProductForm({ produto }: Props) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center gap-2 bg-noir text-cream text-xs tracking-widest uppercase px-6 py-3 rounded-lg hover:bg-noir/90 disabled:opacity-60 transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="flex items-center gap-2 bg-noir text-cream text-xs tracking-widest uppercase px-6 py-3 min-h-12 rounded-lg hover:bg-noir/90 disabled:opacity-60 transition-colors font-sans"
         >
           {isSubmitting && <Loader2 size={14} className="animate-spin" />}
           {produto?.id ? 'Guardar alterações' : 'Criar produto'}

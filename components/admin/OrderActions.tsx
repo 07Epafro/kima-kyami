@@ -107,18 +107,18 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
           />
           <div className="flex gap-2">
             <button
+              type="button"
               onClick={() => avancar('ENVIADA')}
               disabled={!tracking || !!loading}
-              className="flex items-center gap-2 px-4 py-2 bg-noir text-cream text-sm rounded hover:bg-noir/90 disabled:opacity-50"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="flex items-center gap-2 px-4 py-2.5 min-h-11 bg-noir text-cream text-sm rounded hover:bg-noir/90 disabled:opacity-50 font-sans"
             >
               <Truck size={14} />
               Confirmar envio
             </button>
             <button
+              type="button"
               onClick={() => setShowTracking(false)}
-              className="px-4 py-2 text-sm text-muted hover:text-noir"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="px-4 py-2.5 min-h-11 text-sm text-muted hover:text-noir font-sans"
             >
               Cancelar
             </button>
@@ -129,14 +129,14 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
       <div className="flex flex-wrap gap-2">
         {acoesAvanco.map((estado) => (
           <button
+            type="button"
             key={estado}
             onClick={() => avancar(estado)}
             disabled={!!loading}
             className={cn(
-              'flex items-center gap-2 px-4 py-2 rounded text-sm transition-colors disabled:opacity-50',
-              'bg-noir text-cream hover:bg-noir/90'
+              'flex items-center gap-2 px-4 py-2.5 min-h-11 rounded text-sm transition-colors disabled:opacity-50',
+              'bg-noir text-cream hover:bg-noir/90 font-sans'
             )}
-            style={{ fontFamily: 'var(--font-sans)' }}
           >
             <ChevronRight size={14} />
             {LABELS[estado]}
@@ -146,10 +146,10 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
 
         {podeCancelar && (
           <button
+            type="button"
             onClick={() => avancar('CANCELADA')}
             disabled={!!loading}
-            className="flex items-center gap-2 px-4 py-2 rounded text-sm text-red-600 border border-red-200 hover:bg-red-50 disabled:opacity-50 transition-colors"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="flex items-center gap-2 px-4 py-2.5 min-h-11 rounded text-sm text-red-600 border border-red-200 hover:bg-red-50 disabled:opacity-50 transition-colors font-sans"
           >
             <X size={14} />
             Cancelar encomenda
@@ -157,10 +157,10 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
         )}
       </div>
 
-      {erro && <p className="text-xs text-red-500" style={{ fontFamily: 'var(--font-sans)' }}>{erro}</p>}
+      {erro && <p className="text-xs text-red-500 font-sans">{erro}</p>}
 
       <div className="border-t border-gray-100 pt-4">
-        <label className="block text-xs tracking-widest uppercase text-muted mb-2" style={{ fontFamily: 'var(--font-sans)' }}>
+        <label className="block text-xs tracking-widest uppercase text-muted mb-2 font-sans">
           Notas internas
         </label>
         <textarea
@@ -173,8 +173,8 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
         <button
           onClick={guardarNotas}
           disabled={!!loading}
-          className="mt-2 px-3 py-1.5 text-xs bg-gray-100 text-noir rounded hover:bg-gray-200 disabled:opacity-50 transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          type="button"
+          className="mt-2 px-3 py-1.5 min-h-9 text-xs bg-gray-100 text-noir rounded hover:bg-gray-200 disabled:opacity-50 transition-colors font-sans"
         >
           Guardar notas
         </button>

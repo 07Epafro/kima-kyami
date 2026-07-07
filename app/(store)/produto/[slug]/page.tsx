@@ -53,7 +53,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function ProdutoPage({ params }: Params) {
   const { slug } = await params
 
-  const produto = await db.produto.findUnique({ where: { slug } })
+  const [produto, relacionados] = await Promise.all([
+    db.produto.findUnique({ where: { slug } }),
+    db.produto.findMany({
+      where: { ativo: true, emBreve: false, NOT: { slug } },
+      select: { id: true, nome: true, slug: true, preco: true, imagens: true },
+      orderBy: { criadoEm: 'desc' },
+      take: 3,
+    }),
+  ])
   if (!produto || !produto.ativo) notFound()
 
   const cores = produto.cores as unknown as CorProduto[]
@@ -107,8 +115,7 @@ export default async function ProdutoPage({ params }: Params) {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-10 lg:py-16">
         {/* Breadcrumb */}
         <nav
-          className="flex items-center flex-wrap gap-2 text-[10px] tracking-[0.2em] text-muted mb-8"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="flex items-center flex-wrap gap-2 text-[10px] tracking-[0.2em] text-muted mb-8 font-sans"
           aria-label="Breadcrumb"
         >
           <Link href="/" className="hover:text-gold transition-colors">INÍCIO</Link>
@@ -145,6 +152,8 @@ export default async function ProdutoPage({ params }: Params) {
             emBreve={produto.emBreve}
             slug={produto.slug}
             imagem={produto.imagens[0] ?? ''}
+            imagens={produto.imagens}
+            relacionados={relacionados}
           />
         </div>
       </div>

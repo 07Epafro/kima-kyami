@@ -64,7 +64,7 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
               <Link
                 href={href}
                 onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors font-sans ${
+                className={`flex items-center gap-3 px-3 py-3 min-h-11 rounded-lg text-sm transition-colors font-sans ${
                   isActive
                     ? 'bg-gold/10 text-gold border-l-2 border-gold pl-[10px]'
                     : 'text-muted hover:text-cream hover:bg-white/5 border-l-2 border-transparent pl-[10px]'

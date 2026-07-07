@@ -31,14 +31,11 @@ export default function TopBar({ adminNome }: Props) {
 
   return (
     <header className="sticky top-0 z-30 h-14 flex items-center justify-between px-6 bg-white border-b border-gray-100 lg:px-8">
-      <h1
-        className="text-sm font-medium tracking-widest uppercase text-noir"
-        style={{ fontFamily: 'var(--font-sans)' }}
-      >
+      <h1 className="text-sm font-medium tracking-widest uppercase text-noir font-sans">
         {titulo}
       </h1>
       <div className="flex items-center gap-3">
-        <span className="hidden sm:block text-xs text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+        <span className="hidden sm:block text-xs text-muted font-sans">
           {adminNome}
         </span>
         <div className="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center text-gold text-sm font-semibold">

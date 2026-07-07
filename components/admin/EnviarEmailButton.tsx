@@ -47,9 +47,9 @@ export default function EnviarEmailButton({ clienteId, clienteEmail }: Props) {
   return (
     <>
       <button
+        type="button"
         onClick={() => setAberto(true)}
-        className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded text-sm text-muted hover:text-noir hover:border-gray-300 transition-colors"
-        style={{ fontFamily: 'var(--font-sans)' }}
+        className="flex items-center gap-2 px-4 py-2.5 min-h-11 border border-gray-200 rounded text-sm text-muted hover:text-noir hover:border-gray-300 transition-colors font-sans"
       >
         <Mail size={14} />
         Enviar email
@@ -59,16 +59,16 @@ export default function EnviarEmailButton({ clienteId, clienteEmail }: Props) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h2 className="text-xs tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+              <h2 className="text-xs tracking-widest uppercase text-muted font-sans">
                 Email para {clienteEmail}
               </h2>
-              <button onClick={() => setAberto(false)} className="text-muted hover:text-noir">
+              <button type="button" onClick={() => setAberto(false)} className="text-muted hover:text-noir">
                 <X size={16} />
               </button>
             </div>
             <div className="px-6 py-5 space-y-4">
               <div>
-                <label className="block text-[10px] tracking-widest uppercase text-muted mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+                <label className="block text-[10px] tracking-widest uppercase text-muted mb-1 font-sans">
                   Assunto
                 </label>
                 <input
@@ -79,7 +79,7 @@ export default function EnviarEmailButton({ clienteId, clienteEmail }: Props) {
                 />
               </div>
               <div>
-                <label className="block text-[10px] tracking-widest uppercase text-muted mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+                <label className="block text-[10px] tracking-widest uppercase text-muted mb-1 font-sans">
                   Mensagem
                 </label>
                 <textarea
@@ -90,22 +90,22 @@ export default function EnviarEmailButton({ clienteId, clienteEmail }: Props) {
                   placeholder="Escreve a tua mensagem…"
                 />
               </div>
-              {erro && <p className="text-xs text-red-500">{erro}</p>}
-              {sucesso && <p className="text-xs text-emerald-600">Email enviado com sucesso.</p>}
+              {erro && <p className="text-xs text-red-500 font-sans">{erro}</p>}
+              {sucesso && <p className="text-xs text-emerald-600 font-sans">Email enviado com sucesso.</p>}
             </div>
             <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
               <button
+                type="button"
                 onClick={() => setAberto(false)}
-                className="px-4 py-2 text-sm text-muted hover:text-noir"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="px-4 py-2.5 min-h-11 text-sm text-muted hover:text-noir font-sans"
               >
                 Cancelar
               </button>
               <button
+                type="button"
                 onClick={enviar}
                 disabled={enviando || !assunto.trim() || !mensagem.trim()}
-                className="flex items-center gap-2 px-4 py-2 bg-noir text-cream text-sm rounded hover:bg-noir/90 disabled:opacity-50 transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="flex items-center gap-2 px-4 py-2.5 min-h-11 bg-noir text-cream text-sm rounded hover:bg-noir/90 disabled:opacity-50 transition-colors font-sans"
               >
                 <Send size={13} />
                 {enviando ? 'A enviar…' : 'Enviar'}
