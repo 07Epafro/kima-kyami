@@ -30,7 +30,7 @@ export default function TopBar({ adminNome }: Props) {
   const initial = adminNome.charAt(0).toUpperCase()
 
   return (
-    <header className="sticky top-0 z-30 h-14 flex items-center justify-between px-6 bg-white border-b border-gray-100 lg:px-8">
+    <header className="sticky top-0 z-30 h-14 flex items-center justify-between pl-16 pr-6 bg-white border-b border-gray-100 lg:px-8">
       <h1 className="text-sm font-medium tracking-widest uppercase text-noir font-sans">
         {titulo}
       </h1>

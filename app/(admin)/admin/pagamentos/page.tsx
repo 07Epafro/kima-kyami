@@ -93,10 +93,7 @@ export default async function PagamentosPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h1
-          className="text-sm font-normal tracking-widest uppercase text-noir"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
+        <h1 className="text-sm font-normal tracking-widest uppercase text-noir font-sans">
           Pagamentos
         </h1>
         {tab === 'pendentes' && pendentes.length > 0 && (
@@ -109,23 +106,21 @@ export default async function PagamentosPage({ searchParams }: PageProps) {
       <div className="flex gap-1 border-b border-gray-100">
         <Link
           href="/admin/pagamentos?tab=pendentes"
-          className={`px-4 py-2 text-xs tracking-wide transition-colors ${
+          className={`px-4 py-2 text-xs tracking-wide transition-colors font-sans ${
             tab === 'pendentes'
               ? 'border-b-2 border-noir text-noir font-medium'
               : 'text-muted hover:text-noir'
           }`}
-          style={{ fontFamily: 'var(--font-sans)' }}
         >
           Pendentes ({pendentes.length})
         </Link>
         <Link
           href="/admin/pagamentos?tab=todos"
-          className={`px-4 py-2 text-xs tracking-wide transition-colors ${
+          className={`px-4 py-2 text-xs tracking-wide transition-colors font-sans ${
             tab === 'todos'
               ? 'border-b-2 border-noir text-noir font-medium'
               : 'text-muted hover:text-noir'
           }`}
-          style={{ fontFamily: 'var(--font-sans)' }}
         >
           Todos
         </Link>
@@ -133,90 +128,91 @@ export default async function PagamentosPage({ searchParams }: PageProps) {
 
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         {lista.length === 0 ? (
-          <p className="text-center py-12 text-sm text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-center py-12 text-sm text-muted font-sans">
             {tab === 'pendentes' ? 'Nenhum pagamento pendente.' : 'Nenhum pagamento encontrado.'}
           </p>
         ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-100">
-                <th className="px-6 py-3 text-left font-normal">Referência</th>
-                <th className="px-4 py-3 text-left font-normal">Cliente</th>
-                <th className="px-4 py-3 text-left font-normal">Estado</th>
-                <th className="px-4 py-3 text-left font-normal">Score</th>
-                <th className="px-4 py-3 text-right font-normal">Tempo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {lista.map(pag => {
-                const resultado = pag.validacaoScript as unknown as ResultadoValidacao | null
-                const score = resultado?.score ?? null
-                const scoreColor =
-                  score === null ? 'bg-gray-200' :
-                  score >= 80 ? 'bg-green-500' :
-                  score >= 50 ? 'bg-yellow-400' :
-                  'bg-red-500'
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-100">
+                  <th className="px-6 py-3 text-left font-normal">Referência</th>
+                  <th className="px-4 py-3 text-left font-normal">Cliente</th>
+                  <th className="px-4 py-3 text-left font-normal">Estado</th>
+                  <th className="px-4 py-3 text-left font-normal">Score</th>
+                  <th className="px-4 py-3 text-right font-normal">Tempo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {lista.map(pag => {
+                  const resultado = pag.validacaoScript as unknown as ResultadoValidacao | null
+                  const score = resultado?.score ?? null
+                  const scoreColor =
+                    score === null ? 'bg-gray-200' :
+                    score >= 80 ? 'bg-green-500' :
+                    score >= 50 ? 'bg-yellow-400' :
+                    'bg-red-500'
 
-                return (
-                  <tr
-                    key={pag.id}
-                    className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
-                  >
-                    <td className="px-6 py-3">
-                      <Link
-                        href={`/admin/pagamentos/${pag.id}`}
-                        className="font-mono text-xs text-noir hover:text-gold transition-colors"
-                      >
-                        {pag.encomenda.referencia}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-muted">
-                      {pag.encomenda.cliente.nome}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`text-[10px] px-2 py-1 rounded-full font-medium ${ESTADO_CONFIG[pag.estado].cls}`}
-                      >
-                        {ESTADO_CONFIG[pag.estado].label}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      {score !== null ? (
-                        <div className="flex items-center gap-2">
-                          <div className="w-20 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${scoreColor}`}
-                              style={{ width: `${score}%` }}
-                            />
+                  return (
+                    <tr
+                      key={pag.id}
+                      className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
+                    >
+                      <td className="px-6 py-3">
+                        <Link
+                          href={`/admin/pagamentos/${pag.id}`}
+                          className="font-mono text-xs text-noir hover:text-gold transition-colors"
+                        >
+                          {pag.encomenda.referencia}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-muted">
+                        {pag.encomenda.cliente.nome}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`text-[10px] px-2 py-1 rounded-full font-medium ${ESTADO_CONFIG[pag.estado].cls}`}
+                        >
+                          {ESTADO_CONFIG[pag.estado].label}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        {score !== null ? (
+                          <div className="flex items-center gap-2">
+                            <div className="w-20 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full ${scoreColor}`}
+                                style={{ width: `${score}%` }}
+                              />
+                            </div>
+                            <span className="text-[10px] text-muted">{score}</span>
                           </div>
-                          <span className="text-[10px] text-muted">{score}</span>
-                        </div>
-                      ) : (
-                        <span className="text-[10px] text-muted">—</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-[10px] text-muted text-right">
-                      {tempoAtras(pag.criadoEm)}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                        ) : (
+                          <span className="text-[10px] text-muted">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-[10px] text-muted text-right">
+                        {tempoAtras(pag.criadoEm)}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {tab === 'todos' && paginas > 1 && (
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+          <span className="text-xs text-muted font-sans">
             Página {page} de {paginas}
           </span>
           <div className="flex gap-2">
             {page > 1 && (
               <Link
                 href={`/admin/pagamentos?tab=todos&page=${page - 1}`}
-                className="px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors font-sans"
               >
                 Anterior
               </Link>
@@ -224,8 +220,7 @@ export default async function PagamentosPage({ searchParams }: PageProps) {
             {page < paginas && (
               <Link
                 href={`/admin/pagamentos?tab=todos&page=${page + 1}`}
-                className="px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors font-sans"
               >
                 Seguinte
               </Link>

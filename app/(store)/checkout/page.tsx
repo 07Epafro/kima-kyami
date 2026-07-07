@@ -29,8 +29,8 @@ type FormValues = z.infer<typeof schema>
 
 const PAISES = ['Angola', 'Portugal', 'Espanha', 'França', 'Alemanha', 'Reino Unido', 'Outro']
 
-const inputCls = 'w-full border border-noir/20 px-4 py-3 text-sm bg-cream text-noir placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors'
-const labelCls = 'block text-[9.5px] tracking-[0.25em] uppercase text-muted mb-1.5'
+const inputCls = 'w-full border border-noir/20 px-4 py-3 text-sm bg-cream text-noir placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors font-sans'
+const labelCls = 'block text-[9.5px] tracking-[0.25em] uppercase text-muted mb-1.5 font-sans'
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -106,14 +106,13 @@ export default function CheckoutPage() {
 
   if (count === 0) {
     return (
-      <div className="max-w-lg mx-auto px-6 py-20 text-center">
-        <p className="text-sm text-muted mb-6" style={{ fontFamily: 'var(--font-sans)' }}>
+      <div className="max-w-lg mx-auto px-6 py-20 text-center font-sans">
+        <p className="text-sm text-muted mb-6">
           O teu carrinho está vazio.
         </p>
         <Link
           href="/colecoes"
           className="inline-block text-[10px] tracking-[0.25em] uppercase border border-noir text-noir px-8 py-3 hover:bg-noir hover:text-cream transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
         >
           DESCOBRIR COLEÇÃO
         </Link>
@@ -122,20 +121,16 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-10">
+    <div className="max-w-300 mx-auto px-5 sm:px-8 py-10 font-sans">
       {/* Back */}
       <Link
         href="/colecoes"
         className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.2em] text-muted hover:text-noir transition-colors mb-8"
-        style={{ fontFamily: 'var(--font-sans)' }}
       >
         <ChevronLeft size={12} /> CONTINUAR A COMPRAR
       </Link>
 
-      <h1
-        className="text-2xl font-light text-noir tracking-[0.12em] uppercase mb-10"
-        style={{ fontFamily: 'var(--font-serif)' }}
-      >
+      <h1 className="text-2xl font-light text-noir tracking-[0.12em] uppercase mb-10 font-serif">
         Checkout
       </h1>
 
@@ -144,61 +139,55 @@ export default function CheckoutPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Contacto */}
           <section>
-            <h2
-              className="text-[10px] tracking-[0.3em] uppercase text-muted mb-5 pb-3 border-b border-noir/8"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <h2 className="text-[10px] tracking-[0.3em] uppercase text-muted mb-5 pb-3 border-b border-noir/8">
               Dados de Contacto
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Nome completo *</label>
-                <input {...register('nome')} className={inputCls} placeholder="Ana Sofia Luvualu" style={{ fontFamily: 'var(--font-sans)' }} />
-                {errors.nome && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.nome.message}</p>}
+                <label className={labelCls}>Nome completo *</label>
+                <input {...register('nome')} className={inputCls} placeholder="Ana Sofia Luvualu" />
+                {errors.nome && <p className="text-xs text-red-500 mt-1">{errors.nome.message}</p>}
               </div>
               <div>
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Email *</label>
-                <input {...register('email')} type="email" className={inputCls} placeholder="ana@exemplo.ao" style={{ fontFamily: 'var(--font-sans)' }} />
-                {errors.email && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.email.message}</p>}
+                <label className={labelCls}>Email *</label>
+                <input {...register('email')} type="email" className={inputCls} placeholder="ana@exemplo.ao" />
+                {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
               </div>
               <div>
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Telefone</label>
-                <input {...register('telefone')} className={inputCls} placeholder="+244 9XX XXX XXX" style={{ fontFamily: 'var(--font-sans)' }} />
+                <label className={labelCls}>Telefone</label>
+                <input {...register('telefone')} className={inputCls} placeholder="+244 9XX XXX XXX" />
               </div>
             </div>
           </section>
 
           {/* Morada */}
           <section>
-            <h2
-              className="text-[10px] tracking-[0.3em] uppercase text-muted mb-5 pb-3 border-b border-noir/8"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <h2 className="text-[10px] tracking-[0.3em] uppercase text-muted mb-5 pb-3 border-b border-noir/8">
               Morada de Envio
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2">
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Rua / Avenida *</label>
-                <input {...register('moradaRua')} className={inputCls} placeholder="Rua Rainha Ginga" style={{ fontFamily: 'var(--font-sans)' }} />
-                {errors.moradaRua && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.moradaRua.message}</p>}
+                <label className={labelCls}>Rua / Avenida *</label>
+                <input {...register('moradaRua')} className={inputCls} placeholder="Rua Rainha Ginga" />
+                {errors.moradaRua && <p className="text-xs text-red-500 mt-1">{errors.moradaRua.message}</p>}
               </div>
               <div>
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Nº / Andar</label>
-                <input {...register('moradaNumero')} className={inputCls} placeholder="12, 3º Dto" style={{ fontFamily: 'var(--font-sans)' }} />
+                <label className={labelCls}>Nº / Andar</label>
+                <input {...register('moradaNumero')} className={inputCls} placeholder="12, 3º Dto" />
               </div>
               <div>
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Código Postal *</label>
-                <input {...register('moradaCp')} className={inputCls} placeholder="11000" style={{ fontFamily: 'var(--font-sans)' }} />
-                {errors.moradaCp && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.moradaCp.message}</p>}
+                <label className={labelCls}>Código Postal *</label>
+                <input {...register('moradaCp')} className={inputCls} placeholder="11000" />
+                {errors.moradaCp && <p className="text-xs text-red-500 mt-1">{errors.moradaCp.message}</p>}
               </div>
               <div>
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>Cidade *</label>
-                <input {...register('moradaCidade')} className={inputCls} placeholder="Luanda" style={{ fontFamily: 'var(--font-sans)' }} />
-                {errors.moradaCidade && <p className="text-xs text-red-500 mt-1" style={{ fontFamily: 'var(--font-sans)' }}>{errors.moradaCidade.message}</p>}
+                <label className={labelCls}>Cidade *</label>
+                <input {...register('moradaCidade')} className={inputCls} placeholder="Luanda" />
+                {errors.moradaCidade && <p className="text-xs text-red-500 mt-1">{errors.moradaCidade.message}</p>}
               </div>
               <div>
-                <label className={labelCls} style={{ fontFamily: 'var(--font-sans)' }}>País *</label>
-                <select {...register('moradaPais')} className={inputCls + ' appearance-none cursor-pointer'} style={{ fontFamily: 'var(--font-sans)' }}>
+                <label className={labelCls}>País *</label>
+                <select {...register('moradaPais')} className={inputCls + ' appearance-none cursor-pointer'}>
                   {PAISES.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
               </div>
@@ -206,13 +195,13 @@ export default function CheckoutPage() {
           </section>
 
           {avisoStock && (
-            <p className="text-sm text-amber-700 bg-amber-50 px-4 py-3 border border-amber-200" style={{ fontFamily: 'var(--font-sans)' }}>
+            <p className="text-sm text-amber-700 bg-amber-50 px-4 py-3 border border-amber-200">
               {avisoStock}
             </p>
           )}
 
           {erro && (
-            <p className="text-sm text-red-600 bg-red-50 px-4 py-3 border border-red-200" style={{ fontFamily: 'var(--font-sans)' }}>
+            <p className="text-sm text-red-600 bg-red-50 px-4 py-3 border border-red-200">
               {erro}
             </p>
           )}
@@ -220,8 +209,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full min-h-14 py-4 bg-noir text-cream text-[11px] tracking-[0.3em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="w-full min-h-14 py-4 bg-noir text-cream text-[11px] tracking-[0.3em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors font-sans"
           >
             {isSubmitting ? 'A processar…' : 'CONTINUAR PARA PAGAMENTO'}
           </button>
@@ -230,10 +218,7 @@ export default function CheckoutPage() {
         {/* Order summary */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="border border-noir/10 p-6 space-y-5 bg-white">
-            <h2
-              className="text-[10px] tracking-[0.3em] uppercase text-muted"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <h2 className="text-[10px] tracking-[0.3em] uppercase text-muted">
               Resumo do Pedido
             </h2>
 
@@ -253,31 +238,19 @@ export default function CheckoutPage() {
                         className="object-cover"
                       />
                     )}
-                    <span
-                      className="absolute -top-1.5 -right-1.5 bg-noir text-cream text-[9px] w-4 h-4 rounded-full flex items-center justify-center"
-                      style={{ fontFamily: 'var(--font-sans)' }}
-                    >
+                    <span className="absolute -top-1.5 -right-1.5 bg-noir text-cream text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
                       {item.quantidade}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p
-                      className="text-xs font-light text-noir leading-snug"
-                      style={{ fontFamily: 'var(--font-serif)' }}
-                    >
+                    <p className="text-xs font-light text-noir leading-snug font-serif">
                       {item.nome}
                     </p>
-                    <p
-                      className="text-[10px] text-muted mt-0.5"
-                      style={{ fontFamily: 'var(--font-sans)' }}
-                    >
+                    <p className="text-[10px] text-muted mt-0.5">
                       {item.cor} · Nº {item.tamanho}
                     </p>
                   </div>
-                  <p
-                    className="text-xs text-noir shrink-0"
-                    style={{ fontFamily: 'var(--font-sans)' }}
-                  >
+                  <p className="text-xs text-noir shrink-0">
                     {formatarPreco(item.preco * item.quantidade)}
                   </p>
                 </li>
@@ -285,17 +258,17 @@ export default function CheckoutPage() {
             </ul>
 
             <div className="border-t border-noir/8 pt-4 space-y-2">
-              <div className="flex justify-between text-xs text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+              <div className="flex justify-between text-xs text-muted">
                 <span>Subtotal</span>
                 <span>{formatarPreco(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-xs text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+              <div className="flex justify-between text-xs text-muted">
                 <span>Portes</span>
                 <span>{portes === 0 ? 'Grátis' : formatarPreco(portes)}</span>
               </div>
-              <div className="flex justify-between text-sm font-medium text-noir pt-2 border-t border-noir/8" style={{ fontFamily: 'var(--font-sans)' }}>
+              <div className="flex justify-between text-sm font-medium text-noir pt-2 border-t border-noir/8">
                 <span>Total</span>
-                <span className="text-base" style={{ fontFamily: 'var(--font-serif)' }}>{formatarPreco(totalFinal)}</span>
+                <span className="text-base font-serif">{formatarPreco(totalFinal)}</span>
               </div>
             </div>
           </div>

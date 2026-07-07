@@ -253,7 +253,7 @@ export default async function ProdutosPage({
                   <th className="px-4 py-3 text-left font-normal">Produto</th>
                   <th className="px-4 py-3 text-left font-normal">Categoria</th>
                   <th className="px-4 py-3 text-right font-normal">Preço</th>
-                  <th className="px-4 py-3 text-right font-normal">Stock</th>
+                  <th className="px-4 py-3 text-right font-normal hidden sm:table-cell">Stock</th>
                   <th className="px-4 py-3 text-center font-normal">Estado</th>
                   <th className="px-4 py-3 text-center font-normal">Activo</th>
                   <th className="px-4 py-3 text-right font-normal">Criado</th>
@@ -333,7 +333,7 @@ export default async function ProdutosPage({
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-3 text-right hidden sm:table-cell">
                         <span
                           className={`text-xs font-medium ${stockTotal === 0 ? 'text-red-500' : 'text-noir'}`}
                         >

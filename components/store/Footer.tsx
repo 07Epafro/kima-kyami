@@ -114,12 +114,12 @@ export default function Footer() {
             <p className="text-[10px] tracking-[0.3em] uppercase text-cream/70 mb-6">
               Informações
             </p>
-            <ul className="space-y-3.5">
+            <ul>
               {INFO_LINKS.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-[12px] text-cream/60 hover:text-gold transition-colors tracking-wide"
+                    className="min-h-11 flex items-center text-[12px] text-cream/60 hover:text-gold transition-colors tracking-wide"
                   >
                     {label}
                   </Link>
@@ -133,12 +133,12 @@ export default function Footer() {
             <p className="text-[10px] tracking-[0.3em] uppercase text-cream/70 mb-6">
               Ajuda
             </p>
-            <ul className="space-y-3.5">
+            <ul>
               {AJUDA_LINKS.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-[12px] text-cream/60 hover:text-gold transition-colors tracking-wide"
+                    className="min-h-11 flex items-center text-[12px] text-cream/60 hover:text-gold transition-colors tracking-wide"
                   >
                     {label}
                   </Link>

@@ -63,7 +63,7 @@ export default function ColecoesClient({ produtosIniciais, total, categoria, ord
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-10">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-10">
         {produtos.map((p, i) => (
           <ProductCard key={p.id} produto={p} prioridade={i < 4} />
         ))}
@@ -73,10 +73,7 @@ export default function ColecoesClient({ produtosIniciais, total, categoria, ord
       {cursor && (
         <div ref={sentinela} className="flex justify-center py-12">
           {carregando && (
-            <div
-              className="text-[10px] tracking-[0.3em] uppercase text-muted animate-pulse"
-              style={{ fontFamily: 'var(--font-sans)' }}
-            >
+            <div className="text-[10px] tracking-[0.3em] uppercase text-muted animate-pulse font-sans">
               A CARREGAR…
             </div>
           )}
@@ -85,10 +82,7 @@ export default function ColecoesClient({ produtosIniciais, total, categoria, ord
 
       {/* Count */}
       {!cursor && produtos.length > 0 && (
-        <p
-          className="text-center mt-10 text-[10px] text-muted tracking-[0.2em]"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
+        <p className="text-center mt-10 text-[10px] text-muted tracking-[0.2em] font-sans">
           {produtos.length} de {total} peças
         </p>
       )}

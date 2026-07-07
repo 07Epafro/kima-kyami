@@ -72,13 +72,12 @@ export default async function ClientesPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <p className="text-xs text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+        <p className="text-xs text-muted font-sans">
           {total} cliente{total !== 1 ? 's' : ''}
         </p>
         <a
           href="/api/clientes?format=csv"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 text-muted transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 text-muted transition-colors font-sans"
         >
           <Download size={13} /> Exportar CSV
         </a>
@@ -91,15 +90,14 @@ export default async function ClientesPage({ searchParams }: PageProps) {
             name="search"
             defaultValue={search}
             placeholder="Nome ou email…"
-            className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-gold"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded text-sm bg-white focus:outline-none focus:border-gold font-sans"
           />
         </div>
-        <button type="submit" className="px-4 py-2 bg-noir text-cream text-sm rounded hover:bg-noir/90 transition-colors" style={{ fontFamily: 'var(--font-sans)' }}>
+        <button type="submit" className="px-4 py-2 bg-noir text-cream text-sm rounded hover:bg-noir/90 transition-colors font-sans">
           Pesquisar
         </button>
         {search && (
-          <a href="/admin/clientes" className="px-3 py-2 text-sm text-muted hover:text-noir" style={{ fontFamily: 'var(--font-sans)' }}>
+          <a href="/admin/clientes" className="px-3 py-2 text-sm text-muted hover:text-noir font-sans">
             Limpar
           </a>
         )}
@@ -107,68 +105,68 @@ export default async function ClientesPage({ searchParams }: PageProps) {
 
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         {clientes.length === 0 ? (
-          <p className="text-center py-12 text-sm text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-center py-12 text-sm text-muted font-sans">
             Nenhum cliente encontrado.
           </p>
         ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-100" style={{ fontFamily: 'var(--font-sans)' }}>
-                <th className="px-6 py-3 text-left font-normal">{sortLink('nome', 'Nome')}</th>
-                <th className="px-4 py-3 text-left font-normal">Email</th>
-                <th className="px-4 py-3 text-left font-normal hidden md:table-cell">Telefone</th>
-                <th className="px-4 py-3 text-center font-normal">{sortLink('encomendas', 'Encomendas')}</th>
-                <th className="px-4 py-3 text-right font-normal hidden lg:table-cell">Total gasto</th>
-                <th className="px-4 py-3 text-right font-normal hidden lg:table-cell">Última compra</th>
-              </tr>
-            </thead>
-            <tbody>
-              {clientes.map((c) => {
-                const totalGasto = c.encomendas.reduce((s, e) => s + e.total, 0)
-                const ultimaCompra = c.encomendas[0]?.criadaEm
-                return (
-                  <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-3">
-                      <Link href={`/admin/clientes/${c.id}`} className="text-xs font-medium text-noir hover:text-gold transition-colors">
-                        {c.nome}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-muted">{c.email}</td>
-                    <td className="px-4 py-3 text-xs text-muted hidden md:table-cell">{c.telefone ?? '—'}</td>
-                    <td className="px-4 py-3 text-xs text-center text-muted">{c._count.encomendas}</td>
-                    <td className="px-4 py-3 text-xs text-right font-medium text-noir hidden lg:table-cell">
-                      {totalGasto > 0 ? formatarPreco(totalGasto) : '—'}
-                    </td>
-                    <td className="px-4 py-3 text-[10px] text-muted text-right hidden lg:table-cell">
-                      {ultimaCompra
-                        ? ultimaCompra.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })
-                        : '—'}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-100 font-sans">
+                  <th className="px-6 py-3 text-left font-normal">{sortLink('nome', 'Nome')}</th>
+                  <th className="px-4 py-3 text-left font-normal">Email</th>
+                  <th className="px-4 py-3 text-left font-normal hidden md:table-cell">Telefone</th>
+                  <th className="px-4 py-3 text-center font-normal">{sortLink('encomendas', 'Encomendas')}</th>
+                  <th className="px-4 py-3 text-right font-normal hidden lg:table-cell">Total gasto</th>
+                  <th className="px-4 py-3 text-right font-normal hidden lg:table-cell">Última compra</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clientes.map((c) => {
+                  const totalGasto = c.encomendas.reduce((s, e) => s + e.total, 0)
+                  const ultimaCompra = c.encomendas[0]?.criadaEm
+                  return (
+                    <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                      <td className="px-6 py-3">
+                        <Link href={`/admin/clientes/${c.id}`} className="text-xs font-medium text-noir hover:text-gold transition-colors">
+                          {c.nome}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-muted">{c.email}</td>
+                      <td className="px-4 py-3 text-xs text-muted hidden md:table-cell">{c.telefone ?? '—'}</td>
+                      <td className="px-4 py-3 text-xs text-center text-muted">{c._count.encomendas}</td>
+                      <td className="px-4 py-3 text-xs text-right font-medium text-noir hidden lg:table-cell">
+                        {totalGasto > 0 ? formatarPreco(totalGasto) : '—'}
+                      </td>
+                      <td className="px-4 py-3 text-[10px] text-muted text-right hidden lg:table-cell">
+                        {ultimaCompra
+                          ? ultimaCompra.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })
+                          : '—'}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {paginas > 1 && (
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+          <span className="text-xs text-muted font-sans">
             Página {page} de {paginas}
           </span>
           <div className="flex gap-2">
             {page > 1 && (
               <Link href={buildUrl({ page: String(page - 1) })}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}>
+                className="flex items-center gap-1 px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors font-sans">
                 <ChevronLeft size={13} /> Anterior
               </Link>
             )}
             {page < paginas && (
               <Link href={buildUrl({ page: String(page + 1) })}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors"
-                style={{ fontFamily: 'var(--font-sans)' }}>
+                className="flex items-center gap-1 px-3 py-1.5 text-xs border border-gray-200 rounded hover:bg-gray-50 transition-colors font-sans">
                 Seguinte <ChevronRight size={13} />
               </Link>
             )}
