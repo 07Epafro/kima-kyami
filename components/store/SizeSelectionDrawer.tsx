@@ -101,14 +101,14 @@ export default function SizeSelectionDrawer({
         }`}
       >
         {/* ── Header: produto confirmado ───────────────────── */}
-        <div className="flex items-start gap-4 px-7 pt-7 pb-6 border-b border-noir/8">
-          <div className="relative w-[72px] h-[90px] shrink-0 bg-noir/5 overflow-hidden">
+        <div className="flex items-start gap-5 px-7 pt-7 pb-6 border-b border-noir/8">
+          <div className="relative w-[92px] h-[115px] shrink-0 bg-noir/5 overflow-hidden">
             {produto.imagens[0] && (
               <Image
                 src={produto.imagens[0]}
                 alt={produto.nome}
                 fill
-                sizes="72px"
+                sizes="92px"
                 className="object-cover"
               />
             )}
@@ -116,14 +116,14 @@ export default function SizeSelectionDrawer({
 
           <div className="flex-1 min-w-0 pt-1">
             {corSel && (
-              <p className="text-[9px] tracking-spaced-xl uppercase text-muted mb-1 font-sans">
+              <p className="text-[9px] tracking-spaced-xl uppercase text-muted mb-1.5 font-sans">
                 {corSel.nome}
               </p>
             )}
-            <h2 className="text-[15px] font-light text-noir leading-snug font-serif mb-3 truncate">
+            <h2 className="text-[18px] font-light text-noir leading-snug font-serif mb-3">
               {produto.nome}
             </h2>
-            <p className="text-base font-light text-noir font-serif">
+            <p className="text-[18px] font-light text-noir font-serif">
               {formatarPreco(produto.preco)}
             </p>
           </div>
@@ -146,7 +146,7 @@ export default function SizeSelectionDrawer({
             <p className="text-[9px] tracking-spaced-xl uppercase text-noir/70 mb-5 font-sans">
               TAMANHO {tamSel && `— ${tamSel}`}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {tamanhos.map(tam => {
                 const disponivel = !corSel || tamanhosDisponiveis.includes(tam)
                 const selecionado = tamSel === tam
@@ -158,7 +158,7 @@ export default function SizeSelectionDrawer({
                     disabled={!disponivel}
                     aria-pressed={selecionado}
                     aria-label={`Tamanho ${tam}${!disponivel ? ' — esgotado' : ''}`}
-                    className={`w-[46px] h-[46px] text-[11px] border transition-all font-sans ${
+                    className={`w-14 h-14 text-[13px] border transition-all font-sans ${
                       selecionado
                         ? 'bg-noir text-cream border-noir'
                         : disponivel
@@ -190,24 +190,24 @@ export default function SizeSelectionDrawer({
                     <Link
                       href={`/produto/${rel.slug}`}
                       onClick={onClose}
-                      className="relative w-[60px] h-[75px] shrink-0 overflow-hidden bg-noir/5"
+                      className="relative w-19 h-23.75 shrink-0 overflow-hidden bg-noir/5"
                     >
                       {rel.imagens[0] && (
                         <Image
                           src={rel.imagens[0]}
                           alt={rel.nome}
                           fill
-                          sizes="60px"
+                          sizes="80px"
                           className="object-cover hover:scale-105 transition-transform duration-500"
                         />
                       )}
                     </Link>
 
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-light text-noir leading-snug truncate font-serif">
+                      <p className="text-[14px] font-light text-noir leading-snug truncate font-serif">
                         {rel.nome}
                       </p>
-                      <p className="text-[11px] text-noir/60 mt-1 font-sans">
+                      <p className="text-[12px] text-noir/60 mt-1.5 font-sans">
                         {formatarPreco(rel.preco)}
                       </p>
                     </div>
@@ -216,9 +216,9 @@ export default function SizeSelectionDrawer({
                       href={`/produto/${rel.slug}`}
                       onClick={onClose}
                       aria-label={`Ver ${rel.nome}`}
-                      className="w-9 h-9 flex items-center justify-center border border-noir/15 hover:border-gold hover:text-gold transition-colors text-noir/35 shrink-0"
+                      className="w-10 h-10 flex items-center justify-center border border-noir/15 hover:border-gold hover:text-gold transition-colors text-noir/35 shrink-0"
                     >
-                      <ArrowRight size={13} strokeWidth={1.5} />
+                      <ArrowRight size={14} strokeWidth={1.5} />
                     </Link>
                   </div>
                 ))}
