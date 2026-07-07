@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ShoppingBag } from 'lucide-react'
 import type { CorProduto } from '@/types'
+import { formatarPreco } from '@/lib/utils'
 
 interface ProdutoCard {
   id: string
@@ -21,10 +22,6 @@ interface ProdutoCard {
 interface Props {
   produto: ProdutoCard
   prioridade?: boolean
-}
-
-function formatarPreco(valor: number) {
-  return `Kz ${valor.toFixed(2).replace('.', ',')}`
 }
 
 function temStock(stock: Record<string, number>) {

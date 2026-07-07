@@ -84,8 +84,7 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
     <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-10 lg:py-14">
       {/* Breadcrumb */}
       <nav
-        className="flex items-center gap-2 text-[10px] tracking-[0.2em] text-muted mb-8"
-        style={{ fontFamily: 'var(--font-sans)' }}
+        className="flex items-center gap-2 text-[10px] tracking-[0.2em] text-muted mb-8 font-sans"
         aria-label="Breadcrumb"
       >
         <Link href="/" className="hover:text-gold transition-colors">INÍCIO</Link>
@@ -106,14 +105,12 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
       {/* Header */}
       <div className="mb-8">
         <h1
-          className="text-[clamp(28px,4vw,48px)] font-light text-noir tracking-[0.12em] uppercase"
-          style={{ fontFamily: 'var(--font-serif)' }}
+          className="text-[clamp(28px,4vw,48px)] font-light text-noir tracking-[0.12em] uppercase font-serif"
         >
           {catActual ? catActual.label : 'Coleções'}
         </h1>
         <p
-          className="text-xs text-muted mt-2"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="text-xs text-muted mt-2 font-sans"
         >
           {total} peça{total !== 1 ? 's' : ''}
         </p>
@@ -125,12 +122,11 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
         <div className="flex flex-wrap gap-2">
           <Link
             href="/colecoes"
-            className={`text-[9.5px] tracking-[0.2em] uppercase px-4 py-2 border transition-colors ${
+            className={`text-[9.5px] tracking-[0.2em] uppercase px-4 py-2 border transition-colors font-sans ${
               !categoriaValida
                 ? 'bg-noir text-cream border-noir'
                 : 'border-noir/20 text-noir/60 hover:border-noir hover:text-noir'
             }`}
-            style={{ fontFamily: 'var(--font-sans)' }}
           >
             TODAS
           </Link>
@@ -138,12 +134,11 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
             <Link
               key={cat.value}
               href={buildUrl({ categoria: cat.value, ordem: undefined })}
-              className={`text-[9.5px] tracking-[0.2em] uppercase px-4 py-2 border transition-colors ${
+              className={`text-[9.5px] tracking-[0.2em] uppercase px-4 py-2 border transition-colors font-sans ${
                 categoriaValida === cat.value
                   ? 'bg-noir text-cream border-noir'
                   : 'border-noir/20 text-noir/60 hover:border-noir hover:text-noir'
               }`}
-              style={{ fontFamily: 'var(--font-sans)' }}
             >
               {cat.label.toUpperCase()}
             </Link>
@@ -161,16 +156,12 @@ export default async function ColecoesPage({ searchParams }: PageProps) {
       {/* Grid */}
       {produtos.length === 0 ? (
         <div className="py-24 text-center">
-          <p
-            className="text-muted text-sm"
-            style={{ fontFamily: 'var(--font-sans)' }}
-          >
+          <p className="text-muted text-sm font-sans">
             Nenhum produto encontrado.
           </p>
           <Link
             href="/colecoes"
-            className="inline-block mt-6 text-[10px] tracking-[0.25em] uppercase border border-noir text-noir px-8 py-3 hover:bg-noir hover:text-cream transition-colors"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="inline-block mt-6 text-[10px] tracking-[0.25em] uppercase border border-noir text-noir px-8 py-3 hover:bg-noir hover:text-cream transition-colors font-sans"
           >
             VER TODOS
           </Link>

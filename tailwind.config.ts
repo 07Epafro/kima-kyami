@@ -26,10 +26,10 @@ const config: Config = {
         'nav-mobile': 'clamp(26px, 7vw, 40px)',
       },
       letterSpacing: {
-        'spaced': '.2em',
-        'spaced-lg': '.3em',
-        'spaced-xl': '.35em',
-        'spaced-max': '.5em',
+        'spaced': '.12em',
+        'spaced-lg': '.18em',
+        'spaced-xl': '.22em',
+        'spaced-max': '.35em',
       },
       screens: {
         xs: '480px',
