@@ -25,8 +25,8 @@ function formatarData(iso: string): string {
 }
 
 function formatarEixoY(valor: number): string {
-  if (valor >= 1000) return `€${(valor / 1000).toFixed(1)}k`
-  return `€${valor}`
+  if (valor >= 1000) return `Kz ${(valor / 1000).toFixed(0)}k`
+  return `Kz ${valor}`
 }
 
 export default function SalesChart({ data }: Props) {
@@ -38,20 +38,20 @@ export default function SalesChart({ data }: Props) {
         <CartesianGrid strokeDasharray="3 3" stroke="#f0ebe5" vertical={false} />
         <XAxis
           dataKey="label"
-          tick={{ fontSize: 11, fill: '#9a9a9a', fontFamily: 'var(--font-sans)' }}
+          tick={{ fontSize: 11, fill: '#555555', fontFamily: 'var(--font-sans)' }}
           tickLine={false}
           axisLine={false}
           interval={4}
         />
         <YAxis
           tickFormatter={formatarEixoY}
-          tick={{ fontSize: 11, fill: '#9a9a9a', fontFamily: 'var(--font-sans)' }}
+          tick={{ fontSize: 11, fill: '#555555', fontFamily: 'var(--font-sans)' }}
           tickLine={false}
           axisLine={false}
           width={55}
         />
         <Tooltip
-          formatter={(value) => [`€ ${Number(value).toFixed(2).replace('.', ',')}`, 'Vendas']}
+          formatter={(value) => [`Kz ${Number(value).toLocaleString('pt-AO')}`, 'Vendas']}
           labelFormatter={(label) => `Dia ${label}`}
           contentStyle={{
             background: '#181818',

@@ -107,8 +107,7 @@ export default async function ProdutosPage({
         <div className="flex items-center gap-3">
           <Package size={20} className="text-gold" />
           <h1
-            className="text-2xl font-light text-noir"
-            style={{ fontFamily: 'var(--font-serif)' }}
+            className="text-2xl font-light text-noir font-serif"
           >
             Produtos
           </h1>
@@ -116,8 +115,7 @@ export default async function ProdutosPage({
         </div>
         <Link
           href="/admin/produtos/novo"
-          className="flex items-center gap-2 bg-noir text-cream text-xs tracking-widest uppercase px-4 py-2.5 rounded-lg hover:bg-noir/90 transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="flex items-center gap-2 bg-noir text-cream text-xs tracking-widest uppercase px-4 py-2.5 rounded-lg hover:bg-noir/90 transition-colors font-sans"
         >
           <Plus size={14} />
           Novo Produto
@@ -130,8 +128,7 @@ export default async function ProdutosPage({
           <div className="flex-1 min-w-[180px]">
             <label
               htmlFor="search"
-              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5 font-sans"
             >
               Pesquisar
             </label>
@@ -148,8 +145,7 @@ export default async function ProdutosPage({
           <div className="min-w-[150px]">
             <label
               htmlFor="categoria"
-              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5 font-sans"
             >
               Categoria
             </label>
@@ -171,8 +167,7 @@ export default async function ProdutosPage({
           <div className="min-w-[140px]">
             <label
               htmlFor="estado"
-              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5 font-sans"
             >
               Estado
             </label>
@@ -192,8 +187,7 @@ export default async function ProdutosPage({
           <div className="min-w-[150px]">
             <label
               htmlFor="sort"
-              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5 font-sans"
             >
               Ordenar por
             </label>
@@ -213,8 +207,7 @@ export default async function ProdutosPage({
           <div className="min-w-[110px]">
             <label
               htmlFor="order"
-              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="block text-[10px] tracking-widest uppercase text-muted mb-1.5 font-sans"
             >
               Direcção
             </label>
@@ -231,16 +224,14 @@ export default async function ProdutosPage({
 
           <button
             type="submit"
-            className="bg-noir text-cream text-xs tracking-widest uppercase px-5 py-2 rounded-lg hover:bg-noir/90 transition-colors"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="bg-noir text-cream text-xs tracking-widest uppercase px-5 py-2 rounded-lg hover:bg-noir/90 transition-colors font-sans"
           >
             Filtrar
           </button>
 
           <Link
             href="/admin/produtos"
-            className="text-xs text-muted hover:text-noir transition-colors py-2 px-2"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="text-xs text-muted hover:text-noir transition-colors py-2 px-2 font-sans"
           >
             Limpar
           </Link>
@@ -302,15 +293,15 @@ export default async function ProdutosPage({
                       key={p.id}
                       className="border-b border-gray-50 hover:bg-gray-50/40 transition-colors"
                     >
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                             {primImagem ? (
                               <Image
                                 src={primImagem}
                                 alt={p.nome}
-                                width={48}
-                                height={48}
+                                width={64}
+                                height={64}
                                 className="w-full h-full object-cover"
                               />
                             ) : (
@@ -325,7 +316,7 @@ export default async function ProdutosPage({
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-4">
                         <span
                           className={`text-[10px] px-2 py-1 rounded-full font-medium ${
                             categoriaBadge[p.categoria as CategoriaKey] ?? 'bg-gray-100 text-gray-600'
@@ -362,11 +353,11 @@ export default async function ProdutosPage({
                       <td className="px-4 py-3 text-right text-[10px] text-muted">
                         {dataCriacao}
                       </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center justify-end gap-1">
+                      <td className="px-4 py-4">
+                        <div className="flex items-center justify-end gap-2 pr-1">
                           <Link
                             href={`/admin/produtos/${p.id}`}
-                            className="p-1.5 rounded text-muted hover:text-gold hover:bg-gold/10 transition-colors"
+                            className="p-2 rounded text-noir/45 hover:text-gold hover:bg-gold/10 transition-colors"
                             title="Editar produto"
                           >
                             <Edit2 size={15} />
@@ -386,7 +377,7 @@ export default async function ProdutosPage({
       {/* Paginação */}
       {paginas > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-xs text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-xs text-muted font-sans">
             Página {page} de {paginas}
           </p>
           <div className="flex items-center gap-2">

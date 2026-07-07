@@ -106,7 +106,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/colecoes"
-              className="inline-flex items-center justify-center border border-cream text-cream text-[10px] tracking-spaced-lg px-10 min-h-12 hover:bg-cream hover:text-noir transition-colors duration-300 animate-kk-fade-up font-sans"
+              className="inline-flex items-center justify-center bg-cream text-noir text-[10px] tracking-spaced-lg px-10 min-h-12 hover:bg-white transition-colors duration-300 animate-kk-fade-up font-sans"
               style={{ animationDelay: '0.3s' }}
             >
               DESCOBRIR COLEÇÃO

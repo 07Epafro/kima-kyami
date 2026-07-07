@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { Save, CheckCircle } from 'lucide-react'
 
-const labelClass = 'text-[9px] tracking-[0.25em] uppercase text-muted mb-1.5 block'
-const inputClass = 'w-full bg-noir/30 border border-white/10 text-cream text-[13px] px-4 py-2.5 rounded-lg focus:outline-none focus:border-gold/50 transition-colors placeholder:text-muted'
+const labelClass = 'text-[9px] tracking-[0.25em] uppercase text-noir/65 mb-1.5 block font-sans'
+const inputClass = 'w-full bg-white border border-gray-200 text-noir text-[13px] px-4 py-2.5 rounded-lg focus:outline-none focus:border-gold/60 transition-colors placeholder:text-gray-300 font-sans'
 
 export default function ConfiguracoesPage() {
   const [form, setForm] = useState({
@@ -61,10 +61,10 @@ export default function ConfiguracoesPage() {
   return (
     <div className="max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-xl font-light text-cream tracking-wide" style={{ fontFamily: 'var(--font-serif)' }}>
+        <h1 className="text-xl font-light text-noir tracking-wide font-serif">
           Configurações da Loja
         </h1>
-        <p className="text-[12px] text-muted mt-1" style={{ fontFamily: 'var(--font-sans)' }}>
+        <p className="text-[12px] text-noir/55 mt-1 font-sans">
           Dados de contacto exibidos na página pública de contactos.
         </p>
       </div>
@@ -78,7 +78,7 @@ export default function ConfiguracoesPage() {
         <form onSubmit={guardar} className="space-y-6">
           {/* Contacto */}
           <section className="space-y-4">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold" style={{ fontFamily: 'var(--font-sans)' }}>
+            <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-sans">
               Contacto
             </p>
             <div>
@@ -99,7 +99,7 @@ export default function ConfiguracoesPage() {
 
           {/* Redes sociais */}
           <section className="space-y-4 pt-2">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold" style={{ fontFamily: 'var(--font-sans)' }}>
+            <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-sans">
               Redes Sociais
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -116,7 +116,7 @@ export default function ConfiguracoesPage() {
 
           {/* Localização & Horário */}
           <section className="space-y-4 pt-2">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold" style={{ fontFamily: 'var(--font-sans)' }}>
+            <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-sans">
               Localização & Horário
             </p>
             <div>
@@ -142,8 +142,7 @@ export default function ConfiguracoesPage() {
             <button
               type="submit"
               disabled={estado === 'saving'}
-              className="flex items-center gap-2 bg-gold text-noir text-[10px] tracking-[0.25em] uppercase px-6 py-3 rounded-lg hover:bg-gold/90 transition-colors disabled:opacity-50"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              className="flex items-center gap-2 bg-gold text-noir text-[10px] tracking-[0.25em] uppercase px-6 min-h-12 rounded-lg hover:bg-gold/90 transition-colors disabled:opacity-50 font-sans"
             >
               {estado === 'saving' ? (
                 <>
@@ -158,13 +157,13 @@ export default function ConfiguracoesPage() {
               )}
             </button>
             {estado === 'ok' && (
-              <span className="flex items-center gap-1.5 text-[11px] text-green-400" style={{ fontFamily: 'var(--font-sans)' }}>
+              <span className="flex items-center gap-1.5 text-[11px] text-green-600 font-sans">
                 <CheckCircle size={13} />
                 Guardado com sucesso
               </span>
             )}
             {estado === 'error' && (
-              <span className="text-[11px] text-red-400" style={{ fontFamily: 'var(--font-sans)' }}>
+              <span className="text-[11px] text-red-500 font-sans">
                 Erro ao guardar. Tenta novamente.
               </span>
             )}

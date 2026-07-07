@@ -132,7 +132,7 @@ export default function SizeSelectionDrawer({
             type="button"
             onClick={onClose}
             aria-label="Fechar"
-            className="p-2 -m-2 mt-1 text-noir/35 hover:text-gold transition-colors shrink-0"
+            className="min-w-11 min-h-11 flex items-center justify-center -mr-2.5 mt-0.5 text-noir/55 hover:text-gold transition-colors shrink-0"
           >
             <X size={18} strokeWidth={1.5} />
           </button>
@@ -181,10 +181,10 @@ export default function SizeSelectionDrawer({
           {/* Complete o seu look */}
           {relacionados.length > 0 && (
             <div className="border-t border-noir/8 px-7 py-7">
-              <p className="text-[9px] tracking-spaced-xl uppercase text-muted mb-6 font-sans">
+              <p className="text-[9px] tracking-spaced-xl uppercase text-noir/60 mb-6 font-sans">
                 COMPLETE O SEU LOOK
               </p>
-              <div className="space-y-5">
+              <div className="space-y-6">
                 {relacionados.map(rel => (
                   <div key={rel.id} className="flex items-center gap-4">
                     <Link
@@ -207,7 +207,7 @@ export default function SizeSelectionDrawer({
                       <p className="text-[12px] font-light text-noir leading-snug truncate font-serif">
                         {rel.nome}
                       </p>
-                      <p className="text-[11px] text-muted mt-1 font-sans">
+                      <p className="text-[11px] text-noir/60 mt-1 font-sans">
                         {formatarPreco(rel.preco)}
                       </p>
                     </div>

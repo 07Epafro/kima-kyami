@@ -19,14 +19,14 @@ const estadoLabels: Record<EstadoEncomenda, string> = {
 }
 
 const estadoCores: Record<EstadoEncomenda, string> = {
-  PENDENTE: 'bg-amber-100 text-amber-700',
-  PAGAMENTO_ANALISE: 'bg-blue-100 text-blue-700',
-  CONFIRMADA: 'bg-green-100 text-green-700',
-  EM_PREPARACAO: 'bg-purple-100 text-purple-700',
-  ENVIADA: 'bg-indigo-100 text-indigo-700',
-  ENTREGUE: 'bg-emerald-100 text-emerald-700',
-  CANCELADA: 'bg-red-100 text-red-700',
-  DEVOLVIDA: 'bg-orange-100 text-orange-700',
+  PENDENTE: 'bg-amber-100 text-amber-800',
+  PAGAMENTO_ANALISE: 'bg-blue-100 text-blue-800',
+  CONFIRMADA: 'bg-green-100 text-green-800',
+  EM_PREPARACAO: 'bg-purple-100 text-purple-800',
+  ENVIADA: 'bg-indigo-100 text-indigo-800',
+  ENTREGUE: 'bg-emerald-100 text-emerald-800',
+  CANCELADA: 'bg-red-100 text-red-800',
+  DEVOLVIDA: 'bg-orange-100 text-orange-800',
 }
 
 function horasAtras(iso: string): string {
@@ -129,16 +129,16 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {kpis.map(({ label, valor, icon: Icon, cor, bg }) => (
-          <div key={label} className="bg-white rounded-xl p-6 border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs tracking-spaced-lg uppercase text-muted font-sans">
+          <div key={label} className="bg-white rounded-xl p-7 border border-gray-100">
+            <div className="flex items-center justify-between mb-5">
+              <span className="text-[10px] tracking-widest uppercase text-noir/55 font-sans">
                 {label}
               </span>
-              <div className={`w-8 h-8 rounded-lg ${bg} flex items-center justify-center`}>
-                <Icon size={16} className={cor} />
+              <div className={`w-9 h-9 rounded-lg ${bg} flex items-center justify-center`}>
+                <Icon size={17} className={cor} />
               </div>
             </div>
-            <p className="text-2xl font-light text-noir font-serif">
+            <p className="text-[28px] font-light text-noir font-serif leading-none">
               {valor}
             </p>
           </div>

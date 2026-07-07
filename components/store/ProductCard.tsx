@@ -50,7 +50,7 @@ export default function ProductCard({ produto, prioridade = false }: Props) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-noir/5 mb-4">
+      <div className="relative aspect-3/4 overflow-hidden bg-noir/5 mb-4">
         {/* Primary image */}
         {produto.imagens[0] && (
           <Image
@@ -80,7 +80,7 @@ export default function ProductCard({ produto, prioridade = false }: Props) {
 
         {/* Badge */}
         {badge && (
-          <div className="absolute top-3 left-3 z-10">
+          <div className="absolute top-4 left-4 z-10">
             <span
               className={`text-[8px] tracking-[0.25em] uppercase px-2.5 py-1 font-sans ${badge.cls}`}
             >
