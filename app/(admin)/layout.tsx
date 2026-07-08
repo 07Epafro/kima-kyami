@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const adminEmail = session.user.email ?? ''
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#faf7f4]">
+    <div className="flex h-screen overflow-hidden bg-a-bone">
       <Sidebar
         adminNome={adminNome}
         adminEmail={adminEmail}

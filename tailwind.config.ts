@@ -14,10 +14,18 @@ const config: Config = {
         noir: '#181818',
         gold: '#f7c480',
         muted: '#9a9a9a',
+        // Admin — Kinetic Elegance
+        'a-bone':     '#FBF9F5',
+        'a-charcoal': '#1A1A1A',
+        'a-gold':     '#D4AF37',
+        'a-muted':    '#6B6B6B',
+        'a-border':   '#DBDAD6',
       },
       fontFamily: {
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
-        sans: ['var(--font-sans)', 'sans-serif'],
+        serif:   ['var(--font-serif)',   'Georgia', 'serif'],
+        sans:    ['var(--font-sans)',    'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        ui:      ['var(--font-ui)',      'sans-serif'],
       },
       fontSize: {
         'hero': 'clamp(40px, 8vw, 76px)',
