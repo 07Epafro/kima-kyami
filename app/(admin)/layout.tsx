@@ -27,8 +27,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         badgeCounts={{ pagamentos: pagamentosPendentes }}
       />
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
-        <TopBar adminNome={adminNome} />
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8">{children}</main>
+        <TopBar adminNome={adminNome} pagamentosPendentes={pagamentosPendentes} />
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-10">{children}</div>
+        </main>
       </div>
     </div>
   )

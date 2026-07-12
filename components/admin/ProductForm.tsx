@@ -85,10 +85,7 @@ function FieldError({ msg }: { msg?: string }) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2
-      className="text-[10px] tracking-widest uppercase text-muted pb-2 border-b border-gray-100 mb-4"
-      style={{ fontFamily: 'var(--font-sans)' }}
-    >
+    <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted pb-3 border-b border-a-border mb-5 font-ui">
       {children}
     </h2>
   )
@@ -98,8 +95,7 @@ function FieldLabel({ htmlFor, children }: { htmlFor?: string; children: React.R
   return (
     <label
       htmlFor={htmlFor}
-      className="block text-[10px] tracking-widest uppercase text-muted mb-1.5"
-      style={{ fontFamily: 'var(--font-sans)' }}
+      className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui"
     >
       {children}
     </label>
@@ -107,7 +103,7 @@ function FieldLabel({ htmlFor, children }: { htmlFor?: string; children: React.R
 }
 
 const inputCls =
-  'w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-noir placeholder-gray-300 focus:outline-none focus:border-gold/60 transition-colors'
+  'w-full border border-a-border rounded-lg px-3 py-2.5 text-sm text-a-charcoal placeholder-a-muted/40 focus:outline-none focus:border-a-gold transition-colors font-ui bg-white'
 
 function ToggleField({
   checked,
@@ -119,14 +115,17 @@ function ToggleField({
   label: string
 }) {
   return (
-    <div className="flex items-center justify-between py-2.5">
-      <span className="text-sm text-noir">{label}</span>
+    <div className="flex items-center justify-between py-3">
+      <span className="text-sm text-a-charcoal font-ui">{label}</span>
       <button
         type="button"
+        role="switch"
+        aria-checked={checked}
+        aria-label={label}
         onClick={() => onChange(!checked)}
         className={cn(
           'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none',
-          checked ? 'bg-gold' : 'bg-gray-200',
+          checked ? 'bg-a-gold' : 'bg-a-border',
         )}
       >
         <span
@@ -174,7 +173,7 @@ export default function ProductForm({ produto }: Props) {
         nome: '',
         slug: '',
         descricao: '',
-        preco: 0,
+        preco: '' as unknown as number, // campo vazio em vez de 0 — placeholder visível
         precoAntes: undefined,
         categoria: 'SALTOS',
         colecao: '',
@@ -376,10 +375,10 @@ export default function ProductForm({ produto }: Props) {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
       {/* ── Informação básica ── */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
         <SectionTitle>Informação básica</SectionTitle>
 
         <div className="space-y-4">
@@ -401,7 +400,7 @@ export default function ProductForm({ produto }: Props) {
           <div>
             <FieldLabel htmlFor="slug">Slug *</FieldLabel>
             <div className="flex items-stretch">
-              <span className="flex items-center px-3 bg-gray-50 border border-r-0 border-gray-200 rounded-l-lg text-xs text-muted whitespace-nowrap">
+              <span className="hidden sm:flex items-center px-3 bg-a-bone border border-r-0 border-a-border rounded-l-lg text-xs text-a-muted whitespace-nowrap font-ui">
                 kimakyami.com/p/
               </span>
               <input
@@ -409,14 +408,14 @@ export default function ProductForm({ produto }: Props) {
                 {...register('slug', {
                   onChange: () => setSlugManual(true),
                 })}
-                className={cn(inputCls, 'rounded-l-none rounded-r-none border-r-0 font-mono text-xs')}
+                className={cn(inputCls, 'sm:rounded-l-none rounded-r-none border-r-0 font-mono text-xs')}
                 placeholder="slug-do-produto"
               />
               <button
                 type="button"
                 onClick={regenerarSlug}
                 title="Regenerar slug a partir do nome"
-                className="px-3 border border-gray-200 rounded-r-lg hover:bg-gray-50 transition-colors text-muted hover:text-noir"
+                className="px-3 border border-a-border rounded-r-lg hover:bg-a-bone transition-colors text-a-muted hover:text-a-charcoal"
               >
                 <RefreshCw size={14} />
               </button>
@@ -438,21 +437,22 @@ export default function ProductForm({ produto }: Props) {
           </div>
 
           {/* Preços */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <FieldLabel htmlFor="preco">Preço *</FieldLabel>
               <div className="flex items-stretch">
-                <span className="flex items-center px-3 bg-gray-50 border border-r-0 border-gray-200 rounded-l-lg text-sm text-muted">
-                  €
+                <span className="flex items-center px-3 bg-a-bone border border-r-0 border-a-border rounded-l-lg text-sm text-a-muted font-ui">
+                  Kz
                 </span>
                 <input
                   id="preco"
                   type="number"
-                  step="0.01"
+                  step="1"
                   min="0"
+                  inputMode="numeric"
                   {...register('preco', { valueAsNumber: true })}
                   className={cn(inputCls, 'rounded-l-none')}
-                  placeholder="0,00"
+                  placeholder="Ex: 24500"
                 />
               </div>
               <FieldError msg={errors.preco?.message} />
@@ -461,17 +461,18 @@ export default function ProductForm({ produto }: Props) {
             <div>
               <FieldLabel htmlFor="precoAntes">Preço anterior</FieldLabel>
               <div className="flex items-stretch">
-                <span className="flex items-center px-3 bg-gray-50 border border-r-0 border-gray-200 rounded-l-lg text-sm text-muted">
-                  €
+                <span className="flex items-center px-3 bg-a-bone border border-r-0 border-a-border rounded-l-lg text-sm text-a-muted font-ui">
+                  Kz
                 </span>
                 <input
                   id="precoAntes"
                   type="number"
-                  step="0.01"
+                  step="1"
                   min="0"
+                  inputMode="numeric"
                   {...register('precoAntes', { valueAsNumber: true })}
                   className={cn(inputCls, 'rounded-l-none')}
-                  placeholder="0,00"
+                  placeholder="Preço antes do desconto"
                 />
               </div>
               <FieldError msg={errors.precoAntes?.message} />
@@ -481,10 +482,10 @@ export default function ProductForm({ produto }: Props) {
       </div>
 
       {/* ── Categoria e coleção ── */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
         <SectionTitle>Categoria e coleção</SectionTitle>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <FieldLabel htmlFor="categoria">Categoria *</FieldLabel>
             <select id="categoria" {...register('categoria')} className={cn(inputCls, 'bg-white')}>
@@ -510,14 +511,14 @@ export default function ProductForm({ produto }: Props) {
       </div>
 
       {/* ── Imagens ── */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
         <SectionTitle>Imagens</SectionTitle>
 
         <div className="space-y-3">
           {watchedImagens.map((url, idx) => (
             <div
               key={`${url}-${idx}`}
-              className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg"
+              className="flex items-center gap-3 p-3 border border-a-border rounded-lg bg-a-bone/40"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -531,7 +532,7 @@ export default function ProductForm({ produto }: Props) {
                   type="button"
                   onClick={() => moverImagem(idx, 'up')}
                   disabled={idx === 0}
-                  className="p-1.5 rounded text-muted hover:text-noir hover:bg-gray-50 disabled:opacity-30 transition-colors"
+                  className="p-1.5 rounded text-a-muted hover:text-a-charcoal hover:bg-a-bone disabled:opacity-30 transition-colors"
                   title="Mover para cima"
                 >
                   <ArrowUp size={14} />
@@ -540,7 +541,7 @@ export default function ProductForm({ produto }: Props) {
                   type="button"
                   onClick={() => moverImagem(idx, 'down')}
                   disabled={idx === watchedImagens.length - 1}
-                  className="p-1.5 rounded text-muted hover:text-noir hover:bg-gray-50 disabled:opacity-30 transition-colors"
+                  className="p-1.5 rounded text-a-muted hover:text-a-charcoal hover:bg-a-bone disabled:opacity-30 transition-colors"
                   title="Mover para baixo"
                 >
                   <ArrowDown size={14} />
@@ -568,7 +569,7 @@ export default function ProductForm({ produto }: Props) {
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex items-center gap-2 text-xs border-2 border-dashed border-gray-200 rounded-lg px-4 py-3 text-muted hover:border-gold/40 hover:text-gold transition-colors disabled:opacity-50 w-full justify-center"
+            className="flex items-center gap-2 text-xs border-2 border-dashed border-a-border rounded-lg px-4 py-6 text-a-muted hover:border-a-gold hover:text-a-gold hover:bg-a-gold/5 transition-colors disabled:opacity-50 w-full justify-center font-ui"
           >
             {uploading ? (
               <>
@@ -588,7 +589,7 @@ export default function ProductForm({ produto }: Props) {
       </div>
 
       {/* ── Tamanhos ── */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
         <SectionTitle>Tamanhos</SectionTitle>
 
         <Controller
@@ -600,15 +601,15 @@ export default function ProductForm({ produto }: Props) {
                 <button
                   type="button"
                   onClick={selectAllTamanhos}
-                  className="text-xs text-gold hover:underline"
+                  className="text-xs text-a-gold hover:underline font-ui"
                 >
                   Seleccionar todos
                 </button>
-                <span className="text-gray-300">·</span>
+                <span className="text-a-border">·</span>
                 <button
                   type="button"
                   onClick={clearTamanhos}
-                  className="text-xs text-muted hover:text-noir"
+                  className="text-xs text-a-muted hover:text-a-charcoal font-ui"
                 >
                   Nenhum
                 </button>
@@ -622,10 +623,10 @@ export default function ProductForm({ produto }: Props) {
                       type="button"
                       onClick={() => toggleTamanho(t)}
                       className={cn(
-                        'w-12 h-12 rounded-lg text-sm font-medium border transition-colors',
+                        'w-12 h-12 rounded-lg text-sm font-medium border transition-colors font-ui',
                         selected
-                          ? 'bg-noir text-cream border-noir'
-                          : 'bg-white text-noir border-gray-200 hover:border-gray-400',
+                          ? 'bg-a-charcoal text-white border-a-charcoal'
+                          : 'bg-white text-a-charcoal border-a-border hover:border-a-charcoal',
                       )}
                     >
                       {t}
@@ -640,7 +641,7 @@ export default function ProductForm({ produto }: Props) {
       </div>
 
       {/* ── Cores ── */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
         <SectionTitle>Cores</SectionTitle>
 
         <Controller
@@ -651,14 +652,14 @@ export default function ProductForm({ produto }: Props) {
               {watchedCores.map((cor, idx) => (
                 <div
                   key={`${cor.nome}-${idx}`}
-                  className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg"
+                  className="flex items-center gap-3 p-3 border border-a-border rounded-lg bg-a-bone/40"
                 >
                   <div
-                    className="w-8 h-8 rounded-full border border-gray-200 flex-shrink-0"
+                    className="w-8 h-8 rounded-full border border-a-border flex-shrink-0"
                     style={{ backgroundColor: cor.hex }}
                   />
-                  <span className="flex-1 text-sm text-noir">{cor.nome}</span>
-                  <span className="text-xs font-mono text-muted">{cor.hex}</span>
+                  <span className="flex-1 text-sm text-a-charcoal font-ui">{cor.nome}</span>
+                  <span className="text-xs font-mono text-a-muted">{cor.hex}</span>
                   <button
                     type="button"
                     onClick={() => removerCor(idx)}
@@ -695,14 +696,14 @@ export default function ProductForm({ produto }: Props) {
                     type="color"
                     value={corHex}
                     onChange={(e) => setCorHex(e.target.value)}
-                    className="w-10 h-9 rounded-lg border border-gray-200 cursor-pointer p-0.5"
+                    className="w-10 h-10 rounded-lg border border-a-border cursor-pointer p-0.5"
                   />
                 </div>
                 <button
                   type="button"
                   onClick={adicionarCor}
                   disabled={!corNome.trim()}
-                  className="flex items-center gap-1.5 bg-noir text-cream text-xs px-3 py-2 rounded-lg hover:bg-noir/90 disabled:opacity-40 transition-colors h-9"
+                  className="flex items-center gap-1.5 bg-a-charcoal text-white text-xs px-3 rounded-lg hover:bg-a-charcoal/90 disabled:opacity-40 transition-colors h-10 font-ui"
                 >
                   <Plus size={14} />
                   Adicionar
@@ -716,24 +717,24 @@ export default function ProductForm({ produto }: Props) {
 
       {/* ── Stock ── */}
       {watchedTamanhos.length > 0 && watchedCores.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
           <SectionTitle>Stock por tamanho / cor</SectionTitle>
 
           <div className="overflow-x-auto">
             <table className="text-sm">
               <thead>
                 <tr>
-                  <th className="text-left text-[10px] tracking-widest uppercase text-muted font-normal pr-6 pb-3">
+                  <th className="text-left text-[9.5px] tracking-[0.18em] uppercase text-a-muted font-normal pr-6 pb-3 font-ui">
                     Tamanho
                   </th>
                   {watchedCores.map((cor) => (
                     <th
                       key={cor.nome}
-                      className="text-center text-[10px] tracking-widest uppercase text-muted font-normal px-3 pb-3 min-w-[80px]"
+                      className="text-center text-[9.5px] tracking-[0.18em] uppercase text-a-muted font-normal px-3 pb-3 min-w-[80px] font-ui"
                     >
                       <div className="flex flex-col items-center gap-1">
                         <div
-                          className="w-4 h-4 rounded-full border border-gray-200"
+                          className="w-4 h-4 rounded-full border border-a-border"
                           style={{ backgroundColor: cor.hex }}
                         />
                         {cor.nome}
@@ -744,9 +745,9 @@ export default function ProductForm({ produto }: Props) {
               </thead>
               <tbody>
                 {watchedTamanhos.map((t) => (
-                  <tr key={t} className="border-t border-gray-50">
+                  <tr key={t} className="border-t border-a-border/40">
                     <td className="pr-6 py-2">
-                      <span className="text-sm font-medium text-noir">{t}</span>
+                      <span className="text-sm font-medium text-a-charcoal font-ui">{t}</span>
                     </td>
                     {watchedCores.map((cor) => (
                       <td key={cor.nome} className="px-3 py-2">
@@ -756,7 +757,7 @@ export default function ProductForm({ produto }: Props) {
                           max="99"
                           defaultValue={getStockValue(t, cor.nome)}
                           onChange={(e) => setStockValue(t, cor.nome, e.target.value)}
-                          className="w-16 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-center text-noir focus:outline-none focus:border-gold/60 transition-colors"
+                          className="w-16 border border-a-border rounded-lg px-2 py-1.5 text-sm text-center text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui"
                         />
                       </td>
                     ))}
@@ -769,10 +770,10 @@ export default function ProductForm({ produto }: Props) {
       )}
 
       {/* ── Visibilidade ── */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
         <SectionTitle>Visibilidade</SectionTitle>
 
-        <div className="divide-y divide-gray-50">
+        <div className="divide-y divide-a-border/40">
           <Controller
             control={control}
             name="ativo"
@@ -798,7 +799,7 @@ export default function ProductForm({ produto }: Props) {
       </div>
 
       {/* ── SEO ── */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-lg border border-a-border p-5 sm:p-6">
         <SectionTitle>SEO</SectionTitle>
 
         <div className="space-y-4">
@@ -807,8 +808,8 @@ export default function ProductForm({ produto }: Props) {
               <FieldLabel htmlFor="metaTitle">Meta título</FieldLabel>
               <span
                 className={cn(
-                  'text-[10px]',
-                  watchedMetaTitle.length > 60 ? 'text-red-500' : 'text-muted',
+                  'text-[10px] font-ui',
+                  watchedMetaTitle.length > 60 ? 'text-red-500' : 'text-a-muted',
                 )}
               >
                 {watchedMetaTitle.length}/60 caracteres
@@ -827,8 +828,8 @@ export default function ProductForm({ produto }: Props) {
               <FieldLabel htmlFor="metaDesc">Meta descrição</FieldLabel>
               <span
                 className={cn(
-                  'text-[10px]',
-                  watchedMetaDesc.length > 160 ? 'text-red-500' : 'text-muted',
+                  'text-[10px] font-ui',
+                  watchedMetaDesc.length > 160 ? 'text-red-500' : 'text-a-muted',
                 )}
               >
                 {watchedMetaDesc.length}/160 caracteres
@@ -852,23 +853,32 @@ export default function ProductForm({ produto }: Props) {
         </div>
       )}
 
-      {/* ── Botões ── */}
-      <div className="flex items-center justify-end gap-4 pb-8">
-        <button
-          type="button"
-          onClick={() => router.push('/admin/produtos')}
-          className="text-sm text-muted hover:text-noir transition-colors"
-        >
-          Cancelar
-        </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex items-center gap-2 bg-noir text-cream text-xs tracking-widest uppercase px-6 py-3 min-h-12 rounded-lg hover:bg-noir/90 disabled:opacity-60 transition-colors font-sans"
-        >
-          {isSubmitting && <Loader2 size={14} className="animate-spin" />}
-          {produto?.id ? 'Guardar alterações' : 'Criar produto'}
-        </button>
+      {/* ── Botões (barra fixa no fundo) ── */}
+      <div className="sticky bottom-0 z-10 -mx-4 sm:mx-0 bg-a-bone/90 backdrop-blur border-t border-a-border sm:border sm:rounded-lg px-4 sm:px-5 py-3 flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          {Object.keys(errors).length > 0 && (
+            <p className="text-xs text-red-500 font-ui truncate">
+              Corrija os campos assinalados acima.
+            </p>
+          )}
+        </div>
+        <div className="flex items-center gap-4 shrink-0">
+          <button
+            type="button"
+            onClick={() => router.push('/admin/produtos')}
+            className="text-sm text-a-muted hover:text-a-charcoal transition-colors font-ui"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-6 py-3 min-h-12 rounded-lg hover:bg-a-charcoal/90 disabled:opacity-60 transition-colors font-ui"
+          >
+            {isSubmitting && <Loader2 size={14} className="animate-spin" />}
+            {produto?.id ? 'Guardar alterações' : 'Criar produto'}
+          </button>
+        </div>
       </div>
     </form>
   )

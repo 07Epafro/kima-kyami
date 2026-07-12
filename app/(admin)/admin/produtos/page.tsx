@@ -75,21 +75,21 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
           <span className="text-[11px] text-a-muted font-ui">({total})</span>
         </div>
         <Link href="/admin/produtos/novo"
-          className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-4 py-2.5 rounded hover:bg-a-charcoal/90 transition-colors font-ui">
+          className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-4 py-2.5 rounded hover:bg-a-charcoal/90 transition-colors font-ui whitespace-nowrap shrink-0">
           <Plus size={13} strokeWidth={1.5} /> Novo Produto
         </Link>
       </div>
 
       {/* Filters */}
       <form method="GET" action="/admin/produtos" className="bg-white border border-a-border rounded-lg p-4">
-        <div className="flex flex-wrap gap-3 items-end">
-          <div className="flex-1 min-w-44">
+        <div className="grid grid-cols-2 gap-3 lg:flex lg:flex-wrap lg:items-end">
+          <div className="col-span-2 lg:flex-1 lg:min-w-44">
             <label htmlFor="search" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Pesquisar</label>
             <input id="search" name="search" type="text" defaultValue={params.search ?? ''}
               placeholder="Nome do produto..."
               className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal placeholder-a-muted/50 focus:outline-none focus:border-a-gold transition-colors font-ui" />
           </div>
-          <div className="min-w-36">
+          <div className="lg:min-w-36">
             <label htmlFor="categoria" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Categoria</label>
             <select id="categoria" name="categoria" defaultValue={params.categoria ?? ''}
               className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
@@ -97,7 +97,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
               {CATEGORIAS.map((c) => <option key={c} value={c}>{categoriaLabels[c]}</option>)}
             </select>
           </div>
-          <div className="min-w-32">
+          <div className="lg:min-w-32">
             <label htmlFor="estado" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Estado</label>
             <select id="estado" name="estado" defaultValue={params.estado ?? ''}
               className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
@@ -107,7 +107,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
               <option value="inativo">Inactivo</option>
             </select>
           </div>
-          <div className="min-w-36">
+          <div className="lg:min-w-36">
             <label htmlFor="sort" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Ordenar por</label>
             <select id="sort" name="sort" defaultValue={params.sort ?? 'criadoEm'}
               className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
@@ -116,7 +116,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
               <option value="preco">Preço</option>
             </select>
           </div>
-          <div className="min-w-28">
+          <div className="lg:min-w-28">
             <label htmlFor="order" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Direcção</label>
             <select id="order" name="order" defaultValue={params.order ?? 'desc'}
               className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
@@ -125,10 +125,10 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
             </select>
           </div>
           <button type="submit"
-            className="bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-5 py-2 rounded hover:bg-a-charcoal/90 transition-colors font-ui">
+            className="bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-5 py-2.5 rounded hover:bg-a-charcoal/90 transition-colors font-ui">
             Filtrar
           </button>
-          <Link href="/admin/produtos" className="text-[11px] text-a-muted hover:text-a-charcoal transition-colors py-2 px-1 font-ui">
+          <Link href="/admin/produtos" className="text-[11px] text-a-muted hover:text-a-charcoal transition-colors py-2.5 px-1 font-ui text-center self-center">
             Limpar
           </Link>
         </div>

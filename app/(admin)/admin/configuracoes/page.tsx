@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { Save, CheckCircle } from 'lucide-react'
 
-const labelClass = 'text-[9px] tracking-[0.25em] uppercase text-noir/65 mb-1.5 block font-sans'
-const inputClass = 'w-full bg-white border border-gray-200 text-noir text-[13px] px-4 py-2.5 rounded-lg focus:outline-none focus:border-gold/60 transition-colors placeholder:text-gray-300 font-sans'
+const labelClass = 'text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 block font-ui'
+const inputClass = 'w-full bg-white border border-a-border text-a-charcoal text-[13px] px-4 py-2.5 rounded-lg focus:outline-none focus:border-a-gold transition-colors placeholder:text-a-muted/40 font-ui'
 
 export default function ConfiguracoesPage() {
   const [form, setForm] = useState({
@@ -60,25 +60,25 @@ export default function ConfiguracoesPage() {
 
   return (
     <div className="max-w-2xl">
-      <div className="mb-8">
-        <h1 className="text-xl font-light text-noir tracking-wide font-serif">
+      <div className="mb-6">
+        <h1 className="text-2xl font-light text-a-charcoal tracking-tight font-display">
           Configurações da Loja
         </h1>
-        <p className="text-[12px] text-noir/55 mt-1 font-sans">
+        <p className="text-sm text-a-muted mt-1 font-ui">
           Dados de contacto exibidos na página pública de contactos.
         </p>
       </div>
 
       {estado === 'loading' ? (
         <div className="flex items-center gap-3 py-12">
-          <div className="w-5 h-5 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
-          <span className="text-muted text-sm">A carregar...</span>
+          <div className="w-5 h-5 border-2 border-a-gold/30 border-t-a-gold rounded-full animate-spin" />
+          <span className="text-a-muted text-sm font-ui">A carregar...</span>
         </div>
       ) : (
-        <form onSubmit={guardar} className="space-y-6">
+        <form onSubmit={guardar} className="space-y-5">
           {/* Contacto */}
-          <section className="space-y-4">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-sans">
+          <section className="space-y-4 bg-white border border-a-border rounded-lg p-5 sm:p-6">
+            <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted pb-3 border-b border-a-border font-ui">
               Contacto
             </p>
             <div>
@@ -98,8 +98,8 @@ export default function ConfiguracoesPage() {
           </section>
 
           {/* Redes sociais */}
-          <section className="space-y-4 pt-2">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-sans">
+          <section className="space-y-4 bg-white border border-a-border rounded-lg p-5 sm:p-6">
+            <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted pb-3 border-b border-a-border font-ui">
               Redes Sociais
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -115,8 +115,8 @@ export default function ConfiguracoesPage() {
           </section>
 
           {/* Localização & Horário */}
-          <section className="space-y-4 pt-2">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-sans">
+          <section className="space-y-4 bg-white border border-a-border rounded-lg p-5 sm:p-6">
+            <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted pb-3 border-b border-a-border font-ui">
               Localização & Horário
             </p>
             <div>
@@ -142,11 +142,11 @@ export default function ConfiguracoesPage() {
             <button
               type="submit"
               disabled={estado === 'saving'}
-              className="flex items-center gap-2 bg-gold text-noir text-[10px] tracking-[0.25em] uppercase px-6 min-h-12 rounded-lg hover:bg-gold/90 transition-colors disabled:opacity-50 font-sans"
+              className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-6 min-h-12 rounded-lg hover:bg-a-charcoal/90 transition-colors disabled:opacity-50 font-ui"
             >
               {estado === 'saving' ? (
                 <>
-                  <div className="w-3.5 h-3.5 border-2 border-noir/30 border-t-noir rounded-full animate-spin" />
+                  <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   A GUARDAR...
                 </>
               ) : (
@@ -157,13 +157,13 @@ export default function ConfiguracoesPage() {
               )}
             </button>
             {estado === 'ok' && (
-              <span className="flex items-center gap-1.5 text-[11px] text-green-600 font-sans">
+              <span className="flex items-center gap-1.5 text-[11px] text-green-600 font-ui">
                 <CheckCircle size={13} />
                 Guardado com sucesso
               </span>
             )}
             {estado === 'error' && (
-              <span className="text-[11px] text-red-500 font-sans">
+              <span className="text-[11px] text-red-500 font-ui">
                 Erro ao guardar. Tenta novamente.
               </span>
             )}

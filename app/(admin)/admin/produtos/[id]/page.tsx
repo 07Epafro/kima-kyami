@@ -74,13 +74,10 @@ export default async function EditarProdutoPage({
     <div className="max-w-4xl space-y-10">
       {/* Cabeçalho */}
       <div>
-        <h1
-          className="text-2xl font-light text-noir"
-          style={{ fontFamily: 'var(--font-serif)' }}
-        >
+        <h1 className="text-2xl font-light text-a-charcoal font-display tracking-tight">
           Editar Produto
         </h1>
-        <p className="text-sm text-muted mt-1" style={{ fontFamily: 'var(--font-sans)' }}>
+        <p className="text-sm text-a-muted mt-1 font-ui">
           {produto.nome}{' '}
           <span className="font-mono text-xs">· {produto.slug}</span>
         </p>
@@ -90,24 +87,22 @@ export default async function EditarProdutoPage({
       <ProductForm produto={produtoParaForm} />
 
       {/* Histórico de vendas */}
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2
-            className="text-xs tracking-widest uppercase text-muted"
-            style={{ fontFamily: 'var(--font-sans)' }}
-          >
+      <div className="bg-white rounded-lg border border-a-border overflow-hidden">
+        <div className="px-6 py-4 border-b border-a-border">
+          <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
             Histórico de vendas (últimas 10)
           </h2>
         </div>
 
         {historico.length === 0 ? (
-          <p className="px-6 py-8 text-sm text-muted text-center">
+          <p className="px-6 py-8 text-sm text-a-muted text-center font-ui">
             Este produto ainda não foi vendido.
           </p>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-50">
+              <tr className="text-[9.5px] tracking-[0.18em] uppercase text-a-muted border-b border-a-border font-ui">
                 <th className="px-6 py-3 text-left font-normal">Encomenda</th>
                 <th className="px-4 py-3 text-right font-normal">Total enc.</th>
                 <th className="px-4 py-3 text-center font-normal">Estado</th>
@@ -118,14 +113,14 @@ export default async function EditarProdutoPage({
               {historico.map((item) => (
                 <tr
                   key={item.id}
-                  className="border-b border-gray-50 hover:bg-gray-50/40 transition-colors"
+                  className="border-b border-a-border/50 hover:bg-a-bone transition-colors last:border-0"
                 >
                   <td className="px-6 py-3">
-                    <span className="font-mono text-xs text-noir">
+                    <span className="font-mono text-xs text-a-charcoal">
                       {item.encomenda.referencia}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-right font-medium text-noir">
+                  <td className="px-4 py-3 text-xs text-right font-medium text-a-charcoal font-ui">
                     {formatarPreco(item.encomenda.total)}
                   </td>
                   <td className="px-4 py-3 text-center">
@@ -137,7 +132,7 @@ export default async function EditarProdutoPage({
                       {estadoLabels[item.encomenda.estado]}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-[10px] text-muted text-right">
+                  <td className="px-4 py-3 text-[10px] text-a-muted text-right font-ui">
                     {item.encomenda.criadaEm.toLocaleDateString('pt-PT', {
                       day: '2-digit',
                       month: '2-digit',
@@ -148,6 +143,7 @@ export default async function EditarProdutoPage({
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

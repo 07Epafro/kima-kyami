@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
   Menu,
+  Plus,
   X,
 } from 'lucide-react'
 
@@ -42,11 +43,11 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
       {/* Brand */}
       <div className="px-6 py-7 border-b border-white/8">
         <Link href="/admin/dashboard" onClick={() => setOpen(false)}>
-          <span className="text-2xl tracking-[0.45em] font-light font-display text-a-gold">
-            KK
-          </span>
-          <span className="block text-[9px] tracking-[0.32em] uppercase text-white/35 mt-1 font-ui">
+          <span className="text-xl tracking-[0.06em] font-light font-display text-a-gold whitespace-nowrap">
             Kima Kyami
+          </span>
+          <span className="block text-[8.5px] tracking-[0.32em] uppercase text-white/35 mt-1.5 font-ui">
+            Luxury Management
           </span>
         </Link>
       </div>
@@ -80,6 +81,18 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
           )
         })}
       </ul>
+
+      {/* Novo produto */}
+      <div className="px-4 pb-4">
+        <Link
+          href="/admin/produtos/novo"
+          onClick={() => setOpen(false)}
+          className="flex items-center justify-center gap-2 w-full border border-a-gold/40 text-a-gold text-[10px] tracking-[0.18em] uppercase px-3 py-2.5 rounded hover:bg-a-gold/10 hover:border-a-gold transition-colors font-ui"
+        >
+          <Plus size={13} strokeWidth={1.5} aria-hidden="true" />
+          <span>Novo Produto</span>
+        </Link>
+      </div>
 
       {/* User + logout */}
       <div className="px-3 py-4 border-t border-white/8 space-y-1">

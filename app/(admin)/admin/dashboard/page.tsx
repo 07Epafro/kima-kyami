@@ -1,6 +1,6 @@
 import db from '@/lib/db'
 import { EstadoPagamento, EstadoEncomenda } from '@prisma/client'
-import { TrendingUp, ShoppingBag, Users, Clock } from 'lucide-react'
+import { TrendingUp, ShoppingBag, Users, Clock, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import SalesChart from '@/components/admin/SalesChart'
 import { formatarPreco } from '@/lib/utils'
@@ -94,6 +94,7 @@ export default async function DashboardPage() {
       icon: TrendingUp,
       iconCls: 'text-a-gold',
       iconBg:  'bg-a-gold/10',
+      href: '/admin/encomendas',
     },
     {
       label: 'Encomendas este mês',
@@ -101,6 +102,7 @@ export default async function DashboardPage() {
       icon: ShoppingBag,
       iconCls: 'text-blue-600',
       iconBg:  'bg-blue-50',
+      href: '/admin/encomendas',
     },
     {
       label: 'Clientes',
@@ -108,6 +110,7 @@ export default async function DashboardPage() {
       icon: Users,
       iconCls: 'text-emerald-600',
       iconBg:  'bg-emerald-50',
+      href: '/admin/clientes',
     },
     {
       label: 'Pagamentos pendentes',
@@ -115,33 +118,38 @@ export default async function DashboardPage() {
       icon: Clock,
       iconCls: pagamentosPendentes > 0 ? 'text-red-500'  : 'text-a-muted',
       iconBg:  pagamentosPendentes > 0 ? 'bg-red-50'     : 'bg-a-border/30',
+      href: '/admin/pagamentos',
     },
   ]
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6 lg:space-y-8">
 
       {/* KPI cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {kpis.map(({ label, valor, icon: Icon, iconCls, iconBg }) => (
-          <div key={label} className="bg-white border border-a-border rounded-lg p-6">
-            <div className="flex items-start justify-between mb-5">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
+        {kpis.map(({ label, valor, icon: Icon, iconCls, iconBg, href }) => (
+          <Link
+            key={label}
+            href={href}
+            className="group bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md hover:border-a-gold/40 transition-all"
+          >
+            <div className="flex items-start justify-between mb-4 sm:mb-5">
               <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui leading-tight max-w-30">
                 {label}
               </p>
-              <div className={`w-8 h-8 rounded ${iconBg} flex items-center justify-center shrink-0`}>
+              <div className={`w-8 h-8 rounded ${iconBg} flex items-center justify-center shrink-0 transition-transform group-hover:scale-105`}>
                 <Icon size={15} strokeWidth={1.5} className={iconCls} />
               </div>
             </div>
-            <p className="text-3xl font-light text-a-charcoal font-display leading-none tracking-tight">
+            <p className="text-2xl sm:text-3xl font-light text-a-charcoal font-display leading-none tracking-tight">
               {valor}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
 
       {/* Sales chart */}
-      <div className="bg-white border border-a-border rounded-lg p-6">
+      <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
         <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted mb-6 font-ui">
           Vendas — últimos 30 dias
         </h2>
@@ -149,10 +157,10 @@ export default async function DashboardPage() {
       </div>
 
       {/* Tables */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
 
         {/* Recent orders */}
-        <div className="bg-white border border-a-border rounded-lg overflow-hidden">
+        <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
           <div className="px-6 py-4 border-b border-a-border flex items-center justify-between">
             <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
               Últimas encomendas
@@ -162,7 +170,12 @@ export default async function DashboardPage() {
             </Link>
           </div>
           {ultimasEncomendas.length === 0 ? (
-            <p className="px-6 py-8 text-sm text-a-muted text-center font-ui">Sem encomendas ainda.</p>
+            <div className="px-6 py-12 text-center">
+              <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
+                <ShoppingBag size={18} strokeWidth={1.5} className="text-a-muted" />
+              </div>
+              <p className="text-sm text-a-muted font-ui">Sem encomendas ainda.</p>
+            </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -200,7 +213,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Payments to validate */}
-        <div className="bg-white border border-a-border rounded-lg overflow-hidden">
+        <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
           <div className="px-6 py-4 border-b border-a-border flex items-center justify-between">
             <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
               Pagamentos a validar
@@ -210,7 +223,12 @@ export default async function DashboardPage() {
             </Link>
           </div>
           {pagamentosUrgentes.length === 0 ? (
-            <p className="px-6 py-8 text-sm text-a-muted text-center font-ui">Nenhum comprovante pendente.</p>
+            <div className="px-6 py-12 text-center">
+              <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
+                <CheckCircle2 size={18} strokeWidth={1.5} className="text-a-muted" />
+              </div>
+              <p className="text-sm text-a-muted font-ui">Nenhum comprovante pendente.</p>
+            </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">

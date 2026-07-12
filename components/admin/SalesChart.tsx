@@ -1,8 +1,8 @@
 'use client'
 
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -33,7 +33,13 @@ export default function SalesChart({ data }: Props) {
 
   return (
     <ResponsiveContainer width="100%" height={260}>
-      <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+      <AreaChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+        <defs>
+          <linearGradient id="goldFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stopColor={GOLD} stopOpacity={0.28} />
+            <stop offset="100%" stopColor={GOLD} stopOpacity={0.02} />
+          </linearGradient>
+        </defs>
         <CartesianGrid strokeDasharray="3 3" stroke={BORDER} vertical={false} />
         <XAxis
           dataKey="label"
@@ -62,15 +68,17 @@ export default function SalesChart({ data }: Props) {
           }}
           cursor={{ stroke: GOLD, strokeWidth: 1, strokeDasharray: '4 2' }}
         />
-        <Line
+        <Area
           type="monotone"
+          isAnimationActive={false}
           dataKey="total"
           stroke={GOLD}
-          strokeWidth={1.5}
+          strokeWidth={2}
+          fill="url(#goldFill)"
           dot={false}
-          activeDot={{ r: 3, fill: GOLD, strokeWidth: 0 }}
+          activeDot={{ r: 4, fill: GOLD, strokeWidth: 0 }}
         />
-      </LineChart>
+      </AreaChart>
     </ResponsiveContainer>
   )
 }

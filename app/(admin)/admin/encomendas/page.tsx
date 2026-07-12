@@ -81,8 +81,8 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
       </div>
 
       {/* Filter form */}
-      <form method="GET" className="bg-white border border-a-border rounded-lg p-4 flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-44">
+      <form method="GET" className="bg-white border border-a-border rounded-lg p-4 grid grid-cols-2 gap-3 lg:flex lg:flex-wrap">
+        <div className="relative col-span-2 lg:flex-1 lg:min-w-44">
           <Search size={13} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-a-muted" />
           <input
             name="search" defaultValue={search} placeholder="Referência ou cliente…"
@@ -91,21 +91,21 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
           />
         </div>
         <select name="estado" defaultValue={estado ?? ''} aria-label="Estado da encomenda"
-          className="border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-ui bg-white">
+          className="col-span-2 border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-ui bg-white lg:col-span-1">
           <option value="">Todos os estados</option>
           {Object.entries(ESTADO_CONFIG).map(([key, { label }]) => (
             <option key={key} value={key}>{label}</option>
           ))}
         </select>
         <input name="de"  type="date" defaultValue={sp.de}  title="Data de início" aria-label="Data de início"
-          className="border border-a-border rounded px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui" />
+          className="w-full border border-a-border rounded px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
         <input name="ate" type="date" defaultValue={sp.ate} title="Data de fim"    aria-label="Data de fim"
-          className="border border-a-border rounded px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui" />
+          className="w-full border border-a-border rounded px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
         <button type="submit"
           className="px-4 py-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded hover:bg-a-charcoal/90 transition-colors font-ui">
           Filtrar
         </button>
-        <a href="/admin/encomendas" className="px-3 py-2 text-[11px] text-a-muted hover:text-a-charcoal transition-colors font-ui">
+        <a href="/admin/encomendas" className="px-3 py-2 text-[11px] text-a-muted hover:text-a-charcoal transition-colors font-ui text-center self-center">
           Limpar
         </a>
       </form>
