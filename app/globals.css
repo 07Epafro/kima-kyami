@@ -63,7 +63,7 @@ body {
   }
 }
 
-/* Section vertical rhythm — 64px mobile / 96px tablet / 140px desktop */
+/* Section vertical rhythm — 64px mobile / 96px tablet / 80px desktop */
 .section-py {
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -78,8 +78,8 @@ body {
 
 @media (min-width: 1280px) {
   .section-py {
-    padding-top: 8.75rem;
-    padding-bottom: 8.75rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 }
 
@@ -96,7 +96,7 @@ body {
 
 @media (min-width: 1280px) {
   .section-pb {
-    padding-bottom: 8.75rem;
+    padding-bottom: 5rem;
   }
 }
 

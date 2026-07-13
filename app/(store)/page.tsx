@@ -132,20 +132,23 @@ export default async function HomePage() {
           KK
         </span>
 
-        <div className="container-kk grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-10">
-          {/* Logo mark */}
-          <div className="flex flex-col items-center lg:items-center gap-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo.svg"
-              alt="Kima Kyami"
-              width={120}
-              height={80}
-              className="object-contain w-28 lg:w-36 h-auto"
-            />
-            <p className="text-[9px] tracking-spaced-xl uppercase text-noir/50 font-sans">
-              KIMA KYAMI
-            </p>
+        <div className="container-kk grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
+          {/* Logo mark — editorial frame */}
+          <div className="flex flex-col items-center gap-8">
+            <div className="border border-noir/12 p-10 lg:p-14 flex flex-col items-center gap-6">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.svg"
+                alt="Kima Kyami"
+                width={160}
+                height={110}
+                className="object-contain w-36 lg:w-48 h-auto"
+              />
+              <div className="w-10 h-px bg-noir/20" />
+              <p className="text-[8px] tracking-[0.35em] uppercase text-noir/40 font-sans">
+                EST. 2024 · LUANDA
+              </p>
+            </div>
           </div>
 
           {/* Text */}

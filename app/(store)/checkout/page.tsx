@@ -121,7 +121,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="max-w-300 mx-auto px-5 sm:px-8 py-10 font-sans">
+    <div className="max-w-5xl mx-auto px-5 sm:px-8 py-10 font-sans">
       {/* Back */}
       <Link
         href="/colecoes"
