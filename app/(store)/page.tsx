@@ -22,22 +22,22 @@ const CATEGORIAS = [
   {
     value: 'SALTOS',
     label: 'SALTOS',
-    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&q=80',
+    image: '/images/categoria-saltos.jpeg',
   },
   {
     value: 'SANDALIAS',
     label: 'SANDÁLIAS',
-    image: 'https://images.unsplash.com/photo-1601001435957-f3399c18851e?w=800&q=80',
+    image: '/images/categoria-sandalias.jpeg',
   },
   {
     value: 'MULES',
     label: 'MULES',
-    image: 'https://images.unsplash.com/photo-1603808033176-9d134e6f4b94?w=800&q=80',
+    image: '/images/categoria-mules.jpeg',
   },
   {
     value: 'COLECAO_LIMITADA',
     label: 'COLEÇÃO LIMITADA',
-    image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=800&q=80',
+    image: '/images/categoria-colecao-limitada.jpeg',
   },
 ]
 
@@ -82,12 +82,12 @@ export default async function HomePage() {
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         {/* Art direction: portrait crop em mobile, landscape em desktop */}
         <Image
-          src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=85"
+          src="/images/hero.jpeg"
           alt="Kima Kyami — Sapatos de luxo"
           fill
           sizes="100vw"
           priority
-          className="object-cover object-[center_20%] sm:object-center"
+          className="object-cover object-center"
         />
         {/* Overlay gradiente */}
         <div className="absolute inset-0 bg-gradient-to-r from-noir/75 via-noir/40 to-noir/20" />
@@ -226,7 +226,7 @@ export default async function HomePage() {
           {/* Image */}
           <div className="relative aspect-[4/5] lg:aspect-auto lg:min-h-[600px] order-2 lg:order-1">
             <Image
-              src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=85"
+              src="/images/quote-section.jpeg"
               alt="Kima Kyami — Postura. Atitude."
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -290,8 +290,8 @@ export default async function HomePage() {
           {/* Image left */}
           <div className="relative aspect-[4/5] lg:aspect-auto">
             <Image
-              src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=700&q=80"
-              alt="Embalagem Kima Kyami"
+              src="/images/exclusividade-1.jpeg"
+              alt="Sandália Kima Kyami"
               fill
               sizes="(max-width: 1024px) 100vw, 33vw"
               className="object-cover"
@@ -317,8 +317,8 @@ export default async function HomePage() {
           {/* Image right */}
           <div className="relative aspect-[4/5] lg:aspect-auto">
             <Image
-              src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80"
-              alt="Saco Kima Kyami"
+              src="/images/exclusividade-2.jpeg"
+              alt="Sapatos Kima Kyami"
               fill
               sizes="(max-width: 1024px) 100vw, 33vw"
               className="object-cover"

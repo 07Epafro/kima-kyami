@@ -31,7 +31,7 @@ export default function MarcaPage() {
       {/* ─── Hero ─── */}
       <section className="relative h-[70vh] min-h-[500px] overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=85"
+          src="/images/marca-hero.jpeg"
           alt="Kima Kyami — A Marca"
           fill
           sizes="100vw"
@@ -118,7 +118,7 @@ export default function MarcaPage() {
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
         <div className="relative aspect-[4/3] lg:aspect-auto">
           <Image
-            src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?w=800&q=85"
+            src="/images/marca-editorial.jpeg"
             alt="Kima Kyami — Artesanato"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
