@@ -202,7 +202,7 @@ export default function Footer() {
             © {new Date().getFullYear()} KIMA KYAMI. TODOS OS DIREITOS RESERVADOS.
           </p>
           <a
-            href="https://www.instagram.com/ubuntucode"
+            href="https://www.instagram.com/ubuntu__code"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2.5 group"
