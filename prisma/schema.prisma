@@ -107,19 +107,31 @@ model ItemEncomenda {
 }
 
 model Pagamento {
-  id                String          @id @default(cuid())
-  encomendaId       String          @unique
-  encomenda         Encomenda       @relation(fields: [encomendaId], references: [id])
-  valor             Float
-  ibanDestinatario  String
-  referencia        String
-  comprovante       String?
-  estado            EstadoPagamento @default(AGUARDA_COMPROVANTE)
-  validacaoScript   Json?
-  validacaoAdmin    Boolean?
-  notaAdmin         String?
-  criadoEm         DateTime        @default(now())
-  verificadoEm     DateTime?
+  id                   String          @id @default(cuid())
+  encomendaId          String          @unique
+  encomenda            Encomenda       @relation(fields: [encomendaId], references: [id])
+  valor                Float
+  ibanDestinatario     String
+  bancoDestinatario    String?
+  titularDestinatario  String?
+  contaBancariaId      String?
+  referencia           String
+  comprovante          String?
+  estado               EstadoPagamento @default(AGUARDA_COMPROVANTE)
+  validacaoScript      Json?
+  validacaoAdmin       Boolean?
+  notaAdmin            String?
+  criadoEm            DateTime        @default(now())
+  verificadoEm        DateTime?
+}
+
+model ContaBancaria {
+  id       String   @id @default(cuid())
+  banco    String
+  titular  String
+  iban     String
+  ativo    Boolean  @default(true)
+  criadoEm DateTime @default(now())
 }
 
 model Admin {

@@ -26,6 +26,7 @@ const criarSchema = z.object({
   moradaCp: z.string().min(3),
   moradaPais: z.string().default('Angola'),
   itens: z.array(itemSchema).min(1),
+  contaBancariaId: z.string().min(1, 'Selecciona a conta bancária para a transferência'),
 })
 
 function stockKey(tamanho: number, cor: string) { return `${tamanho}-${cor}` }
@@ -42,12 +43,42 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Demasiados pedidos. Tenta novamente em breve.' }, { status: 429 })
   }
 
-  if (!process.env.IBAN_LOJA) {
-    console.error('[encomendas] IBAN_LOJA env var is missing')
+  const { nome, email, telefone, moradaRua, moradaNumero, moradaCidade, moradaCp, moradaPais, itens, contaBancariaId } = parsed.data
+
+  // Valida a conta bancária seleccionada — substitui o antigo IBAN_LOJA fixo
+  // por uma verificação por pedido, já que agora existem múltiplas contas.
+  let conta: Awaited<ReturnType<typeof db.contaBancaria.findUnique>> = null
+  try {
+    conta = await db.contaBancaria.findUnique({ where: { id: contaBancariaId } })
+  } catch (err) {
+    console.error('[encomendas] Falha ao consultar conta bancária', err)
     return NextResponse.json({ error: 'Serviço temporariamente indisponível' }, { status: 503 })
   }
 
-  const { nome, email, telefone, moradaRua, moradaNumero, moradaCidade, moradaCp, moradaPais, itens } = parsed.data
+  if (!conta || !conta.ativo) {
+    let contasActivas = 0
+    try {
+      contasActivas = await db.contaBancaria.count({ where: { ativo: true } })
+    } catch (err) {
+      console.error('[encomendas] Falha ao consultar contas bancárias activas', err)
+      return NextResponse.json({ error: 'Serviço temporariamente indisponível' }, { status: 503 })
+    }
+    if (contasActivas === 0) {
+      console.error('[encomendas] Nenhuma conta bancária activa configurada')
+      return NextResponse.json(
+        { error: 'De momento não há contas bancárias activas configuradas na loja. Contacta o suporte.' },
+        { status: 503 },
+      )
+    }
+    return NextResponse.json(
+      { error: 'Conta bancária seleccionada é inválida ou já não está activa. Actualiza a página e tenta novamente.' },
+      { status: 422 },
+    )
+  }
+
+  // Const binding após a validação — garante que o TypeScript preserva o
+  // narrowing (não-nulo) dentro do closure da transacção mais abaixo.
+  const contaValida = conta
 
   const produtoIds = [...new Set(itens.map(i => i.produtoId))]
   const produtos = await db.produto.findMany({
@@ -113,7 +144,10 @@ export async function POST(req: NextRequest) {
       data: {
         encomendaId: enc.id,
         valor: total,
-        ibanDestinatario: process.env.IBAN_LOJA ?? '',
+        ibanDestinatario: contaValida.iban,
+        bancoDestinatario: contaValida.banco,
+        titularDestinatario: contaValida.titular,
+        contaBancariaId: contaValida.id,
         referencia,
         estado: EstadoPagamento.AGUARDA_COMPROVANTE,
       },
@@ -138,8 +172,9 @@ export async function POST(req: NextRequest) {
         total,
         subtotal,
         portes,
-        iban: process.env.IBAN_LOJA ?? '',
-        titular: process.env.TITULAR_LOJA ?? 'Kima Kyami',
+        iban: contaValida.iban,
+        titular: contaValida.titular,
+        banco: contaValida.banco,
         itens: itens.map(i => ({
           nome: produtoMap.get(i.produtoId)?.nome ?? i.produtoId,
           tamanho: i.tamanho,
@@ -157,8 +192,9 @@ export async function POST(req: NextRequest) {
     encomendaId: result.enc.id,
     pagamentoId: result.pagamentoId,
     referencia: result.referencia,
-    iban: process.env.IBAN_LOJA ?? '',
-    titular: process.env.TITULAR_LOJA ?? 'Kima Kyami',
+    iban: contaValida.iban,
+    titular: contaValida.titular,
+    banco: contaValida.banco,
     valor: total,
   }, { status: 201 })
 }

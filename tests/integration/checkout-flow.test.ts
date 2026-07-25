@@ -10,6 +10,7 @@ const { mockDb, mockTx } = vi.hoisted(() => {
   }
   const mockDb = {
     produto: { findMany: vi.fn() },
+    contaBancaria: { findUnique: vi.fn(), count: vi.fn() },
     $transaction: vi.fn(),
   }
   return { mockDb, mockTx }
@@ -17,6 +18,12 @@ const { mockDb, mockTx } = vi.hoisted(() => {
 
 vi.mock('@/lib/db', () => ({ default: mockDb }))
 vi.mock('@/lib/auth', () => ({ auth: vi.fn().mockResolvedValue(null) }))
+// O rate limiter real usa um Map em memória partilhado por todos os testes
+// deste ficheiro (mesma "unknown" IP); sem este mock, testes adicionais
+// esgotam a janela de 5 pedidos/60s e passam a receber 429 em vez do estado
+// esperado. Isolar o rate limiter mantém cada teste independente do nº de
+// pedidos feitos pelos testes anteriores no mesmo ficheiro.
+vi.mock('@/lib/rate-limit', () => ({ rateLimit: () => true }))
 
 const { mockEmailConfirmacao } = vi.hoisted(() => ({
   mockEmailConfirmacao: vi.fn(),
@@ -40,6 +47,14 @@ const PRODUTO_MOCK = {
 const CLIENTE_MOCK = { id: 'cli-1', email: 'cliente@test.com', nome: 'Ana Silva' }
 const ENC_MOCK = { id: 'enc-abc12345', referencia: 'TEMP' }
 const PAG_MOCK = { id: 'pag-xyz', valor: 89.99 }
+const CONTA_MOCK = {
+  id: 'conta-1',
+  banco: 'BAI',
+  titular: 'Ki Ma Kyami Lda',
+  iban: 'AO06000000000012345678901',
+  ativo: true,
+  criadoEm: new Date(),
+}
 
 function buildRequest(body: unknown) {
   return new NextRequest('http://localhost/api/encomendas', {
@@ -56,12 +71,15 @@ const PAYLOAD = {
   moradaCidade: 'Lisboa',
   moradaCp: '1250-071',
   itens: [{ produtoId: 'prod-abc12345', tamanho: 38, cor: 'Dourado', quantidade: 1 }],
+  contaBancariaId: 'conta-1',
 }
 
 beforeEach(() => {
   vi.clearAllMocks()
 
   mockDb.produto.findMany.mockResolvedValue([PRODUTO_MOCK])
+  mockDb.contaBancaria.findUnique.mockResolvedValue(CONTA_MOCK)
+  mockDb.contaBancaria.count.mockResolvedValue(1)
 
   mockDb.$transaction.mockImplementation(async (fn: (tx: typeof mockTx) => Promise<unknown>) =>
     fn(mockTx)
@@ -118,6 +136,41 @@ describe('POST /api/encomendas', () => {
     mockDb.produto.findMany.mockResolvedValue([{ ...PRODUTO_MOCK, stock: { '38-Dourado': 0 } }])
     const res = await POST(buildRequest(PAYLOAD))
     expect(res.status).toBe(422)
+  })
+
+  it('retorna 422 quando a conta bancária seleccionada não existe', async () => {
+    mockDb.contaBancaria.findUnique.mockResolvedValue(null)
+    mockDb.contaBancaria.count.mockResolvedValue(2)
+    const res = await POST(buildRequest(PAYLOAD))
+    expect(res.status).toBe(422)
+  })
+
+  it('retorna 422 quando a conta bancária seleccionada está inactiva', async () => {
+    mockDb.contaBancaria.findUnique.mockResolvedValue({ ...CONTA_MOCK, ativo: false })
+    mockDb.contaBancaria.count.mockResolvedValue(1)
+    const res = await POST(buildRequest(PAYLOAD))
+    expect(res.status).toBe(422)
+  })
+
+  it('retorna 503 quando não existe nenhuma conta bancária activa', async () => {
+    mockDb.contaBancaria.findUnique.mockResolvedValue(null)
+    mockDb.contaBancaria.count.mockResolvedValue(0)
+    const res = await POST(buildRequest(PAYLOAD))
+    expect(res.status).toBe(503)
+  })
+
+  it('regista o snapshot do banco/titular/iban e o contaBancariaId no pagamento', async () => {
+    await POST(buildRequest(PAYLOAD))
+    expect(mockTx.pagamento.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          ibanDestinatario: CONTA_MOCK.iban,
+          bancoDestinatario: CONTA_MOCK.banco,
+          titularDestinatario: CONTA_MOCK.titular,
+          contaBancariaId: CONTA_MOCK.id,
+        }),
+      }),
+    )
   })
 
   it('aplica portes grátis quando subtotal >= 150', async () => {

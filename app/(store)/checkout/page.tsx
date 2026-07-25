@@ -23,9 +23,16 @@ const schema = z.object({
   moradaCidade: z.string().min(1, 'Cidade obrigatória'),
   moradaCp: z.string().min(3, 'Código postal obrigatório'),
   moradaPais: z.string().min(1, 'País obrigatório'),
+  contaBancariaId: z.string().min(1, 'Selecciona o banco para a transferência'),
 })
 
 type FormValues = z.infer<typeof schema>
+
+interface ContaBancariaPublica {
+  id: string
+  banco: string
+  titular: string
+}
 
 const PAISES = ['Angola', 'Portugal', 'Espanha', 'França', 'Alemanha', 'Reino Unido', 'Outro']
 
@@ -37,12 +44,26 @@ export default function CheckoutPage() {
   const { items, total, count } = useCart()
   const [erro, setErro] = useState<string | null>(null)
   const [avisoStock, setAvisoStock] = useState<string | null>(null)
+  const [contas, setContas] = useState<ContaBancariaPublica[]>([])
+  const [contasEstado, setContasEstado] = useState<'loading' | 'idle' | 'error'>('loading')
   const submitted = useRef(false)
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormValues>({
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { moradaPais: 'Angola' },
   })
+
+  useEffect(() => {
+    fetch('/api/contas-bancarias?public=1')
+      .then(r => r.json())
+      .then((data: { contas: ContaBancariaPublica[] }) => {
+        const lista = data.contas ?? []
+        setContas(lista)
+        setContasEstado('idle')
+        if (lista.length > 0) setValue('contaBancariaId', lista[0].id)
+      })
+      .catch(() => setContasEstado('error'))
+  }, [setValue])
 
   useEffect(() => {
     if (items.length === 0) return
@@ -96,6 +117,7 @@ export default function CheckoutPage() {
       referencia: string
       iban: string
       titular: string
+      banco: string
       valor: number
     }
 
@@ -194,6 +216,47 @@ export default function CheckoutPage() {
             </div>
           </section>
 
+          {/* Conta Bancária */}
+          <section>
+            <h2 className="text-[10px] tracking-[0.3em] uppercase text-muted mb-5 pb-3 border-b border-noir/8">
+              Conta Bancária
+            </h2>
+            {contasEstado === 'loading' && (
+              <p className="text-xs text-muted">A carregar contas bancárias…</p>
+            )}
+            {contasEstado === 'error' && (
+              <p className="text-sm text-red-600 bg-red-50 px-4 py-3 border border-red-200">
+                Não foi possível carregar as contas bancárias. Actualiza a página e tenta novamente.
+              </p>
+            )}
+            {contasEstado === 'idle' && contas.length === 0 && (
+              <p className="text-sm text-red-600 bg-red-50 px-4 py-3 border border-red-200">
+                De momento não há contas bancárias disponíveis para transferência. Contacta-nos para finalizar a tua encomenda.
+              </p>
+            )}
+            {contasEstado === 'idle' && contas.length > 0 && (
+              <div className="space-y-2">
+                {contas.map(conta => (
+                  <label
+                    key={conta.id}
+                    className="flex items-center gap-3 border border-noir/15 px-4 py-3 cursor-pointer has-checked:border-gold has-checked:bg-gold/5 transition-colors"
+                  >
+                    <input
+                      type="radio"
+                      value={conta.id}
+                      {...register('contaBancariaId')}
+                      className="accent-gold"
+                    />
+                    <span className="text-sm text-noir font-sans">
+                      {conta.banco} <span className="text-muted">— {conta.titular}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            )}
+            {errors.contaBancariaId && <p className="text-xs text-red-500 mt-1">{errors.contaBancariaId.message}</p>}
+          </section>
+
           {avisoStock && (
             <p className="text-sm text-amber-700 bg-amber-50 px-4 py-3 border border-amber-200">
               {avisoStock}
@@ -208,8 +271,8 @@ export default function CheckoutPage() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="w-full min-h-14 py-4 bg-noir text-cream text-[11px] tracking-[0.3em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors font-sans"
+            disabled={isSubmitting || (contasEstado === 'idle' && contas.length === 0)}
+            className="w-full min-h-14 bg-noir text-cream text-[11px] tracking-[0.3em] uppercase hover:bg-noir/85 disabled:opacity-50 transition-colors font-sans"
           >
             {isSubmitting ? 'A processar…' : 'CONTINUAR PARA PAGAMENTO'}
           </button>
@@ -217,7 +280,7 @@ export default function CheckoutPage() {
 
         {/* Order summary */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="border border-noir/10 p-6 space-y-5 bg-white">
+          <div className="border border-noir/10 p-6 space-y-5 bg-cream">
             <h2 className="text-[10px] tracking-[0.3em] uppercase text-muted">
               Resumo do Pedido
             </h2>

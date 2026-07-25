@@ -12,6 +12,7 @@ interface CheckoutData {
   referencia: string
   iban: string
   titular: string
+  banco: string
   valor: number
 }
 
@@ -96,7 +97,8 @@ export default function PagamentoPage() {
       </p>
 
       {/* Dados de transferência */}
-      <div className="bg-white border border-noir/10 px-6 mb-6">
+      <div className="bg-cream border border-noir/10 px-6 py-2 mb-6">
+        <Campo label="Banco" valor={dados.banco} />
         <Campo label="Titular da conta" valor={dados.titular} />
         <Campo label="IBAN" valor={dados.iban} />
         <Campo label="Valor exacto" valor={formatarPreco(dados.valor)} />

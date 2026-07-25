@@ -54,6 +54,7 @@ export async function POST(req: NextRequest, { params }: Params) {
       total: pagamento.valor,
       referencia: encomenda.referencia,
       criadaEm: encomenda.criadaEm,
+      ibanEsperado: pagamento.ibanDestinatario,
     })
   } catch (err) {
     console.error('[validar-comprovante] OCR falhou — revisão manual necessária', err)

@@ -25,7 +25,7 @@ export interface ResultadoValidacao {
 export async function validarComprovante(
   ficheiro: Buffer,
   mimeType: string,
-  encomenda: { total: number; referencia: string; criadaEm: Date }
+  encomenda: { total: number; referencia: string; criadaEm: Date; ibanEsperado?: string }
 ): Promise<ResultadoValidacao> {
   const alertas: string[] = []
 
@@ -162,7 +162,9 @@ export async function validarComprovante(
   let ibanPresente: boolean | null = null
 
   if (textoExtraido.length >= 20) {
-    const ibanLoja = process.env.IBAN_LOJA ?? ''
+    // Prioriza o IBAN da conta bancária efectivamente seleccionada nesta encomenda
+    // (suporta múltiplas contas); cai para a env var apenas por compatibilidade.
+    const ibanLoja = encomenda.ibanEsperado ?? process.env.IBAN_LOJA ?? ''
     const regexIban = /AO\s*06\s*[\d\s]{21,30}/gi
     const matchesIban = textoExtraido.match(regexIban)
     if (matchesIban && ibanLoja) {

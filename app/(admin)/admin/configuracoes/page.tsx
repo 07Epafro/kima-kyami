@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Save, CheckCircle } from 'lucide-react'
+import ContasBancariasManager from '@/components/admin/ContasBancariasManager'
 
 const labelClass = 'text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 block font-ui'
 const inputClass = 'w-full bg-white border border-a-border text-a-charcoal text-[13px] px-4 py-2.5 rounded-lg focus:outline-none focus:border-a-gold transition-colors placeholder:text-a-muted/40 font-ui'
@@ -170,6 +171,10 @@ export default function ConfiguracoesPage() {
           </div>
         </form>
       )}
+
+      <div className="mt-5">
+        <ContasBancariasManager />
+      </div>
     </div>
   )
 }
