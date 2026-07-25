@@ -95,7 +95,7 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
     <div className="space-y-4">
       {showTracking && (
         <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3">
-          <p className="text-xs text-amber-700 font-medium" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-xs text-amber-700 font-medium font-ui">
             Número de tracking obrigatório para marcar como enviada
           </p>
           <input
@@ -103,14 +103,14 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
             value={tracking}
             onChange={(e) => setTracking(e.target.value)}
             placeholder="ex: PT123456789PT"
-            className="w-full border border-amber-300 rounded px-3 py-2 text-sm text-noir focus:outline-none focus:border-gold font-mono"
+            className="w-full border border-amber-300 rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-mono"
           />
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => avancar('ENVIADA')}
               disabled={!tracking || !!loading}
-              className="flex items-center gap-2 px-4 py-2.5 min-h-11 bg-noir text-cream text-sm rounded hover:bg-noir/90 disabled:opacity-50 font-sans"
+              className="flex items-center gap-2 px-4 py-2.5 min-h-11 bg-a-charcoal text-white text-sm rounded hover:bg-a-charcoal/90 disabled:opacity-50 font-ui"
             >
               <Truck size={14} />
               Confirmar envio
@@ -118,7 +118,7 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
             <button
               type="button"
               onClick={() => setShowTracking(false)}
-              className="px-4 py-2.5 min-h-11 text-sm text-muted hover:text-noir font-sans"
+              className="px-4 py-2.5 min-h-11 text-sm text-a-muted hover:text-a-charcoal font-ui"
             >
               Cancelar
             </button>
@@ -135,7 +135,7 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
             disabled={!!loading}
             className={cn(
               'flex items-center gap-2 px-4 py-2.5 min-h-11 rounded text-sm transition-colors disabled:opacity-50',
-              'bg-noir text-cream hover:bg-noir/90 font-sans'
+              'bg-a-charcoal text-white hover:bg-a-charcoal/90 font-ui'
             )}
           >
             <ChevronRight size={14} />
@@ -149,7 +149,7 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
             type="button"
             onClick={() => avancar('CANCELADA')}
             disabled={!!loading}
-            className="flex items-center gap-2 px-4 py-2.5 min-h-11 rounded text-sm text-red-600 border border-red-200 hover:bg-red-50 disabled:opacity-50 transition-colors font-sans"
+            className="flex items-center gap-2 px-4 py-2.5 min-h-11 rounded text-sm text-red-600 border border-red-200 hover:bg-red-50 disabled:opacity-50 transition-colors font-ui"
           >
             <X size={14} />
             Cancelar encomenda
@@ -157,24 +157,24 @@ export default function OrderActions({ encomendaId, estadoActual, notasActuais }
         )}
       </div>
 
-      {erro && <p className="text-xs text-red-500 font-sans">{erro}</p>}
+      {erro && <p className="text-xs text-red-500 font-ui">{erro}</p>}
 
-      <div className="border-t border-gray-100 pt-4">
-        <label className="block text-xs tracking-widest uppercase text-muted mb-2 font-sans">
+      <div className="border-t border-a-border pt-4">
+        <label className="block text-xs tracking-widest uppercase text-a-muted mb-2 font-ui">
           Notas internas
         </label>
         <textarea
           value={notas}
           onChange={(e) => setNotas(e.target.value)}
           rows={3}
-          className="w-full border border-gray-200 rounded px-3 py-2 text-sm text-noir focus:outline-none focus:border-gold resize-none"
+          className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold resize-none font-ui"
           placeholder="Notas visíveis apenas no painel admin…"
         />
         <button
           onClick={guardarNotas}
           disabled={!!loading}
           type="button"
-          className="mt-2 px-3 py-1.5 min-h-9 text-xs bg-gray-100 text-noir rounded hover:bg-gray-200 disabled:opacity-50 transition-colors font-sans"
+          className="mt-2 px-3 py-1.5 min-h-9 text-xs bg-a-bone text-a-charcoal border border-a-border rounded hover:bg-a-border/40 disabled:opacity-50 transition-colors font-ui"
         >
           Guardar notas
         </button>

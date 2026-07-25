@@ -719,7 +719,7 @@ export default function ProductForm({ produto }: Props) {
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={url} alt={`Imagem ${idx + 1}`} className="w-16 h-16 object-cover rounded-lg flex-shrink-0 bg-gray-50" />
-                  <span className="flex-1 text-xs text-muted font-mono truncate">{url}</span>
+                  <span className="flex-1 text-xs text-a-muted font-mono truncate">{url}</span>
                   <div className="flex items-center gap-1">
                     <button type="button" onClick={() => moverImagem(idx, 'up')} disabled={idx === 0}
                       className="p-1.5 rounded text-a-muted hover:text-a-charcoal hover:bg-a-bone disabled:opacity-30 transition-colors" title="Mover para cima">

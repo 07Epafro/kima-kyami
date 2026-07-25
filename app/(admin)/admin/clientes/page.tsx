@@ -2,7 +2,7 @@ import db from '@/lib/db'
 import Link from 'next/link'
 import { Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
-import { Search, Download } from 'lucide-react'
+import { Search, Download, Users } from 'lucide-react'
 
 export const metadata = { title: 'Clientes' }
 
@@ -95,7 +95,10 @@ export default async function ClientesPage({ searchParams }: PageProps) {
       {/* List panel */}
       <div className="bg-white border border-a-border rounded-lg overflow-hidden">
         {clientes.length === 0 ? (
-          <p className="text-center py-12 text-sm text-a-muted font-ui">Nenhum cliente encontrado.</p>
+          <div className="py-16 text-center">
+            <Users size={28} strokeWidth={1} className="text-a-border mx-auto mb-3" />
+            <p className="text-sm text-a-muted font-ui">Nenhum cliente encontrado.</p>
+          </div>
         ) : (
           <>
             {/* Mobile cards */}

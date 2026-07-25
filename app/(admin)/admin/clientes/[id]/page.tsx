@@ -73,15 +73,14 @@ export default async function ClientePerfilPage({ params }: { params: Promise<{ 
       <div className="flex items-center justify-between">
         <Link
           href="/admin/clientes"
-          className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-noir transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="inline-flex items-center gap-1.5 text-xs text-a-muted hover:text-a-charcoal transition-colors font-ui"
         >
           <ArrowLeft size={13} /> Todos os clientes
         </Link>
         <EnviarEmailButton clienteId={cliente.id} clienteEmail={cliente.email} />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 px-6 py-5">
+      <div className="bg-white rounded-lg border border-a-border px-6 py-5">
         <ClienteEditForm
           clienteId={cliente.id}
           nome={cliente.nome}
@@ -98,11 +97,11 @@ export default async function ClientePerfilPage({ params }: { params: Promise<{ 
           { label: 'Encomenda média', valor: encomendaMedia > 0 ? formatarPreco(encomendaMedia) : '—' },
           { label: 'Total encomendas', valor: String(cliente.encomendas.length) },
         ].map(({ label, valor }) => (
-          <div key={label} className="bg-white rounded-xl border border-gray-100 px-5 py-4">
-            <p className="text-[10px] tracking-widest uppercase text-muted mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+          <div key={label} className="bg-white rounded-lg border border-a-border px-5 py-4">
+            <p className="text-[10px] tracking-widest uppercase text-a-muted mb-1 font-ui">
               {label}
             </p>
-            <p className="text-xl font-light text-noir" style={{ fontFamily: 'var(--font-serif)' }}>
+            <p className="text-xl font-light text-a-charcoal font-display">
               {valor}
             </p>
           </div>
@@ -110,37 +109,36 @@ export default async function ClientePerfilPage({ params }: { params: Promise<{ 
       </div>
 
       {categoriasPreferidas.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-100 px-6 py-5">
-          <h2 className="text-[10px] tracking-widest uppercase text-muted mb-3" style={{ fontFamily: 'var(--font-sans)' }}>
+        <div className="bg-white rounded-lg border border-a-border px-6 py-5">
+          <h2 className="text-[10px] tracking-widest uppercase text-a-muted mb-3 font-ui">
             Categorias preferidas
           </h2>
           <div className="flex flex-wrap gap-2">
             {categoriasPreferidas.map(([cat, qty]) => (
               <span
                 key={cat}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-gold/10 text-noir text-xs rounded-full"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-a-gold/10 text-a-charcoal text-xs rounded-full font-ui"
               >
                 {CATEGORIA_LABELS[cat] ?? cat}
-                <span className="text-muted">×{qty}</span>
+                <span className="text-a-muted">×{qty}</span>
               </span>
             ))}
           </div>
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="text-[10px] tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+      <div className="bg-white rounded-lg border border-a-border overflow-hidden">
+        <div className="px-6 py-4 border-b border-a-border">
+          <h2 className="text-[10px] tracking-widest uppercase text-a-muted font-ui">
             Histórico de encomendas ({cliente.encomendas.length})
           </h2>
         </div>
         {cliente.encomendas.length === 0 ? (
-          <p className="px-6 py-8 text-sm text-muted text-center">Sem encomendas ainda.</p>
+          <p className="px-6 py-8 text-sm text-a-muted text-center font-ui">Sem encomendas ainda.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-[10px] tracking-widest uppercase text-muted border-b border-gray-50">
+              <tr className="text-[10px] tracking-widest uppercase text-a-muted border-b border-a-border">
                 <th className="px-6 py-3 text-left font-normal">Referência</th>
                 <th className="px-4 py-3 text-center font-normal">Itens</th>
                 <th className="px-4 py-3 text-right font-normal">Total</th>
@@ -150,17 +148,17 @@ export default async function ClientePerfilPage({ params }: { params: Promise<{ 
             </thead>
             <tbody>
               {cliente.encomendas.map((enc) => (
-                <tr key={enc.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                <tr key={enc.id} className="border-b border-a-border/50 hover:bg-a-bone transition-colors">
                   <td className="px-6 py-3">
                     <Link
                       href={`/admin/encomendas/${enc.id}`}
-                      className="font-mono text-xs text-noir hover:text-gold transition-colors"
+                      className="font-mono text-xs text-a-charcoal hover:text-a-gold transition-colors"
                     >
                       {enc.referencia}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-xs text-center text-muted">{enc._count.itens}</td>
-                  <td className="px-4 py-3 text-xs text-right font-medium text-noir">
+                  <td className="px-4 py-3 text-xs text-center text-a-muted">{enc._count.itens}</td>
+                  <td className="px-4 py-3 text-xs text-right font-medium text-a-charcoal">
                     {formatarPreco(enc.total)}
                   </td>
                   <td className="px-4 py-3">
@@ -168,7 +166,7 @@ export default async function ClientePerfilPage({ params }: { params: Promise<{ 
                       {ESTADO_CONFIG[enc.estado].label}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-[10px] text-muted text-right">
+                  <td className="px-4 py-3 text-[10px] text-a-muted text-right">
                     {enc.criadaEm.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })}
                   </td>
                 </tr>

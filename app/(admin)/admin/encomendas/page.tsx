@@ -2,7 +2,7 @@ import Link from 'next/link'
 import db from '@/lib/db'
 import { EstadoEncomenda, Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
-import { Download, Search } from 'lucide-react'
+import { Download, Search, ShoppingBag } from 'lucide-react'
 
 export const metadata = { title: 'Encomendas' }
 
@@ -113,7 +113,10 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
       {/* List panel */}
       <div className="bg-white border border-a-border rounded-lg overflow-hidden">
         {encomendas.length === 0 ? (
-          <p className="text-center py-12 text-sm text-a-muted font-ui">Nenhuma encomenda encontrada.</p>
+          <div className="py-16 text-center">
+            <ShoppingBag size={28} strokeWidth={1} className="text-a-border mx-auto mb-3" />
+            <p className="text-sm text-a-muted font-ui">Nenhuma encomenda encontrada.</p>
+          </div>
         ) : (
           <>
             {/* Mobile cards */}

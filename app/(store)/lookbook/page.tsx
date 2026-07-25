@@ -54,7 +54,7 @@ export default function LookbookPage() {
   return (
     <>
       {/* ─── Header ─── */}
-      <section className="bg-cream pt-16 lg:pt-35 pb-12 text-center px-8">
+      <section className="bg-cream pt-20 pb-12 text-center px-8">
         <p
           className="text-[9px] tracking-[0.45em] uppercase text-gold mb-4"
           style={{ fontFamily: 'var(--font-sans)' }}
@@ -71,8 +71,8 @@ export default function LookbookPage() {
       </section>
 
       {/* ─── Grid Editorial ─── */}
-      <section className="bg-cream section-pb px-4 sm:px-8 lg:px-16">
-        <div className="max-w-[1440px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-3">
+      <section className="bg-cream section-pb">
+        <div className="container-kk grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-3">
           {EDITORIAIS.map(editorial => (
             <Link
               key={editorial.id}

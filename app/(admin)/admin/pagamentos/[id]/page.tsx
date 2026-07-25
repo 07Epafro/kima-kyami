@@ -10,7 +10,7 @@ import { ArrowLeft } from 'lucide-react'
 export const metadata = { title: 'Detalhe de Pagamento' }
 
 const ESTADO_CONFIG: Record<EstadoPagamento, { label: string; cls: string }> = {
-  AGUARDA_COMPROVANTE: { label: 'Aguarda comprovante', cls: 'bg-gray-100 text-gray-600' },
+  AGUARDA_COMPROVANTE: { label: 'Aguarda comprovante', cls: 'bg-gray-100 text-a-muted border border-a-border' },
   COMPROVANTE_SUBMETIDO: { label: 'Comprovante submetido', cls: 'bg-amber-100 text-amber-700' },
   VALIDADO_AUTO_OK: { label: 'Validado auto OK', cls: 'bg-green-100 text-green-700' },
   VALIDADO_AUTO_ALERTA: { label: 'Alerta auto', cls: 'bg-yellow-100 text-yellow-700' },
@@ -58,15 +58,13 @@ export default async function PagamentoDetalhePage({ params }: Params) {
       <div className="flex items-center justify-between">
         <Link
           href="/admin/pagamentos"
-          className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-noir transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="inline-flex items-center gap-1.5 text-xs text-a-muted hover:text-a-charcoal transition-colors font-ui"
         >
           <ArrowLeft size={13} /> Todos os pagamentos
         </Link>
         <Link
           href={`/admin/encomendas/${encomenda.id}`}
-          className="text-xs text-muted hover:text-gold transition-colors"
-          style={{ fontFamily: 'var(--font-sans)' }}
+          className="text-xs text-a-muted hover:text-a-gold transition-colors font-ui"
         >
           Ver encomenda →
         </Link>
@@ -75,11 +73,11 @@ export default async function PagamentoDetalhePage({ params }: Params) {
       {/* Cabeçalho */}
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs tracking-widest uppercase text-muted mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-xs tracking-widest uppercase text-a-muted mb-1 font-ui">
             Pagamento
           </p>
-          <h1 className="text-lg font-mono text-noir">{encomenda.referencia}</h1>
-          <p className="text-xs text-muted mt-0.5" style={{ fontFamily: 'var(--font-sans)' }}>
+          <h1 className="text-lg font-mono text-a-charcoal">{encomenda.referencia}</h1>
+          <p className="text-xs text-a-muted mt-0.5 font-ui">
             {encomenda.cliente.nome} · {encomenda.cliente.email}
           </p>
         </div>
@@ -87,28 +85,28 @@ export default async function PagamentoDetalhePage({ params }: Params) {
           <span className={`text-[10px] px-2 py-1 rounded-full font-medium ${ESTADO_CONFIG[pagamento.estado].cls}`}>
             {ESTADO_CONFIG[pagamento.estado].label}
           </span>
-          <p className="text-sm font-medium text-noir mt-2">{formatarPreco(pagamento.valor)}</p>
+          <p className="text-sm font-medium text-a-charcoal mt-2">{formatarPreco(pagamento.valor)}</p>
         </div>
       </div>
 
       {/* Preview do comprovante */}
-      <div className="rounded-xl border border-gray-100 bg-white p-6">
-        <p className="text-xs tracking-widest uppercase text-muted mb-4" style={{ fontFamily: 'var(--font-sans)' }}>
+      <div className="rounded-lg border border-a-border bg-white p-6">
+        <p className="text-xs tracking-widest uppercase text-a-muted mb-4 font-ui">
           Comprovante
         </p>
         {comprovante ? (
           isPdf ? (
-            <iframe src={comprovante} className="w-full h-96 rounded border border-gray-200" />
+            <iframe src={comprovante} className="w-full h-96 rounded border border-a-border" />
           ) : (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={comprovante}
               alt="Comprovante de pagamento"
-              className="max-w-full rounded border border-gray-100"
+              className="max-w-full rounded border border-a-border"
             />
           )
         ) : (
-          <p className="text-sm text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-sm text-a-muted font-ui">
             Comprovante não submetido ainda.
           </p>
         )}
@@ -116,8 +114,8 @@ export default async function PagamentoDetalhePage({ params }: Params) {
 
       {/* Resultado do script */}
       {resultado !== null && (
-        <div className="rounded-xl border border-gray-100 bg-white p-6 space-y-5">
-          <p className="text-xs tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+        <div className="rounded-lg border border-a-border bg-white p-6 space-y-5">
+          <p className="text-xs tracking-widest uppercase text-a-muted font-ui">
             Resultado da Validação Automática
           </p>
 
@@ -125,13 +123,13 @@ export default async function PagamentoDetalhePage({ params }: Params) {
           <div className="flex items-center gap-4">
             <span className={`text-4xl font-light ${scoreColor}`}>{resultado.score}</span>
             <div className="flex-1">
-              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-a-border rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${scoreBarColor} transition-all`}
                   style={{ width: `${resultado.score}%` }}
                 />
               </div>
-              <p className="text-[10px] text-muted mt-1" style={{ fontFamily: 'var(--font-sans)' }}>
+              <p className="text-[10px] text-a-muted mt-1 font-ui">
                 {resultado.estado} · {resultado.score}/100
               </p>
             </div>
@@ -143,8 +141,7 @@ export default async function PagamentoDetalhePage({ params }: Params) {
               {resultado.alertas.map((alerta, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded"
-                  style={{ fontFamily: 'var(--font-sans)' }}
+                  className="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded font-ui"
                 >
                   <span>⚠️</span>
                   <span>{alerta}</span>
@@ -155,53 +152,53 @@ export default async function PagamentoDetalhePage({ params }: Params) {
 
           {/* Detalhes técnicos */}
           <div>
-            <p className="text-[10px] tracking-widest uppercase text-muted mb-3" style={{ fontFamily: 'var(--font-sans)' }}>
+            <p className="text-[10px] tracking-widest uppercase text-a-muted mb-3 font-ui">
               Detalhes técnicos
             </p>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs" style={{ fontFamily: 'var(--font-sans)' }}>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">Valor esperado</span>
-                <span className="text-noir">{formatarPreco(resultado.detalhes.valorEsperado)}</span>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs font-ui">
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">Valor esperado</span>
+                <span className="text-a-charcoal">{formatarPreco(resultado.detalhes.valorEsperado)}</span>
               </div>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">Valor encontrado</span>
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">Valor encontrado</span>
                 <span className={resultado.detalhes.valorCorreto === true ? 'text-emerald-600' : 'text-red-600'}>
                   {resultado.detalhes.valorEncontrado !== null
                     ? formatarPreco(resultado.detalhes.valorEncontrado)
                     : '—'}
                 </span>
               </div>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">Data encontrada</span>
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">Data encontrada</span>
                 <span className={resultado.detalhes.dataValida === true ? 'text-emerald-600' : 'text-red-600'}>
                   {resultado.detalhes.dataEncontrada ?? '—'}
                 </span>
               </div>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">IBAN</span>
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">IBAN</span>
                 <span className={resultado.detalhes.ibanPresente === true ? 'text-emerald-600' : 'text-red-600'}>
                   {resultado.detalhes.ibanPresente === null ? '—' : resultado.detalhes.ibanPresente ? 'Presente' : 'Ausente'}
                 </span>
               </div>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">Referência</span>
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">Referência</span>
                 <span className={resultado.detalhes.referenciaPresente === true ? 'text-emerald-600' : 'text-red-600'}>
                   {resultado.detalhes.referenciaPresente === null ? '—' : resultado.detalhes.referenciaPresente ? 'Presente' : 'Ausente'}
                 </span>
               </div>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">Software edição</span>
-                <span className={resultado.detalhes.softwareEdicao ? 'text-red-600' : 'text-muted'}>
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">Software edição</span>
+                <span className={resultado.detalhes.softwareEdicao ? 'text-red-600' : 'text-a-muted'}>
                   {resultado.detalhes.softwareEdicao ?? 'Nenhum'}
                 </span>
               </div>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">Qualidade imagem</span>
-                <span className="text-noir capitalize">{resultado.detalhes.qualidadeImagem}</span>
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">Qualidade imagem</span>
+                <span className="text-a-charcoal capitalize">{resultado.detalhes.qualidadeImagem}</span>
               </div>
-              <div className="flex justify-between border-b border-gray-50 py-1.5">
-                <span className="text-muted">Confiança OCR</span>
-                <span className="text-noir">{Math.round(resultado.detalhes.confiancaOCR * 100)}%</span>
+              <div className="flex justify-between border-b border-a-border/50 py-1.5">
+                <span className="text-a-muted">Confiança OCR</span>
+                <span className="text-a-charcoal">{Math.round(resultado.detalhes.confiancaOCR * 100)}%</span>
               </div>
             </div>
           </div>
@@ -209,14 +206,11 @@ export default async function PagamentoDetalhePage({ params }: Params) {
           {/* Texto OCR colapsável */}
           {resultado.detalhes.textoExtraido && (
             <details className="text-xs">
-              <summary
-                className="cursor-pointer text-muted hover:text-noir transition-colors py-1"
-                style={{ fontFamily: 'var(--font-sans)' }}
-              >
+              <summary className="cursor-pointer text-a-muted hover:text-a-charcoal transition-colors py-1 font-ui">
                 Ver texto extraído por OCR
               </summary>
               <pre
-                className="mt-2 p-3 bg-gray-50 rounded text-[11px] text-muted whitespace-pre-wrap leading-relaxed overflow-auto max-h-48"
+                className="mt-2 p-3 bg-a-bone rounded text-[11px] text-a-muted whitespace-pre-wrap leading-relaxed overflow-auto max-h-48"
                 style={{ fontFamily: 'monospace' }}
               >
                 {resultado.detalhes.textoExtraido}

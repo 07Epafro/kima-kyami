@@ -32,7 +32,7 @@ export default async function ContactosPage() {
   return (
     <>
       {/* ─── Header ─── */}
-      <section className="bg-cream pt-16 lg:pt-35 pb-12 text-center px-8">
+      <section className="bg-cream pt-20 pb-12 text-center px-8">
         <p className="text-[9px] tracking-[0.45em] uppercase text-gold mb-4 font-sans">
           Fala Connosco
         </p>

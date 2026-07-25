@@ -79,7 +79,7 @@ export default function MarcaPage() {
 
       {/* ─── Valores ─── */}
       <section className="bg-noir section-py">
-        <div className="max-w-[1440px] mx-auto px-8 lg:px-16">
+        <div className="container-kk">
           <p
             className="text-[9px] tracking-[0.4em] uppercase text-gold mb-16 text-center"
             style={{ fontFamily: 'var(--font-sans)' }}

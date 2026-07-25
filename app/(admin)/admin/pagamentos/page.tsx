@@ -3,6 +3,7 @@ import db from '@/lib/db'
 import { EstadoPagamento, Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
 import type { ResultadoValidacao } from '@/lib/validar-comprovante'
+import { CreditCard } from 'lucide-react'
 
 export const metadata = { title: 'Pagamentos' }
 
@@ -104,9 +105,12 @@ export default async function PagamentosPage({ searchParams }: PageProps) {
       {/* List panel */}
       <div className="bg-white border border-a-border rounded-lg overflow-hidden">
         {lista.length === 0 ? (
-          <p className="text-center py-12 text-sm text-a-muted font-ui">
-            {tab === 'pendentes' ? 'Nenhum pagamento pendente.' : 'Nenhum pagamento encontrado.'}
-          </p>
+          <div className="py-16 text-center">
+            <CreditCard size={28} strokeWidth={1} className="text-a-border mx-auto mb-3" />
+            <p className="text-sm text-a-muted font-ui">
+              {tab === 'pendentes' ? 'Nenhum pagamento pendente.' : 'Nenhum pagamento encontrado.'}
+            </p>
+          </div>
         ) : (
           <>
             {/* Mobile cards */}

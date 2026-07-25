@@ -200,7 +200,7 @@ export default function CartSidebar() {
               <Link
                 href="/checkout"
                 onClick={closeCart}
-                className="block w-full text-center min-h-14 py-3.5 bg-noir text-cream text-[11px] tracking-[0.25em] uppercase hover:bg-noir/85 transition-colors"
+                className="flex items-center justify-center w-full text-center min-h-14 bg-noir text-cream text-[11px] tracking-[0.25em] uppercase hover:bg-noir/85 transition-colors"
               >
                 FINALIZAR ENCOMENDA
               </Link>
@@ -208,7 +208,7 @@ export default function CartSidebar() {
               <button
                 type="button"
                 onClick={closeCart}
-                className="block w-full text-center py-3 min-h-11 text-[10px] tracking-[0.2em] uppercase text-noir/65 hover:text-noir transition-colors"
+                className="flex items-center justify-center w-full text-center min-h-11 text-[10px] tracking-[0.2em] uppercase text-noir/65 hover:text-noir transition-colors"
               >
                 CONTINUAR A COMPRAR
               </button>

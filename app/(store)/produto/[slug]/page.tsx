@@ -113,7 +113,7 @@ export default async function ProdutoPage({ params }: Params) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-10 lg:py-16">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 py-10 lg:py-14">
         {/* Breadcrumb */}
         <nav
           className="flex items-center flex-wrap gap-2 text-[10px] tracking-[0.2em] text-noir/60 mb-8 font-sans"

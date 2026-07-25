@@ -37,8 +37,8 @@ interface Props {
   notas?: string | null
 }
 
-const inputCls = 'w-full border border-gray-200 rounded px-3 py-2 text-sm text-noir focus:outline-none focus:border-gold'
-const labelCls = 'block text-[10px] tracking-widest uppercase text-muted mb-1'
+const inputCls = 'w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-ui'
+const labelCls = 'block text-[10px] tracking-widest uppercase text-a-muted mb-1 font-ui'
 
 export default function ClienteEditForm({ clienteId, nome, email, telefone, morada, notas }: Props) {
   const router = useRouter()
@@ -97,36 +97,35 @@ export default function ClienteEditForm({ clienteId, nome, email, telefone, mora
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+          <h3 className="text-xs tracking-widest uppercase text-a-muted font-ui">
             Dados de contacto
           </h3>
           <button
             onClick={() => setEditando(true)}
-            className="flex items-center gap-1.5 text-xs text-gold hover:underline"
-            style={{ fontFamily: 'var(--font-sans)' }}
+            className="flex items-center gap-1.5 text-xs text-a-gold hover:underline font-ui"
           >
             <Edit2 size={12} /> Editar
           </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm" style={{ fontFamily: 'var(--font-sans)' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-ui">
           <div>
             <p className={cn(labelCls, 'mb-0.5')}>Nome</p>
-            <p className="text-noir">{nome}</p>
+            <p className="text-a-charcoal">{nome}</p>
           </div>
           <div>
             <p className={cn(labelCls, 'mb-0.5')}>Email</p>
-            <p className="text-noir">{email}</p>
+            <p className="text-a-charcoal">{email}</p>
           </div>
           {telefone && (
             <div>
               <p className={cn(labelCls, 'mb-0.5')}>Telefone</p>
-              <p className="text-noir">{telefone}</p>
+              <p className="text-a-charcoal">{telefone}</p>
             </div>
           )}
           {morada && (
             <div className="sm:col-span-2">
               <p className={cn(labelCls, 'mb-0.5')}>Morada</p>
-              <address className="not-italic text-noir leading-relaxed">
+              <address className="not-italic text-a-charcoal leading-relaxed">
                 {morada.rua}<br />
                 {morada.codigoPostal} {morada.cidade} · {morada.pais}
               </address>
@@ -135,7 +134,7 @@ export default function ClienteEditForm({ clienteId, nome, email, telefone, mora
           {notas && (
             <div className="sm:col-span-2">
               <p className={cn(labelCls, 'mb-0.5')}>Notas</p>
-              <p className="text-muted text-xs whitespace-pre-wrap">{notas}</p>
+              <p className="text-a-muted text-xs whitespace-pre-wrap">{notas}</p>
             </div>
           )}
         </div>
@@ -146,16 +145,16 @@ export default function ClienteEditForm({ clienteId, nome, email, telefone, mora
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs tracking-widest uppercase text-muted" style={{ fontFamily: 'var(--font-sans)' }}>
+        <h3 className="text-xs tracking-widest uppercase text-a-muted font-ui">
           Editar dados
         </h3>
         <div className="flex gap-2">
           <button type="submit" disabled={isSubmitting}
-            className="flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 disabled:opacity-50">
+            className="flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 disabled:opacity-50 font-ui">
             <Check size={13} /> Guardar
           </button>
           <button type="button" onClick={cancelar}
-            className="flex items-center gap-1 text-xs text-muted hover:text-noir">
+            className="flex items-center gap-1 text-xs text-a-muted hover:text-a-charcoal font-ui">
             <X size={13} /> Cancelar
           </button>
         </div>
@@ -178,7 +177,7 @@ export default function ClienteEditForm({ clienteId, nome, email, telefone, mora
         </div>
         <div />
         <div className="sm:col-span-2">
-          <p className="text-[10px] tracking-widest uppercase text-muted mb-2" style={{ fontFamily: 'var(--font-sans)' }}>
+          <p className="text-[10px] tracking-widest uppercase text-a-muted mb-2 font-ui">
             Morada
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
