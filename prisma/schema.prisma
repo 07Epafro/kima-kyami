@@ -134,6 +134,13 @@ model ContaBancaria {
   criadoEm DateTime @default(now())
 }
 
+model ImagemSite {
+  id           String   @id @default(cuid())
+  chave        String   @unique
+  url          String
+  atualizadoEm DateTime @updatedAt
+}
+
 model Admin {
   id        String    @id @default(cuid())
   nome      String

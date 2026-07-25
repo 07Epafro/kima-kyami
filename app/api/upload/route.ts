@@ -40,8 +40,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Pedido inválido' }, { status: 400 })
   }
 
+  const tipo = formData.get('tipo')?.toString() ?? 'produto'
+  if (tipo !== 'produto' && tipo !== 'comprovante' && tipo !== 'site') {
+    return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 })
+  }
+
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
-  if (!rateLimit(ip, 5, 60_000)) {
+  // Comprovante é submetido por clientes sem sessão — limite apertado contra abuso.
+  // Produto/site são admin-only; um admin a rever/substituir várias imagens
+  // seguidas (ex. as 15 secções de Imagens do Site) não deve ser tratado como abuso.
+  const limite = tipo === 'comprovante' ? 5 : 30
+  if (!rateLimit(ip, limite, 60_000)) {
     return NextResponse.json({ error: 'Demasiados pedidos. Tenta novamente em breve.' }, { status: 429 })
   }
 
@@ -63,15 +72,12 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     )
   }
-
-  const tipo = formData.get('tipo')?.toString() ?? 'produto'
-  if (tipo !== 'produto' && tipo !== 'comprovante') {
-    return NextResponse.json({ error: 'Tipo inválido' }, { status: 400 })
-  }
   const isImagem = TIPOS_IMAGEM.includes(file.type)
 
-  // Admin-only uploads require a session
-  if (tipo === 'produto') {
+  // Todo o upload é admin-only, excepto o comprovante de pagamento (submetido
+  // pelo cliente no checkout, sem sessão). Qualquer novo `tipo` adicionado no
+  // futuro cai automaticamente no branch autenticado por defeito.
+  if (tipo !== 'comprovante') {
     const session = await auth()
     if (!session) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -99,7 +105,10 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       )
     }
-    const folder = tipo === 'comprovante' ? 'kima-kyami/comprovativos' : 'kima-kyami/produtos'
+    const folder =
+      tipo === 'comprovante' ? 'kima-kyami/comprovativos'
+      : tipo === 'site' ? 'kima-kyami/site'
+      : 'kima-kyami/produtos'
 
     const result = await new Promise<{ secure_url: string; public_id: string; format: string }>(
       (resolve, reject) => {

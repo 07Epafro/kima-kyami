@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getImagensSite } from '@/lib/imagens-site'
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'A Marca — Kima Kyami',
@@ -25,13 +28,15 @@ const VALORES = [
   },
 ]
 
-export default function MarcaPage() {
+export default async function MarcaPage() {
+  const img = await getImagensSite()
+
   return (
     <>
       {/* ─── Hero ─── */}
       <section className="relative h-[70vh] min-h-[500px] overflow-hidden">
         <Image
-          src="/images/marca-hero.jpeg"
+          src={img['marca-hero']}
           alt="Kima Kyami — A Marca"
           fill
           sizes="100vw"
@@ -118,7 +123,7 @@ export default function MarcaPage() {
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
         <div className="relative aspect-[4/3] lg:aspect-auto">
           <Image
-            src="/images/marca-editorial.jpeg"
+            src={img['marca-editorial']}
             alt="Kima Kyami — Artesanato"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"

@@ -3,8 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import db from '@/lib/db'
 import ProductCarousel from '@/components/store/ProductCarousel'
+import { getImagensSite } from '@/lib/imagens-site'
 
-export const revalidate = 3600
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: {
@@ -22,22 +23,22 @@ const CATEGORIAS = [
   {
     value: 'SALTOS',
     label: 'SALTOS',
-    image: '/images/categoria-saltos.jpeg',
+    chave: 'home-categoria-saltos',
   },
   {
     value: 'SANDALIAS',
     label: 'SANDÁLIAS',
-    image: '/images/categoria-sandalias.jpeg',
+    chave: 'home-categoria-sandalias',
   },
   {
     value: 'MULES',
     label: 'MULES',
-    image: '/images/categoria-mules.jpeg',
+    chave: 'home-categoria-mules',
   },
   {
     value: 'COLECAO_LIMITADA',
     label: 'COLEÇÃO LIMITADA',
-    image: '/images/categoria-colecao-limitada.jpeg',
+    chave: 'home-categoria-colecao-limitada',
   },
 ]
 
@@ -71,6 +72,8 @@ export default async function HomePage() {
     })
   } catch { /* DB unavailable at build time — section hidden until next revalidation */ }
 
+  const img = await getImagensSite()
+
   return (
     <>
       <script
@@ -82,7 +85,7 @@ export default async function HomePage() {
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         {/* Art direction: portrait crop em mobile, landscape em desktop */}
         <Image
-          src="/images/hero.jpeg"
+          src={img['home-hero']}
           alt="Kima Kyami — Sapatos de luxo"
           fill
           sizes="100vw"
@@ -192,7 +195,7 @@ export default async function HomePage() {
               className="group relative aspect-[3/4] overflow-hidden block"
             >
               <Image
-                src={cat.image}
+                src={img[cat.chave]}
                 alt={cat.label}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
@@ -226,7 +229,7 @@ export default async function HomePage() {
           {/* Image */}
           <div className="relative aspect-[4/5] lg:aspect-auto lg:min-h-[600px] order-2 lg:order-1">
             <Image
-              src="/images/quote-section.jpeg"
+              src={img['home-quote']}
               alt="Kima Kyami — Postura. Atitude."
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -290,7 +293,7 @@ export default async function HomePage() {
           {/* Image left */}
           <div className="relative aspect-[4/5] lg:aspect-auto">
             <Image
-              src="/images/exclusividade-1.jpeg"
+              src={img['home-exclusividade-1']}
               alt="Sandália Kima Kyami"
               fill
               sizes="(max-width: 1024px) 100vw, 33vw"
@@ -317,7 +320,7 @@ export default async function HomePage() {
           {/* Image right */}
           <div className="relative aspect-[4/5] lg:aspect-auto">
             <Image
-              src="/images/exclusividade-2.jpeg"
+              src={img['home-exclusividade-2']}
               alt="Sapatos Kima Kyami"
               fill
               sizes="(max-width: 1024px) 100vw, 33vw"

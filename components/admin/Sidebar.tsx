@@ -10,6 +10,7 @@ import {
   ShoppingBag,
   Users,
   CreditCard,
+  Image as ImageIcon,
   Settings,
   LogOut,
   Menu,
@@ -23,6 +24,7 @@ const navItems = [
   { href: '/admin/encomendas',icon: ShoppingBag,       label: 'Encomendas' },
   { href: '/admin/clientes',  icon: Users,             label: 'Clientes'   },
   { href: '/admin/pagamentos',icon: CreditCard,        label: 'Pagamentos' },
+  { href: '/admin/imagens',   icon: ImageIcon,         label: 'Imagens'    },
   { href: '/admin/configuracoes', icon: Settings,      label: 'Configurações' },
 ]
 

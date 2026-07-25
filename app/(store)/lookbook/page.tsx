@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getImagensSite } from '@/lib/imagens-site'
+
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Lookbook — Kima Kyami',
@@ -12,7 +15,7 @@ const EDITORIAIS = [
     id: 1,
     titulo: 'VERÃO 2025',
     subtitulo: 'Luz & Presença',
-    src: '/images/lookbook-verao-2025.jpeg',
+    chave: 'lookbook-verao-2025',
     span: 'lg:col-span-2 lg:row-span-2',
     aspect: 'aspect-[4/5] lg:aspect-auto lg:min-h-[600px]',
   },
@@ -20,7 +23,7 @@ const EDITORIAIS = [
     id: 2,
     titulo: 'COLEÇÃO NOITE',
     subtitulo: 'Poder & Elegância',
-    src: '/images/lookbook-colecao-noite.jpeg',
+    chave: 'lookbook-colecao-noite',
     span: '',
     aspect: 'aspect-[4/5]',
   },
@@ -28,7 +31,7 @@ const EDITORIAIS = [
     id: 3,
     titulo: 'SALTOS SIGNATURE',
     subtitulo: 'A Declaração',
-    src: '/images/lookbook-saltos-signature.jpeg',
+    chave: 'lookbook-saltos-signature',
     span: '',
     aspect: 'aspect-[4/5]',
   },
@@ -36,7 +39,7 @@ const EDITORIAIS = [
     id: 4,
     titulo: 'MULES EXCLUSIVOS',
     subtitulo: 'Sofisticação Discreta',
-    src: '/images/lookbook-mules.jpeg',
+    chave: 'lookbook-mules',
     span: '',
     aspect: 'aspect-[4/5]',
   },
@@ -44,13 +47,15 @@ const EDITORIAIS = [
     id: 5,
     titulo: 'SANDÁLIAS',
     subtitulo: 'Liberdade com Estilo',
-    src: '/images/lookbook-sandalias.jpeg',
+    chave: 'lookbook-sandalias',
     span: '',
     aspect: 'aspect-[4/5]',
   },
 ]
 
-export default function LookbookPage() {
+export default async function LookbookPage() {
+  const img = await getImagensSite()
+
   return (
     <>
       {/* ─── Header ─── */}
@@ -80,7 +85,7 @@ export default function LookbookPage() {
               className={`group relative overflow-hidden block ${editorial.span} ${editorial.aspect}`}
             >
               <Image
-                src={editorial.src}
+                src={img[editorial.chave]}
                 alt={editorial.titulo}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
