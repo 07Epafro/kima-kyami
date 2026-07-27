@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import { NextRequest, NextResponse } from 'next/server'
 import db from '@/lib/db'
 import { rateLimit } from '@/lib/rate-limit'
+import { getImagemSiteDef } from '@/lib/imagens-site'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -96,6 +97,17 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Site uploads require a known `chave` — usada para recortar a imagem à
+  // proporção exacta da zona onde vai ser exibida (ver lib/imagens-site.ts)
+  let imagemSiteDef: ReturnType<typeof getImagemSiteDef> = undefined
+  if (tipo === 'site') {
+    const chave = formData.get('chave')?.toString()
+    imagemSiteDef = chave ? getImagemSiteDef(chave) : undefined
+    if (!imagemSiteDef) {
+      return NextResponse.json({ error: 'Chave de imagem desconhecida' }, { status: 400 })
+    }
+  }
+
   try {
     const buffer = Buffer.from(await file.arrayBuffer())
 
@@ -110,6 +122,17 @@ export async function POST(req: NextRequest) {
       : tipo === 'site' ? 'kima-kyami/site'
       : 'kima-kyami/produtos'
 
+    // Imagens do site são recortadas na proporção exacta da zona onde vão
+    // aparecer. gravity:'auto' deteta o assunto principal da foto e centra o
+    // recorte nele, em vez de um corte central cego que poderia cortar mal.
+    // Largura por zona (heros ocupam o ecrã inteiro e precisam de mais
+    // resolução do que uma célula de grelha) + quality:'auto:best' para não
+    // perder nitidez nem introduzir artefactos de compressão visíveis.
+    const transformation = imagemSiteDef
+      ? [{ width: imagemSiteDef.uploadWidth, aspect_ratio: imagemSiteDef.aspectRatio, crop: 'fill', gravity: 'auto' }]
+      : [{ width: 1400, crop: 'limit' }]
+    const quality = imagemSiteDef ? 'auto:best' : 'auto'
+
     const result = await new Promise<{ secure_url: string; public_id: string; format: string }>(
       (resolve, reject) => {
         cloudinary.uploader
@@ -117,10 +140,7 @@ export async function POST(req: NextRequest) {
             {
               folder,
               resource_type: 'auto',
-              ...(isImagem && {
-                transformation: [{ width: 1400, crop: 'limit' }],
-                quality: 'auto',
-              }),
+              ...(isImagem && { transformation, quality }),
             },
             (err, res) => {
               if (err || !res) reject(err ?? new Error('Resposta vazia do Cloudinary'))

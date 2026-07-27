@@ -42,6 +42,7 @@ export async function GET() {
     grupo: def.grupo,
     url: overrides.get(def.chave) ?? def.urlDefault,
     personalizada: overrides.has(def.chave),
+    aspectRatio: def.aspectRatio,
   }))
 
   return NextResponse.json({ imagens })

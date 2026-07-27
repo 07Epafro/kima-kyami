@@ -10,6 +10,7 @@ interface ImagemSiteRow {
   grupo: 'Home' | 'A Marca' | 'Lookbook'
   url: string
   personalizada: boolean
+  aspectRatio: string
 }
 
 export default function ImagensSiteManager() {
@@ -42,6 +43,7 @@ export default function ImagensSiteManager() {
       const fd = new FormData()
       fd.append('file', file)
       fd.append('tipo', 'site')
+      fd.append('chave', chave)
       const resUpload = await fetch('/api/upload', { method: 'POST', body: fd })
       if (!resUpload.ok) {
         const json = (await resUpload.json().catch(() => ({}))) as { error?: string }
@@ -119,7 +121,10 @@ export default function ImagensSiteManager() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {itens.map(item => (
                 <div key={item.chave} className="bg-white border border-a-border rounded-lg overflow-hidden">
-                  <div className="relative aspect-4/3 bg-a-bone">
+                  <div
+                    className="relative bg-a-bone"
+                    style={{ aspectRatio: item.aspectRatio.replace(':', ' / ') }}
+                  >
                     <Image
                       src={item.url}
                       alt={item.descricao}
@@ -134,13 +139,18 @@ export default function ImagensSiteManager() {
                     )}
                   </div>
                   <div className="p-4 space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-xs font-medium text-a-charcoal font-ui truncate">{item.descricao}</p>
-                      {item.personalizada && (
-                        <span className="text-[9px] px-2 py-0.5 rounded bg-a-gold/10 text-a-gold border border-a-gold/30 font-ui shrink-0">
-                          Personalizada
-                        </span>
-                      )}
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs font-medium text-a-charcoal font-ui truncate">{item.descricao}</p>
+                        {item.personalizada && (
+                          <span className="text-[9px] px-2 py-0.5 rounded bg-a-gold/10 text-a-gold border border-a-gold/30 font-ui shrink-0">
+                            Personalizada
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10px] text-a-muted font-ui">
+                        Proporção {item.aspectRatio} — o recorte é ajustado automaticamente
+                      </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <label className="flex-1 flex items-center justify-center gap-1.5 text-[10px] tracking-[0.15em] uppercase text-a-charcoal border border-a-border rounded-lg px-3 min-h-9 cursor-pointer hover:border-a-gold hover:text-a-gold transition-colors font-ui">
