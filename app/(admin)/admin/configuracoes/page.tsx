@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Save, CheckCircle, Store, Settings, Landmark } from 'lucide-react'
 import ContasBancariasManager from '@/components/admin/ContasBancariasManager'
+import PageHeader from '@/components/admin/PageHeader'
 
 const labelClass = 'text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 block font-ui'
 const inputClass = 'w-full bg-white border border-a-border text-a-charcoal text-[13px] px-4 py-2.5 rounded-lg focus:outline-none focus:border-a-gold transition-colors placeholder:text-a-muted/40 font-ui'
@@ -70,17 +71,11 @@ export default function ConfiguracoesPage() {
 
   return (
     <div className="max-w-5xl">
-      <div className="mb-6 flex items-center gap-2.5">
-        <Store size={20} strokeWidth={1.5} className="text-a-gold shrink-0" />
-        <div>
-          <h1 className="text-2xl font-light text-a-charcoal tracking-tight font-display">
-            Configurações da Loja
-          </h1>
-          <p className="text-sm text-a-muted mt-1 font-ui">
-            Dados de contacto e pagamento exibidos aos clientes.
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        icon={Store}
+        title="Configurações da Loja"
+        description="Dados de contacto e pagamento exibidos aos clientes."
+      />
 
       <div className="flex flex-col lg:flex-row lg:items-start gap-6">
         <nav className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible border-b lg:border-b-0 border-a-border pb-2 lg:pb-0 lg:w-56 lg:shrink-0 lg:sticky lg:top-24">
@@ -89,7 +84,7 @@ export default function ConfiguracoesPage() {
               key={id}
               type="button"
               onClick={() => setTab(id)}
-              className={`flex items-center gap-2.5 shrink-0 lg:w-full text-left px-4 py-2.5 text-[10px] tracking-[0.15em] uppercase rounded-lg transition-colors font-ui ${
+              className={`flex items-center gap-2.5 shrink-0 lg:w-full text-left px-4 min-h-11 text-[10px] tracking-[0.15em] uppercase rounded-lg transition-colors font-ui ${
                 tab === id
                   ? 'bg-a-charcoal text-white'
                   : 'text-a-muted hover:text-a-charcoal hover:bg-a-bone'

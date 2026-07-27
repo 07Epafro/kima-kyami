@@ -3,6 +3,7 @@ import db from '@/lib/db'
 import { EstadoEncomenda, Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
 import { ArrowRight, Download, Search, ShoppingBag, SlidersHorizontal } from 'lucide-react'
+import PageHeader from '@/components/admin/PageHeader'
 
 export const metadata = { title: 'Encomendas' }
 
@@ -79,19 +80,23 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <p className="text-[11px] text-a-muted font-ui">{total} encomenda{total !== 1 ? 's' : ''}</p>
-        <a
-          href="/api/encomendas?format=csv"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] tracking-wide uppercase border border-a-border rounded-lg text-a-muted hover:text-a-charcoal hover:border-a-charcoal transition-colors font-ui"
-        >
-          <Download size={12} strokeWidth={1.5} /> Exportar CSV
-        </a>
-      </div>
+    <div className="space-y-6 lg:space-y-8">
+      <PageHeader
+        icon={ShoppingBag}
+        title="Encomendas"
+        description={`${total} encomenda${total !== 1 ? 's' : ''} no total.`}
+        action={
+          <a
+            href="/api/encomendas?format=csv"
+            className="flex items-center gap-1.5 px-4 min-h-11 text-[10px] tracking-wide uppercase border border-a-border rounded-lg text-a-muted hover:text-a-charcoal hover:border-a-charcoal transition-colors font-ui"
+          >
+            <Download size={12} strokeWidth={1.5} /> Exportar CSV
+          </a>
+        }
+      />
 
       {/* Filter form */}
-      <div className="bg-white border border-a-border rounded-lg p-4 space-y-3">
+      <div className="bg-white border border-a-border rounded-lg p-6 space-y-4 shadow-sm">
         <div className="flex items-center gap-1.5 text-a-muted">
           <SlidersHorizontal size={12} strokeWidth={1.5} />
           <span className="text-[10px] tracking-[0.14em] uppercase font-ui">Filtros</span>
@@ -102,32 +107,32 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
             <input
               name="search" defaultValue={search} placeholder="Referência ou cliente…"
               aria-label="Pesquisar encomendas"
-              className="w-full pl-9 pr-3 py-2 border border-a-border rounded-lg text-sm focus:outline-none focus:border-a-gold font-ui"
+              className="w-full pl-9 pr-3 min-h-11 border border-a-border rounded-lg text-sm focus:outline-none focus:border-a-gold font-ui"
             />
           </div>
           <select name="estado" defaultValue={estado ?? ''} aria-label="Estado da encomenda"
-            className="col-span-2 border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-ui bg-white lg:col-span-1">
+            className="col-span-2 border border-a-border rounded-lg px-3 min-h-11 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-ui bg-white lg:col-span-1">
             <option value="">Todos os estados</option>
             {Object.entries(ESTADO_CONFIG).map(([key, { label }]) => (
               <option key={key} value={key}>{label}</option>
             ))}
           </select>
           <input name="de"  type="date" defaultValue={sp.de}  title="Data de início" aria-label="Data de início"
-            className="w-full border border-a-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
+            className="w-full border border-a-border rounded-lg px-3 min-h-11 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
           <input name="ate" type="date" defaultValue={sp.ate} title="Data de fim"    aria-label="Data de fim"
-            className="w-full border border-a-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
+            className="w-full border border-a-border rounded-lg px-3 min-h-11 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
           <button type="submit"
-            className="px-4 py-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
+            className="px-6 min-h-11 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
             Filtrar
           </button>
-          <a href="/admin/encomendas" className="px-3 py-2 text-[11px] text-a-muted hover:text-a-charcoal transition-colors font-ui text-center self-center">
+          <a href="/admin/encomendas" className="px-3 min-h-11 flex items-center text-[11px] text-a-muted hover:text-a-charcoal transition-colors font-ui text-center self-center">
             Limpar
           </a>
         </form>
       </div>
 
       {/* List panel */}
-      <div className="bg-white border border-a-border rounded-lg overflow-hidden">
+      <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
         {encomendas.length === 0 ? (
           <div className="py-16 text-center">
             <ShoppingBag size={28} strokeWidth={1} className="text-a-border mx-auto mb-3" />

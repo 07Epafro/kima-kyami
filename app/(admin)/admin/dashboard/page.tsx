@@ -1,8 +1,9 @@
 import db from '@/lib/db'
 import { EstadoPagamento, EstadoEncomenda } from '@prisma/client'
-import { TrendingUp, ShoppingBag, Users, Clock, CheckCircle2, Plus, Store } from 'lucide-react'
+import { LayoutDashboard, TrendingUp, ShoppingBag, Users, Clock, CheckCircle2, Plus, Store } from 'lucide-react'
 import Link from 'next/link'
 import SalesChart from '@/components/admin/SalesChart'
+import PageHeader from '@/components/admin/PageHeader'
 import { formatarPreco } from '@/lib/utils'
 
 export const metadata = { title: 'Dashboard' }
@@ -127,15 +128,20 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <div className="space-y-6 lg:space-y-8">
+    <div>
+      <PageHeader
+        icon={LayoutDashboard}
+        title="Dashboard"
+        description="Visão geral da loja — vendas, encomendas recentes e pagamentos por validar."
+      />
 
       {/* KPI cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-6">
         {kpis.map(({ label, valor, icon: Icon, iconCls, iconBg, href, flourish }) => (
           <Link
             key={label}
             href={href}
-            className="group relative overflow-hidden bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md hover:border-a-gold/40 transition-all min-h-32"
+            className="group relative overflow-hidden bg-white border border-a-border rounded-lg p-6 sm:p-8 shadow-sm hover:shadow-md hover:border-a-gold/40 transition-all min-h-32"
           >
             {flourish && (
               <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-a-gold/5 rounded-full blur-xl pointer-events-none" />
@@ -156,13 +162,13 @@ export default async function DashboardPage() {
       </div>
 
       {/* Chart + tables */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
 
         {/* Left column: sales chart + recent orders */}
-        <div className="lg:col-span-8 space-y-5 lg:space-y-6">
+        <div className="lg:col-span-8 space-y-6">
 
           {/* Sales chart */}
-          <div className="bg-white border border-a-border rounded-lg p-4 sm:p-8 shadow-sm">
+          <div className="bg-white border border-a-border rounded-lg p-6 sm:p-8 shadow-sm">
             <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted mb-6 font-ui">
               Vendas — últimos 30 dias
             </h2>
@@ -225,10 +231,10 @@ export default async function DashboardPage() {
         </div>
 
         {/* Right column: quick actions + payments to validate */}
-        <div className="lg:col-span-4 space-y-5 lg:space-y-6">
+        <div className="lg:col-span-4 space-y-6">
 
           {/* Quick actions */}
-          <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
+          <div className="bg-white border border-a-border rounded-lg p-6 sm:p-8 shadow-sm">
             <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted mb-4 font-ui">
               Ações rápidas
             </h2>

@@ -6,6 +6,7 @@ import { Package, Plus, ChevronLeft, ChevronRight, Edit2, Search, SlidersHorizon
 import { formatarPreco } from '@/lib/utils'
 import DeleteButton from '@/components/admin/DeleteButton'
 import ToggleAtivoButton from '@/components/admin/ToggleAtivoButton'
+import PageHeader from '@/components/admin/PageHeader'
 
 export const metadata = { title: 'Produtos' }
 
@@ -75,27 +76,22 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
   }
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-a-gold/10 shrink-0">
-            <Package size={18} strokeWidth={1.5} className="text-a-gold" />
-          </div>
-          <div>
-            <h1 className="text-xl font-light text-a-charcoal font-display tracking-tight">Produtos</h1>
-            <p className="text-[11px] text-a-muted font-ui">{total} produto{total === 1 ? '' : 's'} no catálogo</p>
-          </div>
-        </div>
-        <Link href="/admin/produtos/novo"
-          className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-6 min-h-12 rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui whitespace-nowrap shrink-0">
-          <Plus size={13} strokeWidth={1.5} /> Novo Produto
-        </Link>
-      </div>
+    <div className="space-y-6 lg:space-y-8">
+      <PageHeader
+        icon={Package}
+        title="Produtos"
+        description={`${total} produto${total === 1 ? '' : 's'} no catálogo.`}
+        action={
+          <Link href="/admin/produtos/novo"
+            className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-6 min-h-12 rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui whitespace-nowrap shrink-0">
+            <Plus size={13} strokeWidth={1.5} /> Novo Produto
+          </Link>
+        }
+      />
 
       {/* Filters */}
-      <form method="GET" action="/admin/produtos" className="bg-white border border-a-border rounded-lg p-4">
-        <div className="flex items-center gap-1.5 text-a-muted mb-3">
+      <form method="GET" action="/admin/produtos" className="bg-white border border-a-border rounded-lg p-6 shadow-sm">
+        <div className="flex items-center gap-1.5 text-a-muted mb-4">
           <SlidersHorizontal size={12} strokeWidth={1.5} />
           <span className="text-[10px] tracking-[0.14em] uppercase font-ui">Filtros</span>
         </div>
@@ -106,13 +102,13 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
               <Search size={13} strokeWidth={1.5} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-a-muted" />
               <input id="search" name="search" type="text" defaultValue={params.search ?? ''}
                 placeholder="Nome do produto..."
-                className="w-full bg-white border border-a-border rounded-lg pl-9 pr-3 py-2 text-sm text-a-charcoal placeholder-a-muted/50 focus:outline-none focus:border-a-gold transition-colors font-ui" />
+                className="w-full bg-white border border-a-border rounded-lg pl-9 pr-3 min-h-11 text-sm text-a-charcoal placeholder-a-muted/50 focus:outline-none focus:border-a-gold transition-colors font-ui" />
             </div>
           </div>
           <div className="lg:min-w-36">
             <label htmlFor="categoria" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Categoria</label>
             <select id="categoria" name="categoria" defaultValue={params.categoria ?? ''}
-              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 min-h-11 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="">Todas</option>
               {CATEGORIAS.map((c) => <option key={c} value={c}>{categoriaLabels[c]}</option>)}
             </select>
@@ -120,7 +116,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
           <div className="lg:min-w-32">
             <label htmlFor="estado" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Estado</label>
             <select id="estado" name="estado" defaultValue={params.estado ?? ''}
-              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 min-h-11 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="">Todos</option>
               <option value="ativo">Activo</option>
               <option value="emBreve">Em breve</option>
@@ -130,7 +126,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
           <div className="lg:min-w-36">
             <label htmlFor="sort" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Ordenar por</label>
             <select id="sort" name="sort" defaultValue={params.sort ?? 'criadoEm'}
-              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 min-h-11 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="criadoEm">Data criação</option>
               <option value="nome">Nome</option>
               <option value="preco">Preço</option>
@@ -139,23 +135,23 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
           <div className="lg:min-w-28">
             <label htmlFor="order" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Direcção</label>
             <select id="order" name="order" defaultValue={params.order ?? 'desc'}
-              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 min-h-11 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="desc">Decrescente</option>
               <option value="asc">Crescente</option>
             </select>
           </div>
           <button type="submit"
-            className="bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-4 py-2 rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
+            className="bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-6 min-h-11 rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
             Filtrar
           </button>
-          <Link href="/admin/produtos" className="text-[11px] text-a-muted hover:text-a-charcoal transition-colors py-2 px-1 font-ui text-center self-center">
+          <Link href="/admin/produtos" className="text-[11px] text-a-muted hover:text-a-charcoal transition-colors min-h-11 flex items-center px-1 font-ui text-center self-center">
             Limpar
           </Link>
         </div>
       </form>
 
       {/* List panel */}
-      <div className="bg-white border border-a-border rounded-lg overflow-hidden">
+      <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
         {produtos.length === 0 ? (
           <div className="py-16 text-center">
             <Package size={28} strokeWidth={1} className="text-a-border mx-auto mb-3" />
@@ -304,21 +300,21 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
             <div className="flex items-center gap-2">
               {page > 1 ? (
                 <Link href={buildUrl({ page: String(page - 1) })}
-                  className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
+                  className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded-lg px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
                   <ChevronLeft size={13} strokeWidth={1.5} /> Anterior
                 </Link>
               ) : (
-                <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded px-3 py-2 cursor-not-allowed font-ui">
+                <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded-lg px-3 py-2 cursor-not-allowed font-ui">
                   <ChevronLeft size={13} strokeWidth={1.5} /> Anterior
                 </span>
               )}
               {page < paginas ? (
                 <Link href={buildUrl({ page: String(page + 1) })}
-                  className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
+                  className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded-lg px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
                   Próxima <ChevronRight size={13} strokeWidth={1.5} />
                 </Link>
               ) : (
-                <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded px-3 py-2 cursor-not-allowed font-ui">
+                <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded-lg px-3 py-2 cursor-not-allowed font-ui">
                   Próxima <ChevronRight size={13} strokeWidth={1.5} />
                 </span>
               )}

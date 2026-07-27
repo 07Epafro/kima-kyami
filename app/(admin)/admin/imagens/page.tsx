@@ -1,18 +1,17 @@
+import { Image as ImageIcon } from 'lucide-react'
 import ImagensSiteManager from '@/components/admin/ImagensSiteManager'
+import PageHeader from '@/components/admin/PageHeader'
 
 export const metadata = { title: 'Imagens do Site' }
 
 export default function ImagensSitePage() {
   return (
-    <div className="max-w-5xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-light text-a-charcoal tracking-tight font-display">
-          Imagens do Site
-        </h1>
-        <p className="text-sm text-a-muted mt-1 font-ui">
-          Substitui as imagens usadas na página inicial, em &quot;A Marca&quot; e no Lookbook. As alterações ficam visíveis no site em poucos segundos.
-        </p>
-      </div>
+    <div>
+      <PageHeader
+        icon={ImageIcon}
+        title="Imagens do Site"
+        description={'Substitui as imagens usadas na página inicial, em "A Marca" e no Lookbook. As alterações ficam visíveis no site em poucos segundos.'}
+      />
 
       <ImagensSiteManager />
     </div>

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
 import { Search, Download, Users, Wallet } from 'lucide-react'
+import PageHeader from '@/components/admin/PageHeader'
 
 export const metadata = { title: 'Clientes' }
 
@@ -82,10 +83,22 @@ export default async function ClientesPage({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6 lg:space-y-8">
+      <PageHeader
+        icon={Users}
+        title="Clientes"
+        description={`${total} cliente${total !== 1 ? 's' : ''} registado${total !== 1 ? 's' : ''} na loja.`}
+        action={
+          <a href="/api/clientes?format=csv"
+            className="flex items-center gap-1.5 px-4 min-h-11 text-[10px] tracking-wide uppercase border border-a-border rounded-lg text-a-muted hover:text-a-charcoal hover:border-a-charcoal transition-colors font-ui">
+            <Download size={12} strokeWidth={1.5} /> Exportar CSV
+          </a>
+        }
+      />
+
       {/* Stat cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
-        <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="bg-white border border-a-border rounded-lg p-6 sm:p-8 shadow-sm">
           <div className="flex items-start justify-between mb-4 sm:mb-5">
             <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui leading-tight max-w-30">
               Total de Clientes
@@ -98,7 +111,7 @@ export default async function ClientesPage({ searchParams }: PageProps) {
             {total}
           </p>
         </div>
-        <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
+        <div className="bg-white border border-a-border rounded-lg p-6 sm:p-8 shadow-sm">
           <div className="flex items-start justify-between mb-4 sm:mb-5">
             <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui leading-tight max-w-30">
               Valor Vitalício Médio
@@ -114,34 +127,26 @@ export default async function ClientesPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <p className="text-[11px] text-a-muted font-ui">{total} cliente{total !== 1 ? 's' : ''}</p>
-        <a href="/api/clientes?format=csv"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] tracking-wide uppercase border border-a-border rounded text-a-muted hover:text-a-charcoal hover:border-a-charcoal transition-colors font-ui">
-          <Download size={12} strokeWidth={1.5} /> Exportar CSV
-        </a>
-      </div>
-
       {/* Search */}
-      <form method="GET" className="flex gap-3">
+      <form method="GET" className="bg-white border border-a-border rounded-lg p-6 shadow-sm flex gap-3">
         <div className="relative flex-1 max-w-sm">
           <Search size={13} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-a-muted" />
           <input name="search" defaultValue={search} placeholder="Nome ou email…" aria-label="Pesquisar clientes"
-            className="w-full pl-9 pr-3 py-2 border border-a-border rounded-lg text-sm bg-white focus:outline-none focus:border-a-gold font-ui" />
+            className="w-full pl-9 pr-3 min-h-11 border border-a-border rounded-lg text-sm bg-white focus:outline-none focus:border-a-gold font-ui" />
         </div>
         <button type="submit"
-          className="px-4 py-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
+          className="px-6 min-h-11 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
           Pesquisar
         </button>
         {search && (
-          <a href="/admin/clientes" className="px-3 py-2 text-[11px] text-a-muted hover:text-a-charcoal font-ui">
+          <a href="/admin/clientes" className="px-3 min-h-11 flex items-center text-[11px] text-a-muted hover:text-a-charcoal font-ui">
             Limpar
           </a>
         )}
       </form>
 
       {/* List panel */}
-      <div className="bg-white border border-a-border rounded-lg overflow-hidden">
+      <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
         {clientes.length === 0 ? (
           <div className="py-16 text-center">
             <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
@@ -246,13 +251,13 @@ export default async function ClientesPage({ searchParams }: PageProps) {
           <div className="flex gap-2">
             {page > 1 && (
               <Link href={buildUrl({ page: String(page - 1) })}
-                className="flex items-center gap-1 px-3 py-1.5 text-[11px] border border-a-border rounded hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
+                className="flex items-center gap-1 px-3 py-1.5 text-[11px] border border-a-border rounded-lg hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
                 Anterior
               </Link>
             )}
             {page < paginas && (
               <Link href={buildUrl({ page: String(page + 1) })}
-                className="flex items-center gap-1 px-3 py-1.5 text-[11px] border border-a-border rounded hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
+                className="flex items-center gap-1 px-3 py-1.5 text-[11px] border border-a-border rounded-lg hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
                 Seguinte
               </Link>
             )}
