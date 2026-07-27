@@ -47,9 +47,6 @@ export async function POST(req: NextRequest) {
   }
 
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
-  // Comprovante é submetido por clientes sem sessão — limite apertado contra abuso.
-  // Produto/site são admin-only; um admin a rever/substituir várias imagens
-  // seguidas (ex. as 15 secções de Imagens do Site) não deve ser tratado como abuso.
   const limite = tipo === 'comprovante' ? 5 : 30
   if (!rateLimit(ip, limite, 60_000)) {
     return NextResponse.json({ error: 'Demasiados pedidos. Tenta novamente em breve.' }, { status: 429 })
@@ -75,9 +72,7 @@ export async function POST(req: NextRequest) {
   }
   const isImagem = TIPOS_IMAGEM.includes(file.type)
 
-  // Todo o upload é admin-only, excepto o comprovante de pagamento (submetido
-  // pelo cliente no checkout, sem sessão). Qualquer novo `tipo` adicionado no
-  // futuro cai automaticamente no branch autenticado por defeito.
+  // admin-only por omissão; comprovante (submetido pelo cliente, sem sessão) é a única excepção
   if (tipo !== 'comprovante') {
     const session = await auth()
     if (!session) {
@@ -97,8 +92,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Site uploads require a known `chave` — usada para recortar a imagem à
-  // proporção exacta da zona onde vai ser exibida (ver lib/imagens-site.ts)
   let imagemSiteDef: ReturnType<typeof getImagemSiteDef> = undefined
   if (tipo === 'site') {
     const chave = formData.get('chave')?.toString()
@@ -122,12 +115,7 @@ export async function POST(req: NextRequest) {
       : tipo === 'site' ? 'kima-kyami/site'
       : 'kima-kyami/produtos'
 
-    // Imagens do site são recortadas na proporção exacta da zona onde vão
-    // aparecer. gravity:'auto' deteta o assunto principal da foto e centra o
-    // recorte nele, em vez de um corte central cego que poderia cortar mal.
-    // Largura por zona (heros ocupam o ecrã inteiro e precisam de mais
-    // resolução do que uma célula de grelha) + quality:'auto:best' para não
-    // perder nitidez nem introduzir artefactos de compressão visíveis.
+    // gravity:'auto' centra o recorte no assunto principal da foto
     const transformation = imagemSiteDef
       ? [{ width: imagemSiteDef.uploadWidth, aspect_ratio: imagemSiteDef.aspectRatio, crop: 'fill', gravity: 'auto' }]
       : [{ width: 1400, crop: 'limit' }]

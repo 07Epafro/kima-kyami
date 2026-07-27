@@ -114,75 +114,109 @@ export default function ImagensSiteManager() {
         if (itens.length === 0) return null
 
         return (
-          <section key={grupo} className="space-y-4">
-            <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted pb-3 border-b border-a-border font-ui">
-              {grupo}
-            </p>
+          <section key={grupo} className="space-y-5">
+            <div className="flex items-center gap-4">
+              <h2 className="font-display text-[18px] font-medium text-a-charcoal shrink-0">{grupo}</h2>
+              <div className="flex-1 h-px bg-a-border" />
+              <span className="text-[9px] tracking-[0.2em] uppercase text-a-muted font-ui shrink-0">
+                {itens.length} {itens.length === 1 ? 'Zona' : 'Zonas'}
+              </span>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {itens.map(item => (
-                <div key={item.chave} className="bg-white border border-a-border rounded-lg overflow-hidden">
-                  <div
-                    className="relative bg-a-bone"
-                    style={{ aspectRatio: item.aspectRatio.replace(':', ' / ') }}
-                  >
-                    <Image
-                      src={item.url}
-                      alt={item.descricao}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover"
-                    />
-                    {aEnviar === item.chave && (
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              {itens.map(item => {
+                const inputId = `img-upload-${item.chave}`
+                return (
+                  <div key={item.chave} className="bg-white border border-a-border rounded-lg overflow-hidden group">
+                    <div
+                      className="relative bg-a-bone"
+                      style={{ aspectRatio: item.aspectRatio.replace(':', ' / ') }}
+                    >
+                      <input
+                        id={inputId}
+                        ref={el => { inputRefs.current[item.chave] = el }}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        className="sr-only"
+                        disabled={aEnviar !== null}
+                        onChange={e => {
+                          const file = e.target.files?.[0]
+                          if (file) substituir(item.chave, file)
+                        }}
+                      />
+
+                      <Image
+                        src={item.url}
+                        alt={item.descricao}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-700 lg:group-hover:scale-105"
+                      />
+
+                      <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-white font-ui text-[9px] uppercase tracking-widest">
+                        {item.aspectRatio}
                       </div>
-                    )}
-                  </div>
-                  <div className="p-4 space-y-3">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="text-xs font-medium text-a-charcoal font-ui truncate">{item.descricao}</p>
+
+                      {item.personalizada && (
+                        <div className="absolute top-3 right-3 bg-a-gold/90 backdrop-blur-md px-2 py-1 rounded text-a-charcoal font-ui text-[9px] uppercase tracking-widest font-medium">
+                          Personalizada
+                        </div>
+                      )}
+
+                      <div className="hidden lg:flex absolute inset-0 items-center justify-center gap-2 bg-black/0 lg:group-hover:bg-black/30 lg:group-focus-within:bg-black/30 transition-colors">
+                        <label
+                          htmlFor={inputId}
+                          className="opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100 transition-opacity flex items-center gap-1.5 h-9 px-4 bg-white/95 text-a-charcoal rounded-lg cursor-pointer hover:bg-white text-[10px] tracking-[0.15em] uppercase font-ui backdrop-blur-sm"
+                        >
+                          <Upload size={12} strokeWidth={1.5} />
+                          Substituir
+                        </label>
                         {item.personalizada && (
-                          <span className="text-[9px] px-2 py-0.5 rounded bg-a-gold/10 text-a-gold border border-a-gold/30 font-ui shrink-0">
-                            Personalizada
-                          </span>
+                          <button
+                            type="button"
+                            onClick={() => repor(item.chave)}
+                            disabled={aEnviar !== null}
+                            title="Repor imagem original"
+                            className="opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100 transition-opacity w-9 h-9 flex items-center justify-center bg-white/95 text-a-muted hover:text-red-500 rounded-lg hover:bg-white backdrop-blur-sm disabled:opacity-40"
+                          >
+                            <RotateCcw size={14} strokeWidth={1.5} />
+                          </button>
                         )}
                       </div>
-                      <p className="text-[10px] text-a-muted font-ui">
-                        Proporção {item.aspectRatio} — o recorte é ajustado automaticamente
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <label className="flex-1 flex items-center justify-center gap-1.5 text-[10px] tracking-[0.15em] uppercase text-a-charcoal border border-a-border rounded-lg px-3 min-h-9 cursor-pointer hover:border-a-gold hover:text-a-gold transition-colors font-ui">
-                        <Upload size={12} strokeWidth={1.5} />
-                        Substituir
-                        <input
-                          ref={el => { inputRefs.current[item.chave] = el }}
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          className="hidden"
-                          disabled={aEnviar !== null}
-                          onChange={e => {
-                            const file = e.target.files?.[0]
-                            if (file) substituir(item.chave, file)
-                          }}
-                        />
-                      </label>
-                      {item.personalizada && (
-                        <button
-                          type="button"
-                          onClick={() => repor(item.chave)}
-                          disabled={aEnviar !== null}
-                          title="Repor imagem original"
-                          className="p-2 rounded-lg text-a-muted hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40"
-                        >
-                          <RotateCcw size={14} strokeWidth={1.5} />
-                        </button>
+
+                      {aEnviar === item.chave && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                          <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        </div>
                       )}
                     </div>
+
+                    <div className="p-4 space-y-3">
+                      <p className="text-xs font-medium text-a-charcoal font-ui truncate">{item.descricao}</p>
+
+                      <div className="flex lg:hidden items-center gap-2">
+                        <label
+                          htmlFor={inputId}
+                          className="flex-1 flex items-center justify-center gap-1.5 text-[10px] tracking-[0.15em] uppercase text-a-charcoal border border-a-border rounded-lg px-3 min-h-9 cursor-pointer hover:border-a-gold hover:text-a-gold transition-colors font-ui"
+                        >
+                          <Upload size={12} strokeWidth={1.5} />
+                          Substituir
+                        </label>
+                        {item.personalizada && (
+                          <button
+                            type="button"
+                            onClick={() => repor(item.chave)}
+                            disabled={aEnviar !== null}
+                            title="Repor imagem original"
+                            className="p-2 rounded-lg text-a-muted hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40"
+                          >
+                            <RotateCcw size={14} strokeWidth={1.5} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </section>
         )

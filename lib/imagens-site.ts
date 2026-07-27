@@ -5,19 +5,10 @@ export interface ImagemSiteDef {
   descricao: string
   grupo: 'Home' | 'A Marca' | 'Lookbook'
   urlDefault: string
-  // Proporção (largura:altura) da zona onde a imagem é exibida no site — usada
-  // para recortar de forma inteligente no Cloudinary ao carregar (crop:'fill',
-  // gravity:'auto') e para a pré-visualização no admin corresponder ao real.
   aspectRatio: string
-  // Largura-alvo do upload em pixels. Os heros ocupam o ecrã inteiro (podem
-  // ser vistos em monitores grandes/retina) e precisam de mais resolução do
-  // que uma célula de grelha, que nunca ocupa mais de ~metade do ecrã.
   uploadWidth: number
 }
 
-// Fonte única de verdade: cada slot de imagem personalizável do site,
-// com o ficheiro estático usado como valor por omissão (nunca undefined
-// para um `chave` conhecido, mesmo sem linha na BD ou sem BD disponível).
 export const IMAGENS_SITE: ImagemSiteDef[] = [
   { chave: 'home-hero', descricao: 'Hero principal', grupo: 'Home', urlDefault: '/images/hero.jpeg', aspectRatio: '3:2', uploadWidth: 2400 },
   { chave: 'home-categoria-saltos', descricao: 'Categoria — Saltos', grupo: 'Home', urlDefault: '/images/categoria-saltos.jpeg', aspectRatio: '3:4', uploadWidth: 1600 },

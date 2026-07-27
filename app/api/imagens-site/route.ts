@@ -11,8 +11,7 @@ const patchSchema = z.object({
 })
 
 function revalidarPaginasAfectadas() {
-  // revalidatePath só é válido dentro do contexto de um Route Handler em execução
-  // real (next dev/start) — protege testes e qualquer chamada fora desse contexto.
+  // revalidatePath só funciona dentro de um Route Handler real — protege testes
   try {
     revalidatePath('/')
     revalidatePath('/marca')
@@ -31,8 +30,6 @@ export async function GET() {
     const rows = await db.imagemSite.findMany({ select: { chave: true, url: true } })
     overrides = new Map(rows.map(r => [r.chave, r.url]))
   } catch (err) {
-    // Tabela ainda não existe (antes de `npx prisma db push`) — mostra os valores
-    // por omissão em vez de rebentar; o admin vê a lista, só não tem overrides.
     console.error('[imagens-site] Falha ao consultar overrides — a mostrar valores por omissão', err)
   }
 
