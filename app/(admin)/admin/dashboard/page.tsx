@@ -1,6 +1,6 @@
 import db from '@/lib/db'
 import { EstadoPagamento, EstadoEncomenda } from '@prisma/client'
-import { TrendingUp, ShoppingBag, Users, Clock, CheckCircle2 } from 'lucide-react'
+import { TrendingUp, ShoppingBag, Users, Clock, CheckCircle2, Plus, Store } from 'lucide-react'
 import Link from 'next/link'
 import SalesChart from '@/components/admin/SalesChart'
 import { formatarPreco } from '@/lib/utils'
@@ -95,6 +95,7 @@ export default async function DashboardPage() {
       iconCls: 'text-a-gold',
       iconBg:  'bg-a-gold/10',
       href: '/admin/encomendas',
+      flourish: true,
     },
     {
       label: 'Encomendas este mês',
@@ -103,6 +104,7 @@ export default async function DashboardPage() {
       iconCls: 'text-blue-600',
       iconBg:  'bg-blue-50',
       href: '/admin/encomendas',
+      flourish: false,
     },
     {
       label: 'Clientes',
@@ -111,6 +113,7 @@ export default async function DashboardPage() {
       iconCls: 'text-emerald-600',
       iconBg:  'bg-emerald-50',
       href: '/admin/clientes',
+      flourish: false,
     },
     {
       label: 'Pagamentos pendentes',
@@ -119,6 +122,7 @@ export default async function DashboardPage() {
       iconCls: pagamentosPendentes > 0 ? 'text-red-500'  : 'text-a-muted',
       iconBg:  pagamentosPendentes > 0 ? 'bg-red-50'     : 'bg-a-border/30',
       href: '/admin/pagamentos',
+      flourish: false,
     },
   ]
 
@@ -127,13 +131,16 @@ export default async function DashboardPage() {
 
       {/* KPI cards */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
-        {kpis.map(({ label, valor, icon: Icon, iconCls, iconBg, href }) => (
+        {kpis.map(({ label, valor, icon: Icon, iconCls, iconBg, href, flourish }) => (
           <Link
             key={label}
             href={href}
-            className="group bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md hover:border-a-gold/40 transition-all"
+            className="group relative overflow-hidden bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md hover:border-a-gold/40 transition-all min-h-32"
           >
-            <div className="flex items-start justify-between mb-4 sm:mb-5">
+            {flourish && (
+              <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-a-gold/5 rounded-full blur-xl pointer-events-none" />
+            )}
+            <div className="relative z-10 flex items-start justify-between mb-4 sm:mb-5">
               <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui leading-tight max-w-30">
                 {label}
               </p>
@@ -141,122 +148,153 @@ export default async function DashboardPage() {
                 <Icon size={15} strokeWidth={1.5} className={iconCls} />
               </div>
             </div>
-            <p className="text-2xl sm:text-3xl font-light text-a-charcoal font-display leading-none tracking-tight">
+            <p className="relative z-10 text-2xl sm:text-3xl font-light text-a-charcoal font-display leading-none tracking-tight group-hover:text-a-gold transition-colors">
               {valor}
             </p>
           </Link>
         ))}
       </div>
 
-      {/* Sales chart */}
-      <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
-        <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted mb-6 font-ui">
-          Vendas — últimos 30 dias
-        </h2>
-        <SalesChart data={vendasDiarias} />
-      </div>
+      {/* Chart + tables */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6">
 
-      {/* Tables */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-6">
+        {/* Left column: sales chart + recent orders */}
+        <div className="lg:col-span-8 space-y-5 lg:space-y-6">
 
-        {/* Recent orders */}
-        <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
-          <div className="px-6 py-4 border-b border-a-border flex items-center justify-between">
-            <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
-              Últimas encomendas
+          {/* Sales chart */}
+          <div className="bg-white border border-a-border rounded-lg p-4 sm:p-8 shadow-sm">
+            <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted mb-6 font-ui">
+              Vendas — últimos 30 dias
             </h2>
-            <Link href="/admin/encomendas" className="text-[10px] text-a-gold hover:underline font-ui tracking-wide">
-              Ver todas
-            </Link>
+            <SalesChart data={vendasDiarias} />
           </div>
-          {ultimasEncomendas.length === 0 ? (
-            <div className="px-6 py-12 text-center">
-              <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
-                <ShoppingBag size={18} strokeWidth={1.5} className="text-a-muted" />
+
+          {/* Recent orders */}
+          <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-a-border flex items-center justify-between">
+              <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
+                Últimas encomendas
+              </h2>
+              <Link href="/admin/encomendas" className="text-[10px] text-a-gold hover:underline font-ui tracking-wide">
+                Ver todas
+              </Link>
+            </div>
+            {ultimasEncomendas.length === 0 ? (
+              <div className="px-6 py-12 text-center">
+                <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
+                  <ShoppingBag size={18} strokeWidth={1.5} className="text-a-muted" />
+                </div>
+                <p className="text-sm text-a-muted font-ui">Sem encomendas ainda.</p>
               </div>
-              <p className="text-sm text-a-muted font-ui">Sem encomendas ainda.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-[9.5px] tracking-[0.18em] uppercase text-a-muted border-b border-a-border font-ui">
-                    <th className="px-6 py-3 text-left font-normal">Ref.</th>
-                    <th className="px-4 py-3 text-left font-normal hidden sm:table-cell">Cliente</th>
-                    <th className="px-4 py-3 text-right font-normal">Total</th>
-                    <th className="px-4 py-3 text-left font-normal">Estado</th>
-                    <th className="px-4 py-3 text-right font-normal hidden sm:table-cell">Data</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ultimasEncomendas.map((enc) => (
-                    <tr key={enc.id} className="border-b border-a-border/50 hover:bg-a-bone transition-colors last:border-0">
-                      <td className="px-6 py-3">
-                        <Link href={`/admin/encomendas/${enc.id}`} className="font-mono text-xs text-a-charcoal hover:text-a-gold transition-colors">
-                          {enc.referencia}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-xs text-a-muted truncate max-w-28 hidden sm:table-cell">{enc.cliente.nome}</td>
-                      <td className="px-4 py-3 text-xs text-right font-medium text-a-charcoal font-ui">{formatarPreco(enc.total)}</td>
-                      <td className="px-4 py-3">
-                        <span className={`text-[9px] px-2 py-0.5 rounded font-medium font-ui ${estadoBadge[enc.estado]}`}>
-                          {estadoLabels[enc.estado]}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-[10px] text-a-muted text-right font-ui hidden sm:table-cell">{formatarDataCurta(enc.criadaEm.toISOString())}</td>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-[9.5px] tracking-[0.18em] uppercase text-a-muted border-b border-a-border font-ui">
+                      <th className="px-6 py-3 text-left font-normal">Ref.</th>
+                      <th className="px-4 py-3 text-left font-normal hidden sm:table-cell">Cliente</th>
+                      <th className="px-4 py-3 text-right font-normal">Total</th>
+                      <th className="px-4 py-3 text-left font-normal">Estado</th>
+                      <th className="px-4 py-3 text-right font-normal hidden sm:table-cell">Data</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+                  <tbody>
+                    {ultimasEncomendas.map((enc) => (
+                      <tr key={enc.id} className="border-b border-a-border/50 hover:bg-a-bone transition-colors last:border-0">
+                        <td className="px-6 py-3">
+                          <Link href={`/admin/encomendas/${enc.id}`} className="font-mono text-xs text-a-charcoal hover:text-a-gold transition-colors">
+                            {enc.referencia}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-a-muted truncate max-w-28 hidden sm:table-cell">{enc.cliente.nome}</td>
+                        <td className="px-4 py-3 text-xs text-right font-medium text-a-charcoal font-ui">{formatarPreco(enc.total)}</td>
+                        <td className="px-4 py-3">
+                          <span className={`text-[9px] px-2 py-0.5 rounded font-medium font-ui ${estadoBadge[enc.estado]}`}>
+                            {estadoLabels[enc.estado]}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-[10px] text-a-muted text-right font-ui hidden sm:table-cell">{formatarDataCurta(enc.criadaEm.toISOString())}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
         </div>
 
-        {/* Payments to validate */}
-        <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
-          <div className="px-6 py-4 border-b border-a-border flex items-center justify-between">
-            <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
-              Pagamentos a validar
+        {/* Right column: quick actions + payments to validate */}
+        <div className="lg:col-span-4 space-y-5 lg:space-y-6">
+
+          {/* Quick actions */}
+          <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
+            <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted mb-4 font-ui">
+              Ações rápidas
             </h2>
-            <Link href="/admin/pagamentos" className="text-[10px] text-a-gold hover:underline font-ui tracking-wide">
-              Ver todos
-            </Link>
+            <div className="space-y-2.5">
+              <Link
+                href="/admin/produtos/novo"
+                className="flex items-center justify-center gap-2.5 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-6 min-h-12 rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui"
+              >
+                <Plus size={14} strokeWidth={1.5} />
+                Adicionar produto
+              </Link>
+              <Link
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2.5 border border-a-border text-a-charcoal text-[10px] tracking-[0.18em] uppercase px-6 min-h-12 rounded-lg hover:border-a-gold/40 hover:text-a-gold transition-colors font-ui"
+              >
+                <Store size={14} strokeWidth={1.5} />
+                Ver loja
+              </Link>
+            </div>
           </div>
-          {pagamentosUrgentes.length === 0 ? (
-            <div className="px-6 py-12 text-center">
-              <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
-                <CheckCircle2 size={18} strokeWidth={1.5} className="text-a-muted" />
+
+          {/* Payments to validate */}
+          <div className="bg-white border border-a-border rounded-lg overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-a-border flex items-center justify-between">
+              <h2 className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
+                Pagamentos a validar
+              </h2>
+              <Link href="/admin/pagamentos" className="text-[10px] text-a-gold hover:underline font-ui tracking-wide">
+                Ver todos
+              </Link>
+            </div>
+            {pagamentosUrgentes.length === 0 ? (
+              <div className="px-6 py-12 text-center">
+                <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
+                  <CheckCircle2 size={18} strokeWidth={1.5} className="text-a-muted" />
+                </div>
+                <p className="text-sm text-a-muted font-ui">Nenhum comprovante pendente.</p>
               </div>
-              <p className="text-sm text-a-muted font-ui">Nenhum comprovante pendente.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-[9.5px] tracking-[0.18em] uppercase text-a-muted border-b border-a-border font-ui">
-                    <th className="px-6 py-3 text-left font-normal">Encomenda</th>
-                    <th className="px-4 py-3 text-right font-normal">Valor</th>
-                    <th className="px-4 py-3 text-right font-normal">Aguarda</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pagamentosUrgentes.map((p) => (
-                    <tr key={p.id} className="border-b border-a-border/50 hover:bg-red-50/40 transition-colors last:border-0">
-                      <td className="px-6 py-3">
-                        <Link href={`/admin/pagamentos/${p.id}`} className="font-mono text-xs text-a-charcoal hover:text-a-gold transition-colors">
+            ) : (
+              <ul>
+                {pagamentosUrgentes.map((p) => (
+                  <li key={p.id} className="border-b border-a-border/50 last:border-0">
+                    <Link
+                      href={`/admin/pagamentos/${p.id}`}
+                      className="flex items-center justify-between gap-3 px-6 py-3.5 hover:bg-red-50/40 transition-colors"
+                    >
+                      <div className="min-w-0">
+                        <p className="font-mono text-xs text-a-charcoal truncate">
                           {p.encomenda.referencia}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3 text-xs text-right font-medium text-a-charcoal font-ui">{formatarPreco(p.valor)}</td>
-                      <td className="px-4 py-3 text-[10px] text-red-500 text-right font-medium font-ui">
-                        {horasAtras(p.criadoEm.toISOString())}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                        </p>
+                        <p className="text-[10px] text-red-500 font-medium font-ui mt-0.5">
+                          {horasAtras(p.criadoEm.toISOString())}
+                        </p>
+                      </div>
+                      <p className="text-xs font-medium text-a-charcoal font-ui shrink-0">
+                        {formatarPreco(p.valor)}
+                      </p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
         </div>
 
       </div>

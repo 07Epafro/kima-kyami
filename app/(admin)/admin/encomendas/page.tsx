@@ -2,7 +2,7 @@ import Link from 'next/link'
 import db from '@/lib/db'
 import { EstadoEncomenda, Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
-import { Download, Search, ShoppingBag } from 'lucide-react'
+import { ArrowRight, Download, Search, ShoppingBag, SlidersHorizontal } from 'lucide-react'
 
 export const metadata = { title: 'Encomendas' }
 
@@ -15,6 +15,14 @@ const ESTADO_CONFIG: Record<EstadoEncomenda, { label: string; cls: string }> = {
   ENTREGUE:          { label: 'Entregue',         cls: 'bg-green-50  text-green-700  border border-green-200' },
   CANCELADA:         { label: 'Cancelada',        cls: 'bg-red-50    text-red-700    border border-red-200'   },
   DEVOLVIDA:         { label: 'Devolvida',        cls: 'bg-orange-50 text-orange-700 border border-orange-200'},
+}
+
+/** "Maria Silva" → "MS" · "Madonna" → "MA" · usado no avatar-iniciais da tabela. */
+function iniciais(nome: string): string {
+  const partes = nome.trim().split(/\s+/).filter(Boolean)
+  if (partes.length === 0) return '?'
+  if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase()
+  return (partes[0].charAt(0) + partes[partes.length - 1].charAt(0)).toUpperCase()
 }
 
 interface PageProps {
@@ -59,6 +67,8 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
     db.encomenda.count({ where }),
   ])
   const paginas = Math.ceil(total / limit)
+  const inicio  = total === 0 ? 0 : skip + 1
+  const fim     = Math.min(skip + limit, total)
 
   function buildUrl(o: Record<string, string | undefined>) {
     const p = new URLSearchParams()
@@ -74,41 +84,47 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
         <p className="text-[11px] text-a-muted font-ui">{total} encomenda{total !== 1 ? 's' : ''}</p>
         <a
           href="/api/encomendas?format=csv"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] tracking-wide uppercase border border-a-border rounded text-a-muted hover:text-a-charcoal hover:border-a-charcoal transition-colors font-ui"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] tracking-wide uppercase border border-a-border rounded-lg text-a-muted hover:text-a-charcoal hover:border-a-charcoal transition-colors font-ui"
         >
           <Download size={12} strokeWidth={1.5} /> Exportar CSV
         </a>
       </div>
 
       {/* Filter form */}
-      <form method="GET" className="bg-white border border-a-border rounded-lg p-4 grid grid-cols-2 gap-3 lg:flex lg:flex-wrap">
-        <div className="relative col-span-2 lg:flex-1 lg:min-w-44">
-          <Search size={13} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-a-muted" />
-          <input
-            name="search" defaultValue={search} placeholder="Referência ou cliente…"
-            aria-label="Pesquisar encomendas"
-            className="w-full pl-9 pr-3 py-2 border border-a-border rounded text-sm focus:outline-none focus:border-a-gold font-ui"
-          />
+      <div className="bg-white border border-a-border rounded-lg p-4 space-y-3">
+        <div className="flex items-center gap-1.5 text-a-muted">
+          <SlidersHorizontal size={12} strokeWidth={1.5} />
+          <span className="text-[10px] tracking-[0.14em] uppercase font-ui">Filtros</span>
         </div>
-        <select name="estado" defaultValue={estado ?? ''} aria-label="Estado da encomenda"
-          className="col-span-2 border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-ui bg-white lg:col-span-1">
-          <option value="">Todos os estados</option>
-          {Object.entries(ESTADO_CONFIG).map(([key, { label }]) => (
-            <option key={key} value={key}>{label}</option>
-          ))}
-        </select>
-        <input name="de"  type="date" defaultValue={sp.de}  title="Data de início" aria-label="Data de início"
-          className="w-full border border-a-border rounded px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
-        <input name="ate" type="date" defaultValue={sp.ate} title="Data de fim"    aria-label="Data de fim"
-          className="w-full border border-a-border rounded px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
-        <button type="submit"
-          className="px-4 py-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded hover:bg-a-charcoal/90 transition-colors font-ui">
-          Filtrar
-        </button>
-        <a href="/admin/encomendas" className="px-3 py-2 text-[11px] text-a-muted hover:text-a-charcoal transition-colors font-ui text-center self-center">
-          Limpar
-        </a>
-      </form>
+        <form method="GET" className="grid grid-cols-2 gap-3 lg:flex lg:flex-wrap lg:items-center">
+          <div className="relative col-span-2 lg:flex-1 lg:min-w-44">
+            <Search size={13} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-a-muted" />
+            <input
+              name="search" defaultValue={search} placeholder="Referência ou cliente…"
+              aria-label="Pesquisar encomendas"
+              className="w-full pl-9 pr-3 py-2 border border-a-border rounded-lg text-sm focus:outline-none focus:border-a-gold font-ui"
+            />
+          </div>
+          <select name="estado" defaultValue={estado ?? ''} aria-label="Estado da encomenda"
+            className="col-span-2 border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold font-ui bg-white lg:col-span-1">
+            <option value="">Todos os estados</option>
+            {Object.entries(ESTADO_CONFIG).map(([key, { label }]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
+          <input name="de"  type="date" defaultValue={sp.de}  title="Data de início" aria-label="Data de início"
+            className="w-full border border-a-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
+          <input name="ate" type="date" defaultValue={sp.ate} title="Data de fim"    aria-label="Data de fim"
+            className="w-full border border-a-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-a-gold font-ui lg:w-auto" />
+          <button type="submit"
+            className="px-4 py-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
+            Filtrar
+          </button>
+          <a href="/admin/encomendas" className="px-3 py-2 text-[11px] text-a-muted hover:text-a-charcoal transition-colors font-ui text-center self-center">
+            Limpar
+          </a>
+        </form>
+      </div>
 
       {/* List panel */}
       <div className="bg-white border border-a-border rounded-lg overflow-hidden">
@@ -132,7 +148,12 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
                       {ESTADO_CONFIG[enc.estado].label}
                     </span>
                   </div>
-                  <p className="text-[11px] text-a-muted font-ui mb-1">{enc.cliente.nome}</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-8 h-8 shrink-0 rounded-full bg-a-bone border border-a-border flex items-center justify-center text-[11px] font-medium text-a-charcoal font-ui">
+                      {iniciais(enc.cliente.nome)}
+                    </span>
+                    <p className="text-[11px] text-a-muted font-ui">{enc.cliente.nome}</p>
+                  </div>
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] text-a-muted font-ui">
                       {enc.criadaEm.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })}
@@ -154,18 +175,26 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
                     <th className="px-4 py-3 text-right font-normal">Total</th>
                     <th className="px-4 py-3 text-left font-normal">Estado</th>
                     <th className="px-4 py-3 text-right font-normal">Data</th>
+                    <th className="px-4 py-3 text-right font-normal hidden lg:table-cell"><span className="sr-only">Acções</span></th>
                   </tr>
                 </thead>
                 <tbody>
                   {encomendas.map((enc) => (
-                    <tr key={enc.id} className="border-b border-a-border/50 hover:bg-a-bone transition-colors last:border-0">
+                    <tr key={enc.id} className="group border-b border-a-border/50 hover:bg-a-bone transition-colors last:border-0">
                       <td className="px-6 py-3">
                         <Link href={`/admin/encomendas/${enc.id}`}
                           className="font-mono text-xs text-a-charcoal hover:text-a-gold transition-colors">
                           {enc.referencia}
                         </Link>
                       </td>
-                      <td className="px-4 py-3 text-xs text-a-muted font-ui">{enc.cliente.nome}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <span className="w-8 h-8 shrink-0 rounded-full bg-a-bone border border-a-border flex items-center justify-center text-[11px] font-medium text-a-charcoal font-ui">
+                            {iniciais(enc.cliente.nome)}
+                          </span>
+                          <span className="text-xs text-a-muted font-ui">{enc.cliente.nome}</span>
+                        </div>
+                      </td>
                       <td className="px-4 py-3 text-xs text-center text-a-muted font-ui">{enc._count.itens}</td>
                       <td className="px-4 py-3 text-xs text-right font-medium text-a-charcoal font-ui">{formatarPreco(enc.total)}</td>
                       <td className="px-4 py-3">
@@ -175,6 +204,12 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
                       </td>
                       <td className="px-4 py-3 text-[10px] text-a-muted text-right font-ui">
                         {enc.criadaEm.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                      </td>
+                      <td className="px-4 py-3 text-right hidden lg:table-cell">
+                        <Link href={`/admin/encomendas/${enc.id}`}
+                          className="inline-flex items-center gap-1 text-[11px] text-a-charcoal opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 transition-opacity font-ui hover:text-a-gold">
+                          Ver detalhes <ArrowRight size={12} strokeWidth={1.5} />
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -186,23 +221,27 @@ export default async function EncomendasPage({ searchParams }: PageProps) {
       </div>
 
       {/* Pagination */}
-      {paginas > 1 && (
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] text-a-muted font-ui">Página {page} de {paginas}</span>
-          <div className="flex gap-2">
-            {page > 1 && (
-              <Link href={buildUrl({ page: String(page - 1) })}
-                className="px-3 py-1.5 text-[11px] border border-a-border rounded hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
-                Anterior
-              </Link>
-            )}
-            {page < paginas && (
-              <Link href={buildUrl({ page: String(page + 1) })}
-                className="px-3 py-1.5 text-[11px] border border-a-border rounded hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
-                Seguinte
-              </Link>
-            )}
-          </div>
+      {encomendas.length > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span className="text-[11px] text-a-muted font-ui">
+            Mostrando {inicio} a {fim} de {total} encomenda{total !== 1 ? 's' : ''}
+          </span>
+          {paginas > 1 && (
+            <div className="flex gap-2">
+              {page > 1 && (
+                <Link href={buildUrl({ page: String(page - 1) })}
+                  className="px-3 py-1.5 text-[11px] border border-a-border rounded-lg hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
+                  Anterior
+                </Link>
+              )}
+              {page < paginas && (
+                <Link href={buildUrl({ page: String(page + 1) })}
+                  className="px-3 py-1.5 text-[11px] border border-a-border rounded-lg hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui text-a-muted">
+                  Seguinte
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

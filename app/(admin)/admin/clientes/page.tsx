@@ -2,7 +2,7 @@ import db from '@/lib/db'
 import Link from 'next/link'
 import { Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
-import { Search, Download, Users } from 'lucide-react'
+import { Search, Download, Users, Wallet } from 'lucide-react'
 
 export const metadata = { title: 'Clientes' }
 
@@ -11,6 +11,15 @@ type SortOrder = 'asc' | 'desc'
 
 interface PageProps {
   searchParams: Promise<{ page?: string; search?: string; sort?: string; order?: string }>
+}
+
+function iniciais(nome: string): string {
+  const partes = nome.trim().split(/\s+/).filter(Boolean)
+  if (partes.length === 0) return '?'
+  if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase()
+  const primeira = partes[0].charAt(0)
+  const ultima   = partes[partes.length - 1].charAt(0)
+  return (primeira + ultima).toUpperCase()
 }
 
 export default async function ClientesPage({ searchParams }: PageProps) {
@@ -31,7 +40,7 @@ export default async function ClientesPage({ searchParams }: PageProps) {
     : sort === 'encomendas' ? { encomendas: { _count: order } }
     : { criadoEm: order }
 
-  const [clientes, total] = await Promise.all([
+  const [clientes, total, receitaAgregada, totalClientesGlobal] = await Promise.all([
     db.cliente.findMany({
       where, orderBy, skip, take: limit,
       include: {
@@ -45,8 +54,16 @@ export default async function ClientesPage({ searchParams }: PageProps) {
       },
     }),
     db.cliente.count({ where }),
+    // Site-wide (unfiltered) revenue, used only for the LTV average card below —
+    // independent of the current search so the card stays accurate while filtering.
+    db.encomenda.aggregate({
+      where: { estado: { not: 'CANCELADA' } },
+      _sum: { total: true },
+    }),
+    db.cliente.count(),
   ])
-  const paginas = Math.ceil(total / limit)
+  const paginas  = Math.ceil(total / limit)
+  const ltvMedio = totalClientesGlobal > 0 ? (receitaAgregada._sum.total ?? 0) / totalClientesGlobal : 0
 
   function buildUrl(o: Record<string, string | undefined>) {
     const p = new URLSearchParams()
@@ -66,6 +83,37 @@ export default async function ClientesPage({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-5">
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
+        <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
+          <div className="flex items-start justify-between mb-4 sm:mb-5">
+            <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui leading-tight max-w-30">
+              Total de Clientes
+            </p>
+            <div className="w-8 h-8 rounded bg-emerald-50 flex items-center justify-center shrink-0">
+              <Users size={15} strokeWidth={1.5} className="text-emerald-600" />
+            </div>
+          </div>
+          <p className="text-2xl sm:text-3xl font-light text-a-charcoal font-display leading-none tracking-tight">
+            {total}
+          </p>
+        </div>
+        <div className="bg-white border border-a-border rounded-lg p-4 sm:p-6 shadow-sm">
+          <div className="flex items-start justify-between mb-4 sm:mb-5">
+            <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui leading-tight max-w-30">
+              Valor Vitalício Médio
+            </p>
+            <div className="w-8 h-8 rounded bg-a-gold/10 flex items-center justify-center shrink-0">
+              <Wallet size={15} strokeWidth={1.5} className="text-a-gold" />
+            </div>
+          </div>
+          <p className="text-2xl sm:text-3xl font-light text-a-charcoal font-display leading-none tracking-tight">
+            {formatarPreco(ltvMedio)}
+          </p>
+          <p className="text-[10px] text-a-muted font-ui mt-1">por cliente · todo o histórico</p>
+        </div>
+      </div>
+
       <div className="flex items-center justify-between">
         <p className="text-[11px] text-a-muted font-ui">{total} cliente{total !== 1 ? 's' : ''}</p>
         <a href="/api/clientes?format=csv"
@@ -79,10 +127,10 @@ export default async function ClientesPage({ searchParams }: PageProps) {
         <div className="relative flex-1 max-w-sm">
           <Search size={13} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-a-muted" />
           <input name="search" defaultValue={search} placeholder="Nome ou email…" aria-label="Pesquisar clientes"
-            className="w-full pl-9 pr-3 py-2 border border-a-border rounded text-sm bg-white focus:outline-none focus:border-a-gold font-ui" />
+            className="w-full pl-9 pr-3 py-2 border border-a-border rounded-lg text-sm bg-white focus:outline-none focus:border-a-gold font-ui" />
         </div>
         <button type="submit"
-          className="px-4 py-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded hover:bg-a-charcoal/90 transition-colors font-ui">
+          className="px-4 py-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
           Pesquisar
         </button>
         {search && (
@@ -96,7 +144,9 @@ export default async function ClientesPage({ searchParams }: PageProps) {
       <div className="bg-white border border-a-border rounded-lg overflow-hidden">
         {clientes.length === 0 ? (
           <div className="py-16 text-center">
-            <Users size={28} strokeWidth={1} className="text-a-border mx-auto mb-3" />
+            <div className="w-11 h-11 rounded-lg bg-a-bone border border-a-border flex items-center justify-center mx-auto mb-3">
+              <Users size={18} strokeWidth={1.5} className="text-a-muted" />
+            </div>
             <p className="text-sm text-a-muted font-ui">Nenhum cliente encontrado.</p>
           </div>
         ) : (
@@ -107,26 +157,31 @@ export default async function ClientesPage({ searchParams }: PageProps) {
                 const totalGasto   = c.encomendas.reduce((s, e) => s + e.total, 0)
                 const ultimaCompra = c.encomendas[0]?.criadaEm
                 return (
-                  <div key={c.id} className="p-4 hover:bg-a-bone transition-colors">
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <Link href={`/admin/clientes/${c.id}`}
-                        className="text-sm font-medium text-a-charcoal hover:text-a-gold transition-colors font-display">
-                        {c.nome}
-                      </Link>
-                      <span className="text-[10px] bg-a-bone text-a-muted border border-a-border px-2 py-0.5 rounded font-ui whitespace-nowrap">
-                        {c._count.encomendas} enc.
-                      </span>
+                  <div key={c.id} className="p-4 flex items-start gap-3 hover:bg-a-bone transition-colors">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-a-bone border border-a-border flex items-center justify-center text-[11px] font-medium text-a-charcoal shrink-0">
+                      {iniciais(c.nome)}
                     </div>
-                    <p className="text-[11px] text-a-muted font-ui mb-2">{c.email}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] text-a-muted font-ui">
-                        {ultimaCompra
-                          ? ultimaCompra.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })
-                          : '—'}
-                      </span>
-                      <span className="text-sm font-medium text-a-charcoal font-ui">
-                        {totalGasto > 0 ? formatarPreco(totalGasto) : '—'}
-                      </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <Link href={`/admin/clientes/${c.id}`}
+                          className="text-sm font-medium text-a-charcoal hover:text-a-gold transition-colors font-display truncate">
+                          {c.nome}
+                        </Link>
+                        <span className="text-[10px] bg-a-bone text-a-muted border border-a-border px-2 py-0.5 rounded font-ui whitespace-nowrap">
+                          {c._count.encomendas} enc.
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-a-muted font-ui mb-2">{c.email}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] text-a-muted font-ui">
+                          {ultimaCompra
+                            ? ultimaCompra.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })
+                            : '—'}
+                        </span>
+                        <span className="text-sm font-medium text-a-charcoal font-ui">
+                          {totalGasto > 0 ? formatarPreco(totalGasto) : '—'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 )
@@ -153,10 +208,15 @@ export default async function ClientesPage({ searchParams }: PageProps) {
                     return (
                       <tr key={c.id} className="border-b border-a-border/50 hover:bg-a-bone transition-colors last:border-0">
                         <td className="px-6 py-3">
-                          <Link href={`/admin/clientes/${c.id}`}
-                            className="text-xs font-medium text-a-charcoal hover:text-a-gold transition-colors">
-                            {c.nome}
-                          </Link>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-a-bone border border-a-border flex items-center justify-center text-[11px] font-medium text-a-charcoal shrink-0">
+                              {iniciais(c.nome)}
+                            </div>
+                            <Link href={`/admin/clientes/${c.id}`}
+                              className="text-xs font-medium text-a-charcoal hover:text-a-gold transition-colors">
+                              {c.nome}
+                            </Link>
+                          </div>
                         </td>
                         <td className="px-4 py-3 text-xs text-a-muted font-ui">{c.email}</td>
                         <td className="px-4 py-3 text-xs text-a-muted font-ui hidden md:table-cell">{c.telefone ?? '—'}</td>

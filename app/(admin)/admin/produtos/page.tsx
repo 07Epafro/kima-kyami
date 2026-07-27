@@ -2,7 +2,7 @@ import db from '@/lib/db'
 import { Categoria, Prisma } from '@prisma/client'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Package, Plus, ChevronLeft, ChevronRight, Edit2 } from 'lucide-react'
+import { Package, Plus, ChevronLeft, ChevronRight, Edit2, Search, SlidersHorizontal } from 'lucide-react'
 import { formatarPreco } from '@/lib/utils'
 import DeleteButton from '@/components/admin/DeleteButton'
 import ToggleAtivoButton from '@/components/admin/ToggleAtivoButton'
@@ -52,6 +52,8 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
     db.produto.count({ where }),
   ])
   const paginas = Math.ceil(total / limit)
+  const inicio  = total === 0 ? 0 : skip + 1
+  const fim     = Math.min(skip + limit, total)
 
   function buildUrl(o: Partial<SearchParams>) {
     const sp = new URLSearchParams()
@@ -65,34 +67,52 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
     return               { label: 'Activo',   cls: 'bg-emerald-50 text-emerald-700 border border-emerald-200' }
   }
 
+  // Baixo stock a partir de 1 até 5 unidades no total (soma do mapa stock); 0 = sem stock.
+  function stockInfo(stockTotal: number) {
+    if (stockTotal === 0) return { label: 'Sem Stock',                  dot: 'bg-red-500',     text: 'text-red-600'     }
+    if (stockTotal <= 5)  return { label: `Stock Baixo (${stockTotal})`, dot: 'bg-amber-500',   text: 'text-amber-600'   }
+    return                     { label: `Em Stock (${stockTotal})`,  dot: 'bg-emerald-500', text: 'text-a-charcoal' }
+  }
+
   return (
     <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Package size={18} strokeWidth={1.5} className="text-a-gold" />
-          <h1 className="text-xl font-light text-a-charcoal font-display tracking-tight">Produtos</h1>
-          <span className="text-[11px] text-a-muted font-ui">({total})</span>
+          <div className="p-2 rounded-lg bg-a-gold/10 shrink-0">
+            <Package size={18} strokeWidth={1.5} className="text-a-gold" />
+          </div>
+          <div>
+            <h1 className="text-xl font-light text-a-charcoal font-display tracking-tight">Produtos</h1>
+            <p className="text-[11px] text-a-muted font-ui">{total} produto{total === 1 ? '' : 's'} no catálogo</p>
+          </div>
         </div>
         <Link href="/admin/produtos/novo"
-          className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-4 py-2.5 rounded hover:bg-a-charcoal/90 transition-colors font-ui whitespace-nowrap shrink-0">
+          className="flex items-center gap-2 bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-6 min-h-12 rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui whitespace-nowrap shrink-0">
           <Plus size={13} strokeWidth={1.5} /> Novo Produto
         </Link>
       </div>
 
       {/* Filters */}
       <form method="GET" action="/admin/produtos" className="bg-white border border-a-border rounded-lg p-4">
+        <div className="flex items-center gap-1.5 text-a-muted mb-3">
+          <SlidersHorizontal size={12} strokeWidth={1.5} />
+          <span className="text-[10px] tracking-[0.14em] uppercase font-ui">Filtros</span>
+        </div>
         <div className="grid grid-cols-2 gap-3 lg:flex lg:flex-wrap lg:items-end">
           <div className="col-span-2 lg:flex-1 lg:min-w-44">
             <label htmlFor="search" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Pesquisar</label>
-            <input id="search" name="search" type="text" defaultValue={params.search ?? ''}
-              placeholder="Nome do produto..."
-              className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal placeholder-a-muted/50 focus:outline-none focus:border-a-gold transition-colors font-ui" />
+            <div className="relative">
+              <Search size={13} strokeWidth={1.5} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-a-muted" />
+              <input id="search" name="search" type="text" defaultValue={params.search ?? ''}
+                placeholder="Nome do produto..."
+                className="w-full bg-white border border-a-border rounded-lg pl-9 pr-3 py-2 text-sm text-a-charcoal placeholder-a-muted/50 focus:outline-none focus:border-a-gold transition-colors font-ui" />
+            </div>
           </div>
           <div className="lg:min-w-36">
             <label htmlFor="categoria" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Categoria</label>
             <select id="categoria" name="categoria" defaultValue={params.categoria ?? ''}
-              className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="">Todas</option>
               {CATEGORIAS.map((c) => <option key={c} value={c}>{categoriaLabels[c]}</option>)}
             </select>
@@ -100,7 +120,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
           <div className="lg:min-w-32">
             <label htmlFor="estado" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Estado</label>
             <select id="estado" name="estado" defaultValue={params.estado ?? ''}
-              className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="">Todos</option>
               <option value="ativo">Activo</option>
               <option value="emBreve">Em breve</option>
@@ -110,7 +130,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
           <div className="lg:min-w-36">
             <label htmlFor="sort" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Ordenar por</label>
             <select id="sort" name="sort" defaultValue={params.sort ?? 'criadoEm'}
-              className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="criadoEm">Data criação</option>
               <option value="nome">Nome</option>
               <option value="preco">Preço</option>
@@ -119,16 +139,16 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
           <div className="lg:min-w-28">
             <label htmlFor="order" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Direcção</label>
             <select id="order" name="order" defaultValue={params.order ?? 'desc'}
-              className="w-full border border-a-border rounded px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors bg-white font-ui">
+              className="w-full bg-white border border-a-border rounded-lg px-3 py-2 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
               <option value="desc">Decrescente</option>
               <option value="asc">Crescente</option>
             </select>
           </div>
           <button type="submit"
-            className="bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-5 py-2.5 rounded hover:bg-a-charcoal/90 transition-colors font-ui">
+            className="bg-a-charcoal text-white text-[10px] tracking-[0.18em] uppercase px-4 py-2 rounded-lg hover:bg-a-charcoal/90 transition-colors font-ui">
             Filtrar
           </button>
-          <Link href="/admin/produtos" className="text-[11px] text-a-muted hover:text-a-charcoal transition-colors py-2.5 px-1 font-ui text-center self-center">
+          <Link href="/admin/produtos" className="text-[11px] text-a-muted hover:text-a-charcoal transition-colors py-2 px-1 font-ui text-center self-center">
             Limpar
           </Link>
         </div>
@@ -148,6 +168,9 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
               {produtos.map((p) => {
                 const primImagem = p.imagens[0]
                 const { label, cls } = estadoInfo(p)
+                const stockTyped = p.stock as unknown as Record<string, number>
+                const stockTotal = Object.values(stockTyped).reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0)
+                const stock = stockInfo(stockTotal)
                 return (
                   <div key={p.id} className="p-4 flex items-start gap-3 hover:bg-a-bone transition-colors">
                     <div className="w-14 h-14 rounded bg-a-bone border border-a-border overflow-hidden shrink-0">
@@ -164,12 +187,18 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
                         <span className={`text-[9px] px-2 py-0.5 rounded font-medium font-ui whitespace-nowrap ${cls}`}>{label}</span>
                       </div>
                       <p className="text-[10px] text-a-muted font-mono mb-2">{p.slug}</p>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 mb-2">
                         <span className={`text-[9px] px-2 py-0.5 rounded font-medium font-ui ${categoriaBadge[p.categoria as CategoriaKey] ?? 'bg-a-bone text-a-muted border border-a-border'}`}>
                           {categoriaLabels[p.categoria as CategoriaKey] ?? p.categoria}
                         </span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${stock.dot}`} />
+                          <span className={`text-[10px] font-ui ${stock.text}`}>{stock.label}</span>
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-a-charcoal font-ui">{formatarPreco(p.preco)}</span>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-a-charcoal font-ui">{formatarPreco(p.preco)}</span>
                           <Link href={`/admin/produtos/${p.id}`}
                             className="p-1.5 rounded text-a-muted hover:text-a-gold hover:bg-a-gold/10 transition-colors"
                             title="Editar">
@@ -190,9 +219,8 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
                 <thead>
                   <tr className="text-[9.5px] tracking-[0.18em] uppercase text-a-muted border-b border-a-border font-ui">
                     <th className="px-4 py-3 text-left font-normal">Produto</th>
-                    <th className="px-4 py-3 text-left font-normal hidden lg:table-cell">Categoria</th>
                     <th className="px-4 py-3 text-right font-normal">Preço</th>
-                    <th className="px-4 py-3 text-right font-normal hidden xl:table-cell">Stock</th>
+                    <th className="px-4 py-3 text-left font-normal hidden lg:table-cell">Stock</th>
                     <th className="px-4 py-3 text-center font-normal">Estado</th>
                     <th className="px-4 py-3 text-center font-normal">Activo</th>
                     <th className="px-4 py-3 text-right font-normal hidden xl:table-cell">Criado</th>
@@ -203,6 +231,7 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
                   {produtos.map((p) => {
                     const stockTyped = p.stock as unknown as Record<string, number>
                     const stockTotal = Object.values(stockTyped).reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0)
+                    const stock = stockInfo(stockTotal)
                     const primImagem = p.imagens[0]
                     const { label, cls } = estadoInfo(p)
                     const dataCriacao = p.criadoEm.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: '2-digit' })
@@ -219,13 +248,11 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
                             <div>
                               <p className="text-xs font-medium text-a-charcoal">{p.nome}</p>
                               <p className="text-[10px] text-a-muted font-mono">{p.slug}</p>
+                              <span className={`inline-block mt-1 text-[9px] px-2 py-0.5 rounded font-medium font-ui ${categoriaBadge[p.categoria as CategoriaKey] ?? 'bg-a-bone text-a-muted border border-a-border'}`}>
+                                {categoriaLabels[p.categoria as CategoriaKey] ?? p.categoria}
+                              </span>
                             </div>
                           </div>
-                        </td>
-                        <td className="px-4 py-3 hidden lg:table-cell">
-                          <span className={`text-[9px] px-2 py-0.5 rounded font-medium font-ui ${categoriaBadge[p.categoria as CategoriaKey] ?? 'bg-a-bone text-a-muted border border-a-border'}`}>
-                            {categoriaLabels[p.categoria as CategoriaKey] ?? p.categoria}
-                          </span>
                         </td>
                         <td className="px-4 py-3 text-right">
                           <span className="text-xs font-medium text-a-charcoal font-ui">{formatarPreco(p.preco)}</span>
@@ -233,9 +260,10 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
                             <span className="block text-[10px] text-a-muted line-through font-ui">{formatarPreco(p.precoAntes)}</span>
                           )}
                         </td>
-                        <td className="px-4 py-3 text-right hidden xl:table-cell">
-                          <span className={`text-xs font-medium font-ui ${stockTotal === 0 ? 'text-red-500' : 'text-a-charcoal'}`}>
-                            {stockTotal}
+                        <td className="px-4 py-3 hidden lg:table-cell">
+                          <span className="inline-flex items-center gap-1.5">
+                            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${stock.dot}`} />
+                            <span className={`text-xs font-ui ${stock.text}`}>{stock.label}</span>
                           </span>
                         </td>
                         <td className="px-4 py-3 text-center">
@@ -267,31 +295,35 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
       </div>
 
       {/* Pagination */}
-      {paginas > 1 && (
+      {produtos.length > 0 && (
         <div className="flex items-center justify-between">
-          <p className="text-[11px] text-a-muted font-ui">Página {page} de {paginas}</p>
-          <div className="flex items-center gap-2">
-            {page > 1 ? (
-              <Link href={buildUrl({ page: String(page - 1) })}
-                className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
-                <ChevronLeft size={13} strokeWidth={1.5} /> Anterior
-              </Link>
-            ) : (
-              <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded px-3 py-2 cursor-not-allowed font-ui">
-                <ChevronLeft size={13} strokeWidth={1.5} /> Anterior
-              </span>
-            )}
-            {page < paginas ? (
-              <Link href={buildUrl({ page: String(page + 1) })}
-                className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
-                Próxima <ChevronRight size={13} strokeWidth={1.5} />
-              </Link>
-            ) : (
-              <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded px-3 py-2 cursor-not-allowed font-ui">
-                Próxima <ChevronRight size={13} strokeWidth={1.5} />
-              </span>
-            )}
-          </div>
+          <p className="text-[11px] text-a-muted font-ui">
+            Mostrando {inicio} a {fim} de {total} produto{total !== 1 ? 's' : ''}
+          </p>
+          {paginas > 1 && (
+            <div className="flex items-center gap-2">
+              {page > 1 ? (
+                <Link href={buildUrl({ page: String(page - 1) })}
+                  className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
+                  <ChevronLeft size={13} strokeWidth={1.5} /> Anterior
+                </Link>
+              ) : (
+                <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded px-3 py-2 cursor-not-allowed font-ui">
+                  <ChevronLeft size={13} strokeWidth={1.5} /> Anterior
+                </span>
+              )}
+              {page < paginas ? (
+                <Link href={buildUrl({ page: String(page + 1) })}
+                  className="flex items-center gap-1.5 text-[11px] text-a-muted border border-a-border rounded px-3 py-2 hover:border-a-charcoal hover:text-a-charcoal transition-colors font-ui">
+                  Próxima <ChevronRight size={13} strokeWidth={1.5} />
+                </Link>
+              ) : (
+                <span className="flex items-center gap-1.5 text-[11px] text-a-border border border-a-border/40 rounded px-3 py-2 cursor-not-allowed font-ui">
+                  Próxima <ChevronRight size={13} strokeWidth={1.5} />
+                </span>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
