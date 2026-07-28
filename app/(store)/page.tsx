@@ -42,11 +42,13 @@ const CATEGORIAS = [
   },
 ]
 
+const BASE = process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.ao'
+
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Kima Kyami',
-  url: 'https://kimakyami.com',
+  url: BASE,
   description: 'Sapatos de luxo de inspiração africana contemporânea.',
   contactPoint: {
     '@type': 'ContactPoint',
