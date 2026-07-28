@@ -142,11 +142,13 @@ model ImagemSite {
 }
 
 model Admin {
-  id        String    @id @default(cuid())
-  nome      String
-  email     String    @unique
-  password  String
-  role      RoleAdmin @default(GESTOR)
+  id                 String    @id @default(cuid())
+  nome               String
+  email              String    @unique
+  password           String
+  role               RoleAdmin @default(GESTOR)
+  resetToken         String?   @unique
+  resetTokenExpiraEm DateTime?
   criadoEm DateTime  @default(now())
 }
 

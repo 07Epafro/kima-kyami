@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const ADMIN_HOST = 'admin.kimakyami.ao'
 
+function ehCaminhoPublico(pathname: string): boolean {
+  return (
+    pathname === '/admin/login' ||
+    pathname === '/admin/esqueci-password' ||
+    pathname.startsWith('/admin/repor-password/')
+  )
+}
+
 export function middleware(req: NextRequest) {
   const hostname = req.headers.get('host') ?? ''
   const onAdminHost = hostname === ADMIN_HOST
@@ -17,7 +25,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  if (pathname !== '/admin/login') {
+  if (!ehCaminhoPublico(pathname)) {
     // Cookie-presence check — JWT verification is in app/(admin)/layout.tsx via auth()
     const hasSession =
       req.cookies.has('authjs.session-token') ||

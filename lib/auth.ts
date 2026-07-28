@@ -19,7 +19,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null
         }
 
-        const admin = await db.admin.findUnique({ where: { email } })
+        // select explícito: mantém o login a funcionar mesmo que colunas mais recentes
+        // (ex: reset de password) ainda não existam na base de dados em produção.
+        const admin = await db.admin.findUnique({
+          where: { email },
+          select: { id: true, nome: true, email: true, password: true, role: true },
+        })
         if (!admin) return null
 
         const senhaValida = await bcrypt.compare(password, admin.password)

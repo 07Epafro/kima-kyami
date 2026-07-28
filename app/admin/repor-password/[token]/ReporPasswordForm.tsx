@@ -6,17 +6,21 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { signIn } from 'next-auth/react'
 import { Eye, EyeOff } from 'lucide-react'
 
-const schema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(6, 'Password deve ter pelo menos 6 caracteres'),
-})
+const schema = z
+  .object({
+    password: z.string().min(6, 'A password deve ter pelo menos 6 caracteres'),
+    confirmar: z.string(),
+  })
+  .refine((data) => data.password === data.confirmar, {
+    message: 'As passwords não coincidem',
+    path: ['confirmar'],
+  })
 
 type FormData = z.infer<typeof schema>
 
-export default function LoginForm() {
+export default function ReporPasswordForm({ token }: { token: string }) {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
@@ -29,19 +33,21 @@ export default function LoginForm() {
 
   async function onSubmit(data: FormData) {
     setErrorMsg(null)
-    const result = await signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    })
-
-    if (result?.error) {
-      setErrorMsg('Credenciais inválidas')
-      return
+    try {
+      const res = await fetch('/api/admin/repor-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password: data.password }),
+      })
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}))
+        setErrorMsg(typeof json.error === 'string' ? json.error : 'Erro ao repor a password')
+        return
+      }
+      router.push('/admin/login')
+    } catch {
+      setErrorMsg('Erro de rede. Tenta novamente.')
     }
-
-    router.push('/admin/dashboard')
-    router.refresh()
   }
 
   return (
@@ -49,44 +55,16 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
         <div>
           <label
-            htmlFor="email"
+            htmlFor="password"
             className="block text-xs tracking-widest uppercase text-muted mb-2"
           >
-            Email
+            Nova password
           </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            {...register('email')}
-            className="w-full bg-transparent border border-white/20 rounded px-4 py-3 text-white text-sm placeholder-white/30 focus:outline-none focus:border-gold"
-            placeholder="admin@kimakyami.com"
-          />
-          {errors.email && (
-            <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>
-          )}
-        </div>
-
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <label
-              htmlFor="password"
-              className="block text-xs tracking-widest uppercase text-muted"
-            >
-              Password
-            </label>
-            <Link
-              href="/admin/esqueci-password"
-              className="text-[11px] text-muted hover:text-gold transition-colors"
-            >
-              Esqueceu-se?
-            </Link>
-          </div>
           <div className="relative">
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              autoComplete="current-password"
+              autoComplete="new-password"
               {...register('password')}
               className="w-full bg-transparent border border-white/20 rounded px-4 py-3 pr-11 text-white text-sm placeholder-white/30 focus:outline-none focus:border-gold"
             />
@@ -104,6 +82,25 @@ export default function LoginForm() {
           )}
         </div>
 
+        <div>
+          <label
+            htmlFor="confirmar"
+            className="block text-xs tracking-widest uppercase text-muted mb-2"
+          >
+            Confirmar password
+          </label>
+          <input
+            id="confirmar"
+            type={showPassword ? 'text' : 'password'}
+            autoComplete="new-password"
+            {...register('confirmar')}
+            className="w-full bg-transparent border border-white/20 rounded px-4 py-3 text-white text-sm placeholder-white/30 focus:outline-none focus:border-gold"
+          />
+          {errors.confirmar && (
+            <p className="mt-1 text-xs text-red-400">{errors.confirmar.message}</p>
+          )}
+        </div>
+
         {errorMsg && (
           <p className="text-xs text-red-400 text-center">{errorMsg}</p>
         )}
@@ -113,8 +110,15 @@ export default function LoginForm() {
           disabled={isSubmitting}
           className="w-full bg-gold text-noir text-sm font-medium tracking-widest uppercase py-3 rounded hover:bg-gold/80 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'A entrar…' : 'Entrar'}
+          {isSubmitting ? 'A guardar…' : 'Definir password'}
         </button>
+
+        <Link
+          href="/admin/login"
+          className="block text-center text-xs tracking-widest uppercase text-muted hover:text-white"
+        >
+          Voltar ao login
+        </Link>
       </form>
     </div>
   )

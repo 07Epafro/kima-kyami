@@ -241,3 +241,26 @@ export async function emailEncomendaCancelada(
     html: base('Encomenda cancelada', corpo),
   })
 }
+
+export async function emailResetPasswordAdmin(admin: { nome: string; email: string }, resetUrl: string) {
+  const corpo = `
+    <p style="font-size:14px;color:#181818;line-height:1.7;font-family:Arial,sans-serif">
+      Olá <strong>${admin.nome}</strong>,<br><br>
+      Recebemos um pedido para repor a password de acesso ao painel de administração.
+      Se não foste tu, ignora este email — a tua password actual mantém-se válida.
+    </p>
+    <div style="text-align:center;margin:28px 0">
+      <a href="${resetUrl}" style="display:inline-block;background:#181818;color:#f7c480;text-decoration:none;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:6px;font-family:Arial,sans-serif">Definir nova password</a>
+    </div>
+    <p style="font-size:12px;color:#9a9a9a;font-family:Arial,sans-serif;line-height:1.6">
+      Este link expira dentro de 1 hora. Se o botão não funcionar, copia este endereço para o browser:<br>
+      <span style="word-break:break-all">${resetUrl}</span>
+    </p>`
+
+  await resend.emails.send({
+    from: FROM,
+    to: admin.email,
+    subject: 'Repor password — Painel de Administração',
+    html: base('Reposição de password', corpo),
+  })
+}
