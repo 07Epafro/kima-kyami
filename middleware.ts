@@ -9,8 +9,9 @@ export function middleware(req: NextRequest) {
   let rewritten = false
 
   if (onAdminHost && !pathname.startsWith('/admin')) {
-    // Subdomínio admin: mapeia caminhos limpos ("/produtos") para a árvore real ("/admin/produtos")
-    pathname = `/admin${pathname === '/' ? '' : pathname}`
+    // Subdomínio admin: mapeia caminhos limpos ("/produtos") para a árvore real ("/admin/produtos").
+    // A raiz vai directa para o dashboard, evitando o salto visível de /admin/(admin)/page.tsx.
+    pathname = pathname === '/' ? '/admin/dashboard' : `/admin${pathname}`
     rewritten = true
   } else if (!onAdminHost && !pathname.startsWith('/admin')) {
     return NextResponse.next()
