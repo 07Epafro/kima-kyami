@@ -1,26 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
+const ADMIN_HOST = 'admin.kimakyami.ao'
 
-  if (pathname === '/admin/login' || pathname.startsWith('/api/auth')) {
+export function middleware(req: NextRequest) {
+  const hostname = req.headers.get('host') ?? ''
+  const onAdminHost = hostname === ADMIN_HOST
+  let pathname = req.nextUrl.pathname
+  let rewritten = false
+
+  if (onAdminHost && !pathname.startsWith('/admin')) {
+    // Subdomínio admin: mapeia caminhos limpos ("/produtos") para a árvore real ("/admin/produtos")
+    pathname = `/admin${pathname === '/' ? '' : pathname}`
+    rewritten = true
+  } else if (!onAdminHost && !pathname.startsWith('/admin')) {
     return NextResponse.next()
   }
 
-  // Cookie-presence check — JWT verification is in app/(admin)/layout.tsx via auth()
-  const hasSession =
-    req.cookies.has('authjs.session-token') ||
-    req.cookies.has('__Secure-authjs.session-token')
+  if (pathname !== '/admin/login') {
+    // Cookie-presence check — JWT verification is in app/(admin)/layout.tsx via auth()
+    const hasSession =
+      req.cookies.has('authjs.session-token') ||
+      req.cookies.has('__Secure-authjs.session-token')
 
-  if (!hasSession) {
-    const loginUrl = new URL('/admin/login', req.nextUrl)
-    loginUrl.searchParams.set('callbackUrl', pathname)
-    return NextResponse.redirect(loginUrl)
+    if (!hasSession) {
+      const loginUrl = new URL('/admin/login', req.nextUrl)
+      loginUrl.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
   }
 
-  return NextResponse.next()
+  if (!rewritten) return NextResponse.next()
+
+  const target = req.nextUrl.clone()
+  target.pathname = pathname
+  return NextResponse.rewrite(target)
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/((?!_next|api|.*\\..*).*)'],
 }

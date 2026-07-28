@@ -1,9 +1,14 @@
+import type { Metadata } from 'next'
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import db from '@/lib/db'
 import Sidebar from '@/components/admin/Sidebar'
 import TopBar from '@/components/admin/TopBar'
 import { EstadoPagamento } from '@prisma/client'
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
