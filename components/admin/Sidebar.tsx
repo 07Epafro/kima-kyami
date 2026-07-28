@@ -12,6 +12,7 @@ import {
   CreditCard,
   Image as ImageIcon,
   Settings,
+  UserCog,
   LogOut,
   Menu,
   Plus,
@@ -31,14 +32,18 @@ const navItems = [
 interface Props {
   adminNome: string
   adminEmail: string
+  adminRole: string
   badgeCounts: { pagamentos: number }
 }
 
-export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
+export default function Sidebar({ adminNome, adminEmail, adminRole, badgeCounts }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
   const initial = adminNome.charAt(0).toUpperCase()
+  const itens = adminRole === 'SUPER_ADMIN'
+    ? [...navItems, { href: '/admin/utilizadores', icon: UserCog, label: 'Utilizadores' }]
+    : navItems
 
   const NavContent = (
     <nav className="flex flex-col h-full">
@@ -56,7 +61,7 @@ export default function Sidebar({ adminNome, adminEmail, badgeCounts }: Props) {
 
       {/* Nav */}
       <ul className="flex-1 px-3 py-5 space-y-0.5 overflow-y-auto">
-        {navItems.map(({ href, icon: Icon, label }) => {
+        {itens.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/')
           const badge = label === 'Pagamentos' ? badgeCounts.pagamentos : 0
 

@@ -29,6 +29,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <Sidebar
         adminNome={adminNome}
         adminEmail={adminEmail}
+        adminRole={session.user.role}
         badgeCounts={{ pagamentos: pagamentosPendentes }}
       />
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">

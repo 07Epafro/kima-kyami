@@ -12,6 +12,8 @@ const titulos: Record<string, string> = {
   '/admin/clientes':      'Clientes',
   '/admin/pagamentos':    'Pagamentos',
   '/admin/configuracoes': 'Configurações',
+  '/admin/utilizadores':      'Utilizadores',
+  '/admin/utilizadores/novo': 'Novo Utilizador',
 }
 
 function derivarTitulo(pathname: string): string {
