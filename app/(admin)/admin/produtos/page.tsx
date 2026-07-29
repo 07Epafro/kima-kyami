@@ -43,9 +43,9 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
   if (params.categoria && CATEGORIAS.includes(params.categoria as CategoriaKey)) {
     where.categoria = params.categoria as Categoria
   }
-  if      (params.estado === 'ativo')    { where.ativo = true;  where.emBreve = false }
-  else if (params.estado === 'emBreve')  { where.emBreve = true }
+  if      (params.estado === 'emBreve')  { where.emBreve = true }
   else if (params.estado === 'inativo')  { where.ativo = false }
+  else if (params.estado !== 'todos')    { where.ativo = true; where.emBreve = false } // padrão: esconde inactivos da lista de trabalho
   if (params.search) where.nome = { contains: params.search, mode: 'insensitive' }
 
   const [produtos, total] = await Promise.all([
@@ -117,10 +117,10 @@ export default async function ProdutosPage({ searchParams }: { searchParams: Pro
             <label htmlFor="estado" className="block text-[9.5px] tracking-[0.2em] uppercase text-a-muted mb-1.5 font-ui">Estado</label>
             <select id="estado" name="estado" defaultValue={params.estado ?? ''}
               className="w-full bg-white border border-a-border rounded-lg px-3 min-h-11 text-sm text-a-charcoal focus:outline-none focus:border-a-gold transition-colors font-ui">
-              <option value="">Todos</option>
-              <option value="ativo">Activo</option>
+              <option value="">Activo</option>
               <option value="emBreve">Em breve</option>
               <option value="inativo">Inactivo</option>
+              <option value="todos">Todos</option>
             </select>
           </div>
           <div className="lg:min-w-36">
