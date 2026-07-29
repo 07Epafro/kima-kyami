@@ -8,17 +8,7 @@ import {
   emailEncomendaCancelada,
 } from '@/lib/email'
 import { z } from 'zod'
-
-const TRANSICOES: Record<EstadoEncomenda, EstadoEncomenda[]> = {
-  PENDENTE: ['PAGAMENTO_ANALISE', 'CANCELADA'],
-  PAGAMENTO_ANALISE: ['CONFIRMADA', 'CANCELADA'],
-  CONFIRMADA: ['EM_PREPARACAO', 'CANCELADA'],
-  EM_PREPARACAO: ['ENVIADA', 'CANCELADA'],
-  ENVIADA: ['ENTREGUE'],
-  ENTREGUE: ['DEVOLVIDA'],
-  CANCELADA: [],
-  DEVOLVIDA: [],
-}
+import { TRANSICOES_ENCOMENDA } from '@/lib/encomenda-transicoes'
 
 const patchSchema = z.object({
   estado: z.nativeEnum(EstadoEncomenda).optional(),
@@ -76,7 +66,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   if (!encomenda) return NextResponse.json({ error: 'Não encontrada' }, { status: 404 })
 
   if (novoEstado && novoEstado !== encomenda.estado) {
-    const validos = TRANSICOES[encomenda.estado]
+    const validos = TRANSICOES_ENCOMENDA[encomenda.estado]
     if (!validos.includes(novoEstado)) {
       return NextResponse.json(
         { error: `Transição inválida: ${encomenda.estado} → ${novoEstado}` },

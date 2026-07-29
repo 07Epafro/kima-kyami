@@ -37,6 +37,13 @@ export async function POST(req: NextRequest, { params }: Params) {
 
   if (!pagamento) return NextResponse.json({ error: 'Pagamento não encontrado' }, { status: 404 })
 
+  if (
+    pagamento.estado === EstadoPagamento.CONFIRMADO_ADMIN ||
+    pagamento.estado === EstadoPagamento.REJEITADO_ADMIN
+  ) {
+    return NextResponse.json({ error: 'Este pagamento já foi decidido' }, { status: 409 })
+  }
+
   const { encomenda } = pagamento
 
   const res = await fetch(comprovanteUrl)

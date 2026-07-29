@@ -107,9 +107,24 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   if (!pagamento) return NextResponse.json({ error: 'Pagamento não encontrado' }, { status: 404 })
 
+  if (
+    pagamento.estado === EstadoPagamento.CONFIRMADO_ADMIN ||
+    pagamento.estado === EstadoPagamento.REJEITADO_ADMIN
+  ) {
+    return NextResponse.json({ error: 'Este pagamento já foi decidido' }, { status: 409 })
+  }
+
   const { encomenda } = pagamento
 
   if (validacaoAdmin === true) {
+    const ESTADOS_CONFIRMAVEIS: EstadoEncomenda[] = [EstadoEncomenda.PENDENTE, EstadoEncomenda.PAGAMENTO_ANALISE]
+    if (!ESTADOS_CONFIRMAVEIS.includes(encomenda.estado)) {
+      return NextResponse.json(
+        { error: `A encomenda já está em "${encomenda.estado}" — não pode ser confirmada a partir daqui` },
+        { status: 409 },
+      )
+    }
+
     const [pagamentoActualizado] = await db.$transaction([
       db.pagamento.update({
         where: { id },
