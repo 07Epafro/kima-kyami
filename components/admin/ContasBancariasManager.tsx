@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Plus, Trash2, Pencil, X, Check, Landmark } from 'lucide-react'
+import { useConfirm } from './ConfirmDialog'
 
 interface ContaBancaria {
   id: string
@@ -29,6 +30,7 @@ export default function ContasBancariasManager() {
   const [editForm, setEditForm] = useState<ContaForm>(CONTA_VAZIA)
   const [aGuardarEdicao, setAGuardarEdicao] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
+  const { confirmar, dialog } = useConfirm()
 
   function carregar() {
     setEstado('loading')
@@ -107,7 +109,12 @@ export default function ContasBancariasManager() {
   }
 
   async function remover(id: string) {
-    if (!confirm('Desactivar esta conta bancária? Deixa de estar disponível no checkout, mas encomendas antigas mantêm o registo.')) return
+    const ok = await confirmar('Desactivar esta conta bancária?', {
+      descricao: 'Deixa de estar disponível no checkout, mas encomendas antigas mantêm o registo.',
+      labelConfirmar: 'Desactivar',
+      perigo: true,
+    })
+    if (!ok) return
     const res = await fetch(`/api/contas-bancarias/${id}`, { method: 'DELETE' })
     if (res.ok) carregar()
     else setErro('Erro ao desactivar conta bancária')
@@ -115,6 +122,7 @@ export default function ContasBancariasManager() {
 
   return (
     <section className="space-y-4 bg-white border border-a-border rounded-lg p-5 sm:p-6">
+      {dialog}
       <div className="flex items-center justify-between pb-3 border-b border-a-border">
         <p className="text-[9.5px] tracking-[0.22em] uppercase text-a-muted font-ui">
           Contas Bancárias

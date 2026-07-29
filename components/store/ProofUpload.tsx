@@ -16,6 +16,7 @@ export default function ProofUpload({ pagamentoId, onConcluido }: Props) {
   const [ficheiro, setFicheiro] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [drag, setDrag] = useState(false)
+  const [erroValidacao, setErroValidacao] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const TIPOS_ACEITES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
@@ -29,8 +30,9 @@ export default function ProofUpload({ pagamentoId, onConcluido }: Props) {
 
   const processarFicheiro = useCallback(async (f: File) => {
     const erro = validarFicheiro(f)
-    if (erro) { alert(erro); return }
+    if (erro) { setErroValidacao(erro); return }
 
+    setErroValidacao(null)
     setFicheiro(f)
     if (f.type.startsWith('image/')) {
       setPreviewUrl(URL.createObjectURL(f))
@@ -182,6 +184,13 @@ export default function ProofUpload({ pagamentoId, onConcluido }: Props) {
 
   return (
     <div className="space-y-4">
+      {erroValidacao && (
+        <div className="flex items-start gap-2.5 p-3 bg-red-50 border border-red-200" role="alert">
+          <AlertTriangle size={15} className="text-red-500 shrink-0 mt-0.5" />
+          <p className="text-xs text-red-700" style={{ fontFamily: 'var(--font-sans)' }}>{erroValidacao}</p>
+        </div>
+      )}
+
       {/* Drop zone */}
       <div
         onDragOver={e => { e.preventDefault(); setDrag(true) }}

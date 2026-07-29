@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { Upload, RotateCcw } from 'lucide-react'
+import { useConfirm } from './ConfirmDialog'
 
 interface ImagemSiteRow {
   chave: string
@@ -19,6 +20,7 @@ export default function ImagensSiteManager() {
   const [aEnviar, setAEnviar] = useState<string | null>(null)
   const [erro, setErro] = useState<string | null>(null)
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({})
+  const { confirmar, dialog } = useConfirm()
 
   function carregar() {
     setEstado('loading')
@@ -73,7 +75,8 @@ export default function ImagensSiteManager() {
   }
 
   async function repor(chave: string) {
-    if (!confirm('Repor a imagem original desta secção?')) return
+    const ok = await confirmar('Repor a imagem original desta secção?', { labelConfirmar: 'Repor' })
+    if (!ok) return
     setErro(null)
     setAEnviar(chave)
     try {
@@ -105,6 +108,7 @@ export default function ImagensSiteManager() {
 
   return (
     <div className="space-y-8">
+      {dialog}
       {erro && (
         <p className="text-[12px] text-red-600 bg-red-50 border border-red-200 px-4 py-3 rounded-lg font-ui">{erro}</p>
       )}
