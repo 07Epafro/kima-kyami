@@ -144,7 +144,8 @@ export async function POST(req: NextRequest) {
       publicId: result.public_id,
       format: result.format,
     })
-  } catch {
+  } catch (err) {
+    console.error('[upload] Falha no upload para Cloudinary', err)
     return NextResponse.json({ error: 'Falha no upload para Cloudinary' }, { status: 500 })
   }
 }

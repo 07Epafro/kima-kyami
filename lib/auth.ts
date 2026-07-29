@@ -5,6 +5,9 @@ import bcrypt from 'bcryptjs'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: 'jwt' },
+  // Necessário com múltiplos domínios a servir a mesma app (kimakyami.ao, admin.kimakyami.ao,
+  // *.vercel.app) — sem isto o Auth.js pode rejeitar o pedido consoante o host recebido.
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {

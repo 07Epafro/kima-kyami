@@ -18,6 +18,12 @@ const TOKEN_VALIDO_MS = 24 * 60 * 60 * 1000 // 24 horas — link de boas-vindas,
 export async function POST(req: NextRequest) {
   const session = await auth()
   if (!session || session.user.role !== RoleAdmin.SUPER_ADMIN) {
+    console.error('[utilizadores] Acesso negado', {
+      temSessao: !!session,
+      role: session?.user.role ?? null,
+      host: req.headers.get('host'),
+      cookiesAuth: req.cookies.getAll().map((c) => c.name).filter((n) => n.includes('authjs')),
+    })
     return NextResponse.json({ error: 'Não autorizado' }, { status: 403 })
   }
 
