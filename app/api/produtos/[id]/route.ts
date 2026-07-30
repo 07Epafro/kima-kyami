@@ -3,6 +3,7 @@ import db from '@/lib/db'
 import { Categoria } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { apagarAssetsCloudinary } from '@/lib/cloudinary-cleanup'
 
 const CATEGORIAS = ['SALTOS', 'SANDALIAS', 'MULES', 'COLECAO_LIMITADA'] as const
 
@@ -101,6 +102,13 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
       ...(data.metaDesc !== undefined && { metaDesc: data.metaDesc }),
     },
   })
+
+  if (data.imagens !== undefined) {
+    const removidas = produto.imagens.filter((url) => !data.imagens!.includes(url))
+    if (removidas.length > 0) {
+      await apagarAssetsCloudinary(removidas)
+    }
+  }
 
   return NextResponse.json(atualizado)
 }

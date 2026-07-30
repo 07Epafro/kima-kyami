@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import db from '@/lib/db'
 import { z } from 'zod'
 import { Resend } from 'resend'
+import { ESTADOS_ENCOMENDA_PAGA } from '@/lib/encomenda-transicoes'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -53,7 +54,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 
   if (!cliente) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
 
-  const encomendasValidas = cliente.encomendas.filter((e) => e.estado !== 'CANCELADA')
+  const encomendasValidas = cliente.encomendas.filter((e) => ESTADOS_ENCOMENDA_PAGA.includes(e.estado))
   const totalGasto = encomendasValidas.reduce((s, e) => s + e.total, 0)
   const encomendaMedia = encomendasValidas.length > 0 ? totalGasto / encomendasValidas.length : 0
 

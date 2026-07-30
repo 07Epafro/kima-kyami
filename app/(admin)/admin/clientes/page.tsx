@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client'
 import { formatarPreco } from '@/lib/utils'
 import { Search, Download, Users, Wallet } from 'lucide-react'
 import PageHeader from '@/components/admin/PageHeader'
+import { ESTADOS_ENCOMENDA_PAGA } from '@/lib/encomenda-transicoes'
 
 export const metadata = { title: 'Clientes' }
 
@@ -47,7 +48,7 @@ export default async function ClientesPage({ searchParams }: PageProps) {
       include: {
         _count: { select: { encomendas: true } },
         encomendas: {
-          where: { estado: { not: 'CANCELADA' } },
+          where: { estado: { in: ESTADOS_ENCOMENDA_PAGA } },
           select: { total: true, criadaEm: true },
           orderBy: { criadaEm: 'desc' },
           take: 1,
@@ -58,7 +59,7 @@ export default async function ClientesPage({ searchParams }: PageProps) {
     // Site-wide (unfiltered) revenue, used only for the LTV average card below —
     // independent of the current search so the card stays accurate while filtering.
     db.encomenda.aggregate({
-      where: { estado: { not: 'CANCELADA' } },
+      where: { estado: { in: ESTADOS_ENCOMENDA_PAGA } },
       _sum: { total: true },
     }),
     db.cliente.count(),

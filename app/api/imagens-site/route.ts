@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth'
 import db from '@/lib/db'
 import { z } from 'zod'
 import { IMAGENS_SITE, IMAGENS_SITE_CHAVES } from '@/lib/imagens-site'
+import { apagarAssetsCloudinary } from '@/lib/cloudinary-cleanup'
 
 const patchSchema = z.object({
   chave: z.string().refine(v => IMAGENS_SITE_CHAVES.has(v), { message: 'Chave de imagem desconhecida' }),
@@ -57,11 +58,15 @@ export async function PATCH(req: NextRequest) {
 
   const { chave, url } = parsed.data
   try {
+    const anterior = await db.imagemSite.findUnique({ where: { chave }, select: { url: true } })
     await db.imagemSite.upsert({
       where: { chave },
       create: { chave, url },
       update: { url },
     })
+    if (anterior && anterior.url !== url) {
+      await apagarAssetsCloudinary([anterior.url])
+    }
   } catch (err) {
     console.error('[imagens-site] Falha ao guardar — tabela pode não existir ainda (falta `prisma db push`)', err)
     return NextResponse.json(
@@ -87,7 +92,11 @@ export async function DELETE(req: NextRequest) {
 
   // Repõe a imagem por omissão — remove apenas o override, se existir.
   try {
+    const anterior = await db.imagemSite.findUnique({ where: { chave }, select: { url: true } })
     await db.imagemSite.deleteMany({ where: { chave } })
+    if (anterior) {
+      await apagarAssetsCloudinary([anterior.url])
+    }
   } catch (err) {
     console.error('[imagens-site] Falha ao repor — tabela pode não existir ainda (falta `prisma db push`)', err)
     return NextResponse.json(

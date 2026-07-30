@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import db from '@/lib/db'
 import { EstadoPagamento } from '@prisma/client'
+import { ESTADOS_ENCOMENDA_PAGA } from '@/lib/encomenda-transicoes'
 
 export const revalidate = 60
 
@@ -24,14 +25,14 @@ export async function GET() {
     pagamentosUrgentes,
   ] = await Promise.all([
     db.encomenda.aggregate({
-      where: { criadaEm: { gte: inicioMes }, estado: { not: 'CANCELADA' } },
+      where: { criadaEm: { gte: inicioMes }, estado: { in: ESTADOS_ENCOMENDA_PAGA } },
       _sum: { total: true },
     }),
     db.encomenda.count({ where: { criadaEm: { gte: inicioMes } } }),
     db.cliente.count(),
     db.pagamento.count({ where: { estado: EstadoPagamento.COMPROVANTE_SUBMETIDO } }),
     db.encomenda.findMany({
-      where: { criadaEm: { gte: ha30Dias }, estado: { not: 'CANCELADA' } },
+      where: { criadaEm: { gte: ha30Dias }, estado: { in: ESTADOS_ENCOMENDA_PAGA } },
       select: { criadaEm: true, total: true },
       orderBy: { criadaEm: 'asc' },
     }),
