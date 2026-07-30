@@ -31,6 +31,17 @@ const criarSchema = z.object({
 
 function stockKey(tamanho: number, cor: string) { return `${tamanho}-${cor}` }
 
+class StockInsuficienteError extends Error {}
+
+function isColisaoReferencia(err: unknown): boolean {
+  return (
+    err instanceof Prisma.PrismaClientKnownRequestError &&
+    err.code === 'P2002' &&
+    Array.isArray(err.meta?.target) &&
+    (err.meta.target as string[]).includes('referencia')
+  )
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
   const parsed = criarSchema.safeParse(body)
@@ -110,60 +121,93 @@ export async function POST(req: NextRequest) {
     pais: moradaPais,
   }
 
-  const result = await db.$transaction(async (tx) => {
-    const cliente = await tx.cliente.upsert({
-      where: { email },
-      create: { nome, email, telefone: telefone ?? null, morada: moradaEnvio },
-      update: { nome, ...(telefone ? { telefone } : {}) },
-    })
+  const TENTATIVAS = 3
+  let result: { enc: { id: string }; referencia: string; pagamentoId: string; cliente: { id: string } } | undefined
 
-    const enc = await tx.encomenda.create({
-      data: {
-        referencia: 'TEMP',
-        clienteId: cliente.id,
-        subtotal,
-        portes,
-        total,
-        moradaEnvio,
-        itens: {
-          create: itens.map(item => ({
-            produtoId: item.produtoId,
-            tamanho: item.tamanho,
-            cor: item.cor,
-            quantidade: item.quantidade,
-            precoUnit: produtoMap.get(item.produtoId)?.preco ?? 0,
-          })),
-        },
-      },
-    })
+  for (let tentativa = 1; tentativa <= TENTATIVAS; tentativa++) {
+    try {
+      result = await db.$transaction(async (tx) => {
+        // Bloqueia cada linha de produto (FOR UPDATE) e só decrementa se ainda houver
+        // stock — evita que dois pedidos concorrentes vendam a mesma última unidade.
+        for (const item of itens) {
+          const key = stockKey(item.tamanho, item.cor)
+          const linhas = await tx.$queryRaw<{ stock: Record<string, number> }[]>`
+            SELECT stock FROM "Produto" WHERE id = ${item.produtoId} FOR UPDATE
+          `
+          const prod = linhas[0]
+          if (!prod) continue
+          const disponivelAgora = (prod.stock as Record<string, number>)[key] ?? 0
+          const nomeProduto = produtoMap.get(item.produtoId)?.nome ?? item.produtoId
+          if (disponivelAgora < item.quantidade) {
+            throw new StockInsuficienteError(
+              `Stock insuficiente: ${nomeProduto} (${item.cor}, nº${item.tamanho}). Disponível: ${disponivelAgora}`,
+            )
+          }
+          const novoStock = { ...(prod.stock as Record<string, number>) }
+          novoStock[key] = disponivelAgora - item.quantidade
+          await tx.produto.update({ where: { id: item.produtoId }, data: { stock: novoStock as Prisma.InputJsonValue } })
+        }
 
-    const referencia = gerarReferencia(enc.id)
-    await tx.encomenda.update({ where: { id: enc.id }, data: { referencia } })
+        const cliente = await tx.cliente.upsert({
+          where: { email },
+          create: { nome, email, telefone: telefone ?? null, morada: moradaEnvio },
+          update: { nome, ...(telefone ? { telefone } : {}) },
+        })
 
-    const pagamento = await tx.pagamento.create({
-      data: {
-        encomendaId: enc.id,
-        valor: total,
-        ibanDestinatario: contaValida.iban,
-        bancoDestinatario: contaValida.banco,
-        titularDestinatario: contaValida.titular,
-        contaBancariaId: contaValida.id,
-        referencia,
-        estado: EstadoPagamento.AGUARDA_COMPROVANTE,
-      },
-    })
+        const enc = await tx.encomenda.create({
+          data: {
+            referencia: 'TEMP',
+            clienteId: cliente.id,
+            subtotal,
+            portes,
+            total,
+            moradaEnvio,
+            itens: {
+              create: itens.map(item => ({
+                produtoId: item.produtoId,
+                tamanho: item.tamanho,
+                cor: item.cor,
+                quantidade: item.quantidade,
+                precoUnit: produtoMap.get(item.produtoId)?.preco ?? 0,
+              })),
+            },
+          },
+        })
 
-    for (const item of itens) {
-      const prod = await tx.produto.findUnique({ where: { id: item.produtoId }, select: { stock: true } })
-      if (!prod) continue
-      const stock = { ...(prod.stock as Record<string, number>) }
-      const key = stockKey(item.tamanho, item.cor)
-      stock[key] = Math.max(0, (stock[key] ?? 0) - item.quantidade)
-      await tx.produto.update({ where: { id: item.produtoId }, data: { stock: stock as Prisma.InputJsonValue } })
+        const referencia = gerarReferencia(enc.id)
+        await tx.encomenda.update({ where: { id: enc.id }, data: { referencia } })
+
+        const pagamento = await tx.pagamento.create({
+          data: {
+            encomendaId: enc.id,
+            valor: total,
+            ibanDestinatario: contaValida.iban,
+            bancoDestinatario: contaValida.banco,
+            titularDestinatario: contaValida.titular,
+            contaBancariaId: contaValida.id,
+            referencia,
+            estado: EstadoPagamento.AGUARDA_COMPROVANTE,
+          },
+        })
+
+        return { enc, referencia, pagamentoId: pagamento.id, cliente }
+      })
+      break
+    } catch (err) {
+      if (err instanceof StockInsuficienteError) {
+        return NextResponse.json({ error: err.message }, { status: 422 })
+      }
+      if (isColisaoReferencia(err) && tentativa < TENTATIVAS) {
+        continue
+      }
+      console.error('[encomendas] Falha ao criar encomenda', err)
+      return NextResponse.json({ error: 'Não foi possível criar a encomenda. Tenta novamente.' }, { status: 500 })
     }
+  }
 
-    return { enc, referencia, pagamentoId: pagamento.id, cliente }
-  })
+  if (!result) {
+    return NextResponse.json({ error: 'Não foi possível criar a encomenda. Tenta novamente.' }, { status: 500 })
+  }
 
   try {
     await emailConfirmacaoEncomenda(
