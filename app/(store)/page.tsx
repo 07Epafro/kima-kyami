@@ -57,9 +57,9 @@ const orgSchema = {
     availableLanguage: 'Portuguese',
   },
   sameAs: [
-    'https://instagram.com/kimakyami',
-    'https://tiktok.com/@kimakyami',
-    'https://pinterest.com/kimakyami',
+    'https://instagram.com/kima.kyami',
+    'https://tiktok.com/@kima.kyami',
+    'https://pinterest.com/kima.kyami',
   ],
 }
 
@@ -151,7 +151,7 @@ export default async function HomePage() {
               />
               <div className="w-10 h-px bg-noir/20" />
               <p className="text-[8px] tracking-[0.35em] uppercase text-noir/40 font-sans">
-                EST. 2024 · LUANDA
+                EST. 2026 · LUANDA
               </p>
             </div>
           </div>
@@ -171,10 +171,8 @@ export default async function HomePage() {
             <p
               className="text-sm text-noir/80 leading-[1.9] tracking-wide mb-10 max-w-md font-sans"
             >
-              KIMA KYAMI nasceu para mulheres que não seguem caminhos.
-              Elas criam o seu. Cada par é uma declaração de presença — fruto
-              de uma visão africana contemporânea onde o detalhe é sagrado e
-              a feminilidade, soberana.
+             Cada par é uma declaração de presença concebido com materiais premium, 
+             design refinado e um cuidado absoluto em cada detalhe.
             </p>
             <Link
               href="/marca"

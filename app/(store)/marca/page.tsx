@@ -23,8 +23,8 @@ const VALORES = [
   },
   {
     numero: '03',
-    titulo: 'Herança',
-    texto: 'Raízes africanas contemporâneas. Uma visão estética que celebra a feminilidade soberana.',
+    titulo: 'Essência',
+    texto: 'Elegância intemporal, confiança e presença. Criados para mulheres que inspiram deixam marca por onde passam.',
   },
 ]
 
@@ -74,10 +74,9 @@ export default async function MarcaPage() {
             className="text-noir/60 text-sm leading-[1.9] tracking-wide max-w-[600px] mx-auto"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
-            Kima Kyami é mais do que uma marca de calçado. É uma declaração de presença.
-            Fundada com a missão de celebrar a feminilidade africana contemporânea,
-            cada par é concebido para a mulher que conhece o seu valor e não precisa
-            de pedir permissão para brilhar.
+            Kima Kyami é mais do que uma marca de calçado. É uma declaração de presença. 
+            Criamos peças que unem sofisticação, qualidade e design intemporal para mulheres que fazem da elegância 
+            a sua assinatura.
           </p>
         </div>
       </section>

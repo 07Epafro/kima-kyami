@@ -80,7 +80,7 @@ export default function Footer() {
             {/* Social links — p-2 garante touch target ~44px */}
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://instagram.com/kimakyami"
+                href="https://instagram.com/kima.kyami"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -89,7 +89,7 @@ export default function Footer() {
                 <Instagram size={16} strokeWidth={1.5} />
               </a>
               <a
-                href="https://tiktok.com/@kimakyami"
+                href="https://tiktok.com/@kima.kyami"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
