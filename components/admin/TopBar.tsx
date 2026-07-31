@@ -22,6 +22,7 @@ function derivarTitulo(pathname: string): string {
   if (pathname.match(/^\/admin\/encomendas\/[^/]+$/)) return 'Encomenda'
   if (pathname.match(/^\/admin\/clientes\/[^/]+$/))   return 'Cliente'
   if (pathname.match(/^\/admin\/pagamentos\/[^/]+$/)) return 'Pagamento'
+  if (pathname.match(/^\/admin\/utilizadores\/[^/]+$/)) return 'Editar Utilizador'
   return 'Admin'
 }
 

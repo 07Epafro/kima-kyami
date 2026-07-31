@@ -26,9 +26,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // (ex: reset de password) ainda não existam na base de dados em produção.
         const admin = await db.admin.findUnique({
           where: { email },
-          select: { id: true, nome: true, email: true, password: true, role: true },
+          select: { id: true, nome: true, email: true, password: true, role: true, ativo: true },
         })
         if (!admin) return null
+        if (admin.ativo === false) return null
 
         const senhaValida = await bcrypt.compare(password, admin.password)
         if (!senhaValida) return null

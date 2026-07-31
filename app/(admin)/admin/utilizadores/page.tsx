@@ -30,7 +30,7 @@ export default async function UtilizadoresPage() {
 
   const utilizadores = await db.admin.findMany({
     orderBy: { criadoEm: 'asc' },
-    select: { id: true, nome: true, email: true, role: true, criadoEm: true },
+    select: { id: true, nome: true, email: true, role: true, ativo: true, criadoEm: true },
   })
 
   return (
@@ -51,23 +51,30 @@ export default async function UtilizadoresPage() {
         {/* Mobile cards */}
         <div className="md:hidden divide-y divide-a-border">
           {utilizadores.map((u) => (
-            <div key={u.id} className="p-4 flex items-start gap-3">
+            <Link key={u.id} href={`/admin/utilizadores/${u.id}`} className="p-4 flex items-start gap-3 hover:bg-a-bone transition-colors">
               <div className="w-9 h-9 shrink-0 rounded-full bg-a-bone border border-a-border flex items-center justify-center text-[11px] font-medium text-a-charcoal font-ui">
                 {iniciais(u.nome)}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <p className="text-sm font-medium text-a-charcoal font-display truncate">{u.nome}</p>
-                  <span className={`text-[9px] px-2 py-0.5 rounded font-medium font-ui whitespace-nowrap ${roleBadge[u.role]}`}>
-                    {roleLabels[u.role]}
-                  </span>
+                  <div className="flex items-center gap-1 shrink-0">
+                    {!u.ativo && (
+                      <span className="text-[9px] px-2 py-0.5 rounded font-medium font-ui bg-red-50 text-red-700 border border-red-200">
+                        Inactivo
+                      </span>
+                    )}
+                    <span className={`text-[9px] px-2 py-0.5 rounded font-medium font-ui whitespace-nowrap ${roleBadge[u.role]}`}>
+                      {roleLabels[u.role]}
+                    </span>
+                  </div>
                 </div>
                 <p className="text-[11px] text-a-muted font-ui mb-1">{u.email}</p>
                 <p className="text-[10px] text-a-muted font-ui">
                   Desde {u.criadoEm.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -86,22 +93,29 @@ export default async function UtilizadoresPage() {
               {utilizadores.map((u) => (
                 <tr key={u.id} className="border-b border-a-border/50 hover:bg-a-bone transition-colors last:border-0">
                   <td className="px-6 py-3">
-                    <div className="flex items-center gap-3">
+                    <Link href={`/admin/utilizadores/${u.id}`} className="flex items-center gap-3 group">
                       <div className="w-8 h-8 shrink-0 rounded-full bg-a-bone border border-a-border flex items-center justify-center text-[11px] font-medium text-a-charcoal font-ui">
                         {iniciais(u.nome)}
                       </div>
-                      <span className="text-xs font-medium text-a-charcoal">{u.nome}</span>
+                      <span className="text-xs font-medium text-a-charcoal group-hover:text-a-gold transition-colors">{u.nome}</span>
                       {u.id === session.user.id && (
                         <span className="text-[9px] text-a-muted font-ui">(tu)</span>
                       )}
-                    </div>
+                    </Link>
                   </td>
                   <td className="px-4 py-3 text-xs text-a-muted font-ui">{u.email}</td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`inline-flex items-center gap-1 text-[9px] px-2 py-0.5 rounded font-medium font-ui ${roleBadge[u.role]}`}>
-                      {u.role === RoleAdmin.SUPER_ADMIN && <ShieldCheck size={10} strokeWidth={2} />}
-                      {roleLabels[u.role]}
-                    </span>
+                    <div className="flex items-center justify-center gap-1.5">
+                      {!u.ativo && (
+                        <span className="text-[9px] px-2 py-0.5 rounded font-medium font-ui bg-red-50 text-red-700 border border-red-200">
+                          Inactivo
+                        </span>
+                      )}
+                      <span className={`inline-flex items-center gap-1 text-[9px] px-2 py-0.5 rounded font-medium font-ui ${roleBadge[u.role]}`}>
+                        {u.role === RoleAdmin.SUPER_ADMIN && <ShieldCheck size={10} strokeWidth={2} />}
+                        {roleLabels[u.role]}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-[10px] text-a-muted text-right font-ui">
                     {u.criadoEm.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}
