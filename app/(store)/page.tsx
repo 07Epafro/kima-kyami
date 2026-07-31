@@ -11,10 +11,10 @@ export const metadata: Metadata = {
   title: {
     absolute: 'Kima Kyami — Sapatos de Luxo Femininos em Angola',
   },
-  description: 'Sapatos de luxo criados para mulheres angolanas que deixam presença por onde passam. Saltos, sandálias e mules de inspiração africana contemporânea, feitos em Luanda.',
+  description: 'Sapatos de luxo criados para mulheres angolanas que deixam presença por onde passam. Saltos, sandálias e mules de design contemporâneo, feitos em Luanda.',
   openGraph: {
     title: 'Kima Kyami — Sapatos de Luxo em Angola',
-    description: 'Calçado feminino de luxo com inspiração africana. Descobre a nova coleção.',
+    description: 'Calçado feminino de luxo com design contemporâneo. Descobre a nova coleção.',
     type: 'website',
   },
 }
@@ -49,7 +49,7 @@ const orgSchema = {
   '@type': 'Organization',
   name: 'Kima Kyami',
   url: BASE,
-  description: 'Sapatos de luxo de inspiração africana contemporânea.',
+  description: 'Sapatos de luxo de design contemporâneo.',
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'atendimento@kimakyami.ao',

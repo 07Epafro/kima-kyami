@@ -7,7 +7,7 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Lookbook — Kima Kyami',
-  description: 'Inspira-te com os nossos editoriais. Moda africana contemporânea de luxo.',
+  description: 'Inspira-te com os nossos editoriais. Moda contemporânea de luxo.',
 }
 
 const EDITORIAIS = [

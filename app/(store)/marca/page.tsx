@@ -7,7 +7,7 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'A Marca — Kima Kyami',
-  description: 'Kima Kyami nasceu para mulheres que não seguem caminhos — elas criam o seu. Moda africana contemporânea de luxo.',
+  description: 'Kima Kyami nasceu para mulheres que não seguem caminhos — elas criam o seu. Moda contemporânea de luxo.',
 }
 
 const VALORES = [

@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     template: '%s | Kima Kyami',
     default: 'Kima Kyami',
   },
-  description: 'Kima Kyami — Sapatos de luxo femininos com inspiração africana contemporânea. Saltos, sandálias e mules exclusivos, criados em Angola.',
+  description: 'Kima Kyami — Sapatos de luxo femininos de design contemporâneo. Saltos, sandálias e mules exclusivos, criados em Angola.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.ao'),
   openGraph: {
     type: 'website',
