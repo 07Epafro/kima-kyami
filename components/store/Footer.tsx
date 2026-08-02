@@ -75,7 +75,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-[11px] text-cream/50 leading-relaxed tracking-wide max-w-[200px]">
-              Sapatos criados para mulheres que deixam presença por onde passam.
+              Calçado de luxo para mulheres que inspiram confiança em cada passo.
             </p>
             {/* Social links — p-2 garante touch target ~44px */}
             <div className="flex items-center gap-3 pt-2">
@@ -98,7 +98,7 @@ export default function Footer() {
                 <TikTokIcon />
               </a>
               <a
-                href="https://pinterest.com/kimakyami"
+                href="https://pinterest.com/kima.kyami"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Pinterest"

@@ -146,9 +146,9 @@ export default async function MarcaPage() {
             className="text-noir/60 text-sm leading-[1.9] tracking-wide mb-10 max-w-md"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
-            Do design inicial ao acabamento final, cada Kima Kyami passa por um processo
-            rigoroso de criação. Materiais cuidadosamente seleccionados, formas que
-            abraçam o pé, e uma atenção ao detalhe que transforma cada par numa obra de arte.
+           Nada é deixado ao acaso. Da seleção dos materiais ao acabamento final, 
+           cada detalhe é meticulosamente concebido para dar vida a peças que transcendem 
+           tendências e permanecem intemporais.
           </p>
           <Link
             href="/colecoes"
