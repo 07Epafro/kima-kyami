@@ -3,6 +3,8 @@ import { formatarPreco } from '@/lib/utils'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.EMAIL_FROM ?? 'Kima Kyami <noreply@kimakyami.ao>'
+const REPLY_TO = 'atendimento@kimakyami.ao'
+const SITE_URL = process.env.NEXT_PUBLIC_URL ?? 'https://kimakyami.ao'
 
 interface ItemEmail {
   nome: string
@@ -34,18 +36,25 @@ interface ClienteEmail {
   email: string
 }
 
-function base(titulo: string, corpo: string): string {
+function base(titulo: string, corpo: string, preheader: string): string {
   return `<!DOCTYPE html>
 <html lang="pt">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${titulo} — Kima Kyami</title>
+</head>
 <body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0eb;padding:40px 0">
+  <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all">
+    ${preheader}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0eb;padding:40px 0">
     <tr><td align="center">
-      <table width="580" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;max-width:580px">
+      <table role="presentation" width="580" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;max-width:580px">
         <tr>
-          <td style="background:#181818;padding:32px 40px;text-align:center">
-            <p style="margin:0;font-size:32px;letter-spacing:12px;color:#f7c480;font-weight:300">KK</p>
-            <p style="margin:6px 0 0;font-size:10px;letter-spacing:4px;color:#9a9a9a;text-transform:uppercase;font-family:Arial,sans-serif">Kima Kyami</p>
+          <td style="background:#181818;padding:28px 40px;text-align:center">
+            <img src="${SITE_URL}/logo-email.png" width="52" height="58" alt="Kima Kyami" style="display:block;margin:0 auto;border:0">
+            <p style="margin:10px 0 0;font-size:10px;letter-spacing:4px;color:#9a9a9a;text-transform:uppercase;font-family:Arial,sans-serif">Kima Kyami</p>
           </td>
         </tr>
         <tr>
@@ -139,8 +148,9 @@ export async function emailConfirmacaoEncomenda(enc: EncomendaEmail, cliente: Cl
   await resend.emails.send({
     from: FROM,
     to: cliente.email,
+    replyTo: REPLY_TO,
     subject: `Encomenda recebida — ${enc.referencia}`,
-    html: base('Encomenda recebida', corpo),
+    html: base('Encomenda recebida', corpo, `Recebemos a tua encomenda ${enc.referencia}. Aguardamos o comprovante de pagamento.`),
   })
 }
 
@@ -160,8 +170,9 @@ export async function emailComprovanteRecebido(enc: EncomendaEmail, cliente: Cli
   await resend.emails.send({
     from: FROM,
     to: cliente.email,
+    replyTo: REPLY_TO,
     subject: `Comprovante recebido — ${enc.referencia}`,
-    html: base('Comprovante em análise', corpo),
+    html: base('Comprovante em análise', corpo, `Recebemos o comprovante da encomenda ${enc.referencia} — a validar.`),
   })
 }
 
@@ -182,8 +193,9 @@ export async function emailEncomendaConfirmada(enc: EncomendaEmail, cliente: Cli
   await resend.emails.send({
     from: FROM,
     to: cliente.email,
+    replyTo: REPLY_TO,
     subject: `Pagamento confirmado — ${enc.referencia}`,
-    html: base('Encomenda confirmada', corpo),
+    html: base('Encomenda confirmada', corpo, `Pagamento confirmado! A tua encomenda ${enc.referencia} está em preparação.`),
   })
 }
 
@@ -212,8 +224,9 @@ export async function emailEncomendaEnviada(
   await resend.emails.send({
     from: FROM,
     to: cliente.email,
+    replyTo: REPLY_TO,
     subject: `Encomenda enviada — ${enc.referencia}`,
-    html: base('A caminho! 📦', corpo),
+    html: base('A caminho! 📦', corpo, `A tua encomenda ${enc.referencia} foi enviada — tracking ${tracking}.`),
   })
 }
 
@@ -237,8 +250,9 @@ export async function emailEncomendaCancelada(
   await resend.emails.send({
     from: FROM,
     to: cliente.email,
+    replyTo: REPLY_TO,
     subject: `Encomenda cancelada — ${enc.referencia}`,
-    html: base('Encomenda cancelada', corpo),
+    html: base('Encomenda cancelada', corpo, `A encomenda ${enc.referencia} foi cancelada.`),
   })
 }
 
@@ -260,8 +274,46 @@ export async function emailResetPasswordAdmin(admin: { nome: string; email: stri
   await resend.emails.send({
     from: FROM,
     to: admin.email,
+    replyTo: REPLY_TO,
     subject: 'Repor password — Painel de Administração',
-    html: base('Reposição de password', corpo),
+    html: base('Reposição de password', corpo, 'Este link expira dentro de 1 hora.'),
+  })
+}
+
+export async function emailBoasVindasNewsletter(email: string) {
+  const corpo = `
+    <p style="margin:0 0 20px;font-size:13px;color:#181818;line-height:1.9;font-family:Arial,sans-serif">
+      Bem-vinda à Kima Kyami.
+    </p>
+    <p style="margin:0 0 20px;font-size:13px;color:#181818;line-height:1.9;font-family:Arial,sans-serif">
+      Serás das primeiras a saber dos nossos novos lançamentos, coleções exclusivas e ofertas especiais.
+    </p>
+    <p style="margin:0;font-size:13px;color:#181818;line-height:1.9;font-family:Arial,sans-serif">
+      Obrigada por fazeres parte desta jornada.
+    </p>`
+
+  await resend.emails.send({
+    from: FROM,
+    to: email,
+    replyTo: REPLY_TO,
+    subject: 'Bem-vinda à Kima Kyami',
+    html: base('Bem-vinda', corpo, 'Serás das primeiras a saber dos nossos novos lançamentos e coleções exclusivas.'),
+  })
+}
+
+export async function emailMensagemCliente(cliente: { nome: string; email: string }, assunto: string, mensagem: string) {
+  const corpo = `
+    <p style="margin:0 0 16px;font-size:14px;color:#181818;line-height:1.8;font-family:Arial,sans-serif">
+      Olá <strong>${cliente.nome}</strong>,
+    </p>
+    <p style="margin:0;font-size:14px;color:#181818;line-height:1.8;font-family:Arial,sans-serif;white-space:pre-wrap">${mensagem}</p>`
+
+  await resend.emails.send({
+    from: FROM,
+    to: cliente.email,
+    replyTo: REPLY_TO,
+    subject: assunto,
+    html: base(assunto, corpo, mensagem.slice(0, 90)),
   })
 }
 
@@ -283,7 +335,8 @@ export async function emailBemVindoAdmin(admin: { nome: string; email: string },
   await resend.emails.send({
     from: FROM,
     to: admin.email,
+    replyTo: REPLY_TO,
     subject: 'Bem-vindo(a) ao Painel de Administração — Kima Kyami',
-    html: base('Conta criada', corpo),
+    html: base('Conta criada', corpo, 'Define a tua password — o link expira dentro de 24 horas.'),
   })
 }

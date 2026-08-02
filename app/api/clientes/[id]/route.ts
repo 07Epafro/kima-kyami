@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import db from '@/lib/db'
 import { z } from 'zod'
-import { Resend } from 'resend'
 import { ESTADOS_ENCOMENDA_PAGA } from '@/lib/encomenda-transicoes'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import { emailMensagemCliente } from '@/lib/email'
 
 const patchSchema = z.object({
   nome: z.string().min(2).optional(),
@@ -136,40 +134,7 @@ export async function POST(req: NextRequest, { params }: Params) {
   if (!cliente) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
 
   try {
-    await resend.emails.send({
-    from: process.env.EMAIL_FROM ?? 'Kima Kyami <noreply@kimakyami.ao>',
-    to: cliente.email,
-    subject: parsed.data.assunto,
-    html: `<!DOCTYPE html>
-<html lang="pt">
-<head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0eb;padding:40px 0">
-    <tr><td align="center">
-      <table width="580" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;max-width:580px">
-        <tr>
-          <td style="background:#181818;padding:28px 40px;text-align:center">
-            <p style="margin:0;font-size:28px;letter-spacing:10px;color:#f7c480;font-weight:300">KK</p>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:40px">
-            <p style="margin:0 0 16px;font-size:14px;color:#181818;line-height:1.8;font-family:Arial,sans-serif">
-              Olá <strong>${cliente.nome}</strong>,
-            </p>
-            <p style="margin:0;font-size:14px;color:#181818;line-height:1.8;font-family:Arial,sans-serif;white-space:pre-wrap">${parsed.data.mensagem}</p>
-            <hr style="border:none;border-top:1px solid #e8e0d8;margin:32px 0">
-            <p style="margin:0;font-size:11px;color:#9a9a9a;font-family:Arial,sans-serif;text-align:center">
-              Kima Kyami · <a href="mailto:atendimento@kimakyami.ao" style="color:#9a9a9a">atendimento@kimakyami.ao</a>
-            </p>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`,
-    })
+    await emailMensagemCliente(cliente, parsed.data.assunto, parsed.data.mensagem)
   } catch {
     return NextResponse.json({ error: 'Falha ao enviar email' }, { status: 502 })
   }
