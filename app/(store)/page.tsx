@@ -248,11 +248,13 @@ export default async function HomePage() {
               <br />É ATITUDE.
               <br />É KIMA KYAMI."
             </blockquote>
-            <span
-              className="text-gold text-[28px] tracking-spaced-max font-light font-serif"
-            >
-              KK
-            </span>
+            <Image
+              src="/icon.svg"
+              alt="Kima Kyami"
+              width={48}
+              height={53}
+              className="h-12 w-auto"
+            />
           </div>
         </div>
       </section>
